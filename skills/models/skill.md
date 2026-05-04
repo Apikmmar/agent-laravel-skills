@@ -5,10 +5,10 @@ tags: [model, eloquent, laravel, modules]
 ---
 
 ## Rule
-All models live inside `Modules\{ModuleName}\Models\`, must always use `SoftDeletes`, and must explicitly define `$connection`, `$table`, and `$fillable`. Never use `$guarded`.
+All models live inside `Modules\{ModuleName}\Models\`, must always use `SoftDeletes`, and must explicitly define `$table` and `$fillable`. Never use `$guarded`.
 
 ## Why
-Without explicit `$connection`, Eloquent defaults to the wrong database. Without explicit `$table`, Laravel pluralizes incorrectly for some names.
+Without explicit `$table`, Laravel pluralizes incorrectly for some names.
 
 ## Conventions
 
@@ -37,7 +37,6 @@ Without explicit `$connection`, Eloquent defaults to the wrong database. Without
 
 ## Clarifying Questions
 - What module does this model belong to?
-- What connection does it use?
 - What is the exact table name?
 - Does the table have any JSON columns? (adds `$casts`)
 - What relationships are needed?
