@@ -10,6 +10,7 @@
 ## Review Agents
 - @agents/review/SECURITY.md
 - @agents/review/TESTING.md
+- @agents/review/PERFORMANCE.md
 
 ## Skills
 - @skills/module/SKILL.md
@@ -22,3 +23,4 @@
 - @skills/graphql/resolver/mutator/SKILL.md
 - @skills/graphql/resolver/query/SKILL.md
 - @skills/service/SKILL.md
+- @skills/job/SKILL.md
