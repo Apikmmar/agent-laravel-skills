@@ -14,28 +14,40 @@ use Modules\Blog\Models\Post;
 
 class PostQuery
 {
-    public function listing(mixed $root, array $args): Builder
+    public function listing($_, array $args): Builder
     {
         return Post::query();
     }
 
-    public function detail(mixed $root, array $args): mixed
+    public function detail($_, array $args): mixed
     {
-        // return single model
+        $post = Post::find($args['id']);
+
+        if (!$post) {
+            throw new \Exception('Post not found.');
+        }
+
+        return $post;
     }
 
-    public function dropdown(mixed $root, array $args): mixed
+    public function dropdown($_, array $args): mixed
     {
-        // return simplified list
+        return Post::query()
+            ->where('status', true)
+            ->get()
+            ->map(fn($item) => [
+                'id'   => $item->id,
+                'name' => $item->title,
+            ]);
     }
 }
 ```
 
 **What this shows:**
 - `listing` returns `Builder` — required for `@paginate`
-- `detail` and `dropdown` return model or collection — used with `@field`
-- Namespace: `Modules\{Module}\GraphQL\Queries`
-- Class name: `{Model}Query`
+- `detail` throws `\Exception` if model not found — never return null silently
+- `dropdown` returns simplified collection (id + label only)
+- Method signature: `($_, array $args)` not `(mixed $root, array $args)`
 
 ---
 
@@ -43,9 +55,18 @@ class PostQuery
 
 ```php
 // listing returns Collection instead of Builder — breaks @paginate
-public function listing(mixed $root, array $args): Collection
+public function listing($_, array $args): Collection
 {
     return Post::all();
+}
+
+// Wrong method signature — use ($_, array $args)
+public function listing(mixed $root, array $args): Builder { }
+
+// detail with no exception — must throw if not found
+public function detail($_, array $args): mixed
+{
+    return Post::find($args['id']); // returns null silently
 }
 
 // Wrong class name — must be Query not Queries

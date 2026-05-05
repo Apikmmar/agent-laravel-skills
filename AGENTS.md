@@ -13,3 +13,4 @@
 - @skills/graphql/query/skill.md
 - @skills/graphql/resolver/mutator/skill.md
 - @skills/graphql/resolver/query/skill.md
+- @skills/service/skill.md

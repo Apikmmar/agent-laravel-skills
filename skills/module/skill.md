@@ -36,6 +36,32 @@ php artisan make:migration create_{table_name}_table
 ```
 > Migration goes in `database/migrations/` — NOT inside the module.
 
+**Step 5 — Create the GraphQLResponse trait**
+
+No artisan command — generate this file manually:
+
+```
+Modules/{ModuleName}/Traits/GraphQLResponse.php
+```
+
+```php
+<?php
+
+namespace Modules\{ModuleName}\Traits;
+
+trait GraphQLResponse
+{
+    private function createResponse(bool $status, string $message, $data = null): array
+    {
+        return [
+            'status'  => $status,
+            'message' => $message,
+            'data'    => $data,
+        ];
+    }
+}
+```
+
 ### Generated Structure
 After running all commands:
 
@@ -54,8 +80,10 @@ Modules/
     │       │   └── {ModelName}.graphql
     │       └── Queries/
     │           └── {ModelName}.graphql
-    └── Models/
-        └── {ModelName}.php
+    ├── Models/
+    │   └── {ModelName}.php
+    └── Traits/
+        └── GraphQLResponse.php
 
 database/
 └── migrations/
