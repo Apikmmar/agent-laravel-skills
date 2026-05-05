@@ -3,6 +3,7 @@
 ## Global Rules
 - @agents/convention/CONVENTION.md
 - @agents/principles/PRINCIPLES.md
+- @agents/security/SECURITY.md
 
 ## Skills
 - @skills/module/SKILL.md
