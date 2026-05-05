@@ -1,7 +1,6 @@
 ---
-title: GraphQL Schema — Queries
-impact: CRITICAL
-tags: [graphql, query, pagination, filter, sort, lighthouse]
+name: graphql-query
+description: Use when defining GraphQL queries, filters, or sort inputs. Triggers when user asks to create a listing query, detail query, dropdown query, add pagination, or define filter and sort inputs.
 ---
 
 ## Rule

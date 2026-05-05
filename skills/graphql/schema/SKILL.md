@@ -1,7 +1,6 @@
 ---
-title: GraphQL Schema — Components
-impact: CRITICAL
-tags: [graphql, schema, types, enums, lighthouse]
+name: graphql-schema
+description: Use when defining GraphQL types, enums, or registering schema files. Triggers when user asks to create a GraphQL type, define an enum, add a schema component, or register imports in schema.graphql.
 ---
 
 ## Rule

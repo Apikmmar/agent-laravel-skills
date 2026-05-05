@@ -1,7 +1,6 @@
 ---
-title: Service Layer
-impact: CRITICAL
-tags: [service, business-logic, dry, solid]
+name: laravel-service
+description: Use when creating a service class inside a module. Triggers when user asks to create a service, extract business logic, add a service layer, or move reusable logic out of a mutator or query.
 ---
 
 ## Rule

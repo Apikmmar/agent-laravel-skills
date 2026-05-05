@@ -1,7 +1,6 @@
 ---
-title: Module Structure
-impact: CRITICAL
-tags: [module, laravel, structure, graphql]
+name: laravel-module
+description: Use when creating a new Laravel module. Triggers when user asks to create a module, scaffold a new feature, set up a new domain, or run module:make commands.
 ---
 
 ## Rule

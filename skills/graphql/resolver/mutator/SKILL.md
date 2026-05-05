@@ -1,7 +1,6 @@
 ---
-title: GraphQL Resolver — Mutator
-impact: CRITICAL
-tags: [graphql, resolver, mutator, lighthouse, transaction]
+name: graphql-resolver-mutator
+description: Use when creating a GraphQL mutator resolver class. Triggers when user asks to create a mutator, implement create/update/delete resolver, add a mutation resolver class, or wire up a GraphQL mutation to PHP.
 ---
 
 ## Rule

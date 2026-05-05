@@ -1,7 +1,6 @@
 ---
-title: GraphQL Schema — Mutations
-impact: CRITICAL
-tags: [graphql, mutation, input, lighthouse, validator]
+name: graphql-mutation
+description: Use when defining GraphQL mutations or input types. Triggers when user asks to create a mutation, define a mutation input, add create/update/delete operations, or set up GraphQL mutation schema.
 ---
 
 ## Rule

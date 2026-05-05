@@ -1,7 +1,6 @@
 ---
-title: GraphQL Validation
-impact: CRITICAL
-tags: [graphql, validation, lighthouse, validator]
+name: graphql-validation
+description: Use when creating a GraphQL input validator. Triggers when user asks to add validation, create a validator class, add @validator to an input, or define validation rules for a mutation input.
 ---
 
 ## Rule

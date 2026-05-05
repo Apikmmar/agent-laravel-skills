@@ -1,7 +1,6 @@
 ---
-title: GraphQL Resolver — Query
-impact: CRITICAL
-tags: [graphql, resolver, query, lighthouse, paginate]
+name: graphql-resolver-query
+description: Use when creating a GraphQL query resolver class. Triggers when user asks to create a query resolver, implement listing or detail resolver, add a query class, or wire up a GraphQL query to PHP.
 ---
 
 ## Rule
