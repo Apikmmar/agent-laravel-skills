@@ -1,9 +1,11 @@
 # Webby Development — Agent Rules
 
 ## Global Rules
+- @agents/brainstorm/BRAINSTORM.md
 - @agents/convention/CONVENTION.md
 - @agents/principles/PRINCIPLES.md
 - @agents/security/SECURITY.md
+- @agents/performance/PERFORMANCE.md
 
 ## Review Agents
 - @agents/review/SECURITY.md

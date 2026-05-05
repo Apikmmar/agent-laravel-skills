@@ -21,11 +21,18 @@ All migrations must always include `softDeletes()` and use named foreign key con
 3. `$table->timestamps()`
 4. `$table->softDeletes()`
 5. Foreign key definitions
+6. Indexes
 
 ### Columns
 - Use `unsignedBigInteger` for foreign key columns
 - Use `enum` for fixed value sets — values in lowercase
 - Nullable columns always chain `->nullable()`
+
+### Indexes
+- Add `$table->index('column')` for frequently filtered or sorted columns
+- Add `$table->unique('column')` for columns that must be unique
+- Add `$table->index(['col1', 'col2'])` for composite indexes
+- Define all indexes after foreign keys
 
 ### Foreign Keys
 - Always name the constraint: `fk_{shortTable}_{referencedTable}`
