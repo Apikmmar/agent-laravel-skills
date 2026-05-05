@@ -35,6 +35,20 @@ Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}Schema.graphql
 - `@hasMany(relation: "methodName")` — always include `relation:` when PHP method is camelCase
 - `@hasOne` — for has-one relationships
 
+### Module Registration
+Every module has a `schema.graphql` at `Modules/{Module}/GraphQL/schema.graphql` that registers all its GraphQL files via `#import`:
+
+```graphql
+#import Schema/Components/{Model}Schema.graphql
+
+#import Schema/Mutations/{Model}Mutation.graphql
+
+#import Schema/Queries/{Model}Queries.graphql
+```
+
+- Every new Component, Mutation, and Query file added to the module must be registered here
+- Group by type: Components first, then Mutations, then Queries
+
 ## Clarifying Questions
 - What is the model name?
 - What fields does the type need?

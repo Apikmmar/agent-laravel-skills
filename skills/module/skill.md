@@ -69,6 +69,7 @@ After running all commands:
 Modules/
 └── {ModuleName}/
     ├── GraphQL/
+    │   ├── schema.graphql
     │   ├── Mutations/
     │   │   └── {ModelName}Mutator.php
     │   ├── Queries/
