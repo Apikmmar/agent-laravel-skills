@@ -61,4 +61,4 @@ input PostTagInput {
 - What human-readable label should each field have?
 
 ## Reference
-See `references/validation.md` for real examples.
+See `references/VALIDATION.md` for real examples.

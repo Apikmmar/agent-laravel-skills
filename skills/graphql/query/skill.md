@@ -51,4 +51,4 @@ input {Model}ListingInput {
 - What columns should be sortable?
 
 ## Reference
-See `references/query.md` for real examples.
+See `references/QUERY.md` for real examples.

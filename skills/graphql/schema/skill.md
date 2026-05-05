@@ -56,4 +56,4 @@ Every module has a `schema.graphql` at `Modules/{Module}/GraphQL/schema.graphql`
 - Are there any enum fields? If yes — what are the allowed values?
 
 ## Reference
-See `references/schema.md` for real examples.
+See `references/SCHEMA.md` for real examples.

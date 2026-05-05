@@ -1,17 +1,17 @@
 # Webby Development — Agent Rules
 
 ## Global Rules
-- @agents/convention/convention.md
-- @agents/principles/principles.md
+- @agents/convention/CONVENTION.md
+- @agents/principles/PRINCIPLES.md
 
 ## Skills
-- @skills/module/skill.md
-- @skills/models/skill.md
-- @skills/migration/skill.md
-- @skills/graphql/schema/skill.md
-- @skills/graphql/mutation/skill.md
-- @skills/graphql/query/skill.md
-- @skills/graphql/validation/skill.md
-- @skills/graphql/resolver/mutator/skill.md
-- @skills/graphql/resolver/query/skill.md
-- @skills/service/skill.md
+- @skills/module/SKILL.md
+- @skills/models/SKILL.md
+- @skills/migration/SKILL.md
+- @skills/graphql/schema/SKILL.md
+- @skills/graphql/mutation/SKILL.md
+- @skills/graphql/query/SKILL.md
+- @skills/graphql/validation/SKILL.md
+- @skills/graphql/resolver/mutator/SKILL.md
+- @skills/graphql/resolver/query/SKILL.md
+- @skills/service/SKILL.md

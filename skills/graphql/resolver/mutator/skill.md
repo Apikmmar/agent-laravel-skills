@@ -52,4 +52,4 @@ Modules\\{Module}\\GraphQL\\Mutations\\{Model}Mutator@{method}
 - Which services does this mutator depend on?
 
 ## Reference
-See `references/mutator.md` for real examples.
+See `references/MUTATOR.md` for real examples.

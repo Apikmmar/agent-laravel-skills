@@ -50,4 +50,4 @@ Modules\\{Module}\\GraphQL\\Queries\\{Model}Query@{method}
 - Are prefixed method names needed (e.g. `listingPost`)?
 
 ## Reference
-See `references/query.md` for real examples.
+See `references/QUERY.md` for real examples.

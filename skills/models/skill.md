@@ -42,4 +42,4 @@ Without explicit `$table`, Laravel pluralizes incorrectly for some names.
 - What relationships are needed?
 
 ## Reference
-See `references/model.md` for real examples.
+See `references/MODEL.md` for real examples.

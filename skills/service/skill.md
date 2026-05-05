@@ -46,4 +46,4 @@ Modules/{ModuleName}/Services/{ServiceName}Service.php
 - Is a `BaseService` needed, or is this a standalone service?
 
 ## Reference
-See `references/service.md` for real examples.
+See `references/SERVICE.md` for real examples.

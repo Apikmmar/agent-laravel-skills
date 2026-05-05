@@ -44,4 +44,4 @@ Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
 - Are there nested inputs?
 
 ## Reference
-See `references/mutation.md` for real examples.
+See `references/MUTATION.md` for real examples.

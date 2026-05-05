@@ -41,4 +41,4 @@ All migrations must always include `softDeletes()` and use named foreign key con
 - Any enum columns? If yes — what are the allowed values?
 
 ## Reference
-See `references/migration.md` for real examples.
+See `references/MIGRATION.md` for real examples.
