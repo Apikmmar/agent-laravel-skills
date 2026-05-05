@@ -130,7 +130,7 @@ class Post extends Model
     protected $guarded = [];
 }
 
-// Missing $connection and $table
+// Missing $table — always define explicitly
 class Post extends Model
 {
     protected $fillable = ['title', 'body'];

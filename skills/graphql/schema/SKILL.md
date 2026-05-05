@@ -26,8 +26,9 @@ Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}Schema.graphql
 
 ### Enums
 - Enum names in PascalCase
-- Enum values in lowercase
 - Enums defined in the same `Components/` file as the type that uses them
+- **Status/type enums** (e.g. `PostStatus`, `WorkflowStatus`) — values in **lowercase**: `draft`, `published`
+- **Sort/direction enums** (e.g. `SortDirection`, `PostSortColumn`) — values in **UPPERCASE**: `ASC`, `DESC`, `CREATED_AT`
 
 ### Relationships
 - `@belongsTo` — for belongs-to relationships
@@ -35,7 +36,7 @@ Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}Schema.graphql
 - `@hasOne` — for has-one relationships
 
 ### SuccessResponse
-All mutations return `SuccessResponse`. It is defined once globally (not per module):
+All mutations return `SuccessResponse`. It is defined **once in the root schema** (e.g. `graphql/schema.graphql`) — never inside a module, never duplicated:
 
 ```graphql
 type SuccessResponse {
@@ -45,7 +46,7 @@ type SuccessResponse {
 }
 ```
 
-This maps to the `GraphQLResponse` trait's `createResponse(bool, string, $data)` return shape.
+This maps to the `GraphQLResponse` trait's `createResponse(bool, string, $data)` return shape. Do not redefine it per module.
 
 ### Module Registration
 Every module has a `schema.graphql` at `Modules/{Module}/GraphQL/schema.graphql` that registers all its GraphQL files via `#import`:

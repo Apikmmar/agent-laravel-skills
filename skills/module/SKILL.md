@@ -4,7 +4,7 @@ description: Use when creating a new Laravel module. Triggers when user asks to 
 ---
 
 ## Rule
-All features are organized as modules under `Modules\`. Always follow the 4-step creation flow — scaffold, model, GraphQL, migration.
+All features are organized as modules under `Modules\`. Always follow the 5-step creation flow — scaffold, model, GraphQL, migration, GraphQLResponse trait.
 
 ## Why
 Modules keep domain logic isolated and consistent. Running commands in the wrong order or placing files in the wrong location breaks the module structure.
@@ -75,13 +75,14 @@ Modules/
     │   │   └── {ModelName}Query.php
     │   └── Schema/
     │       ├── Components/
-    │       │   └── {ModelName}.graphql
+    │       │   └── {ModelName}Schema.graphql
     │       ├── Mutations/
-    │       │   └── {ModelName}.graphql
+    │       │   └── {ModelName}Mutation.graphql
     │       └── Queries/
-    │           └── {ModelName}.graphql
+    │           └── {ModelName}Queries.graphql
     ├── Models/
     │   └── {ModelName}.php
+    ├── Services/           ← not scaffolded; create as needed (see skills/service/SKILL.md)
     └── Traits/
         └── GraphQLResponse.php
 
@@ -92,9 +93,15 @@ database/
 
 ## After Scaffolding
 Once commands are run, apply the relevant skill conventions:
-- Model file → follow `skills/models/skill.md`
-- Migration file → follow `skills/migration/skill.md`
-- GraphQL files → follow `skills/graphql/skill.md`
+- Model file → follow `skills/models/SKILL.md`
+- Migration file → follow `skills/migration/SKILL.md`
+- GraphQL type/enum → follow `skills/graphql/schema/SKILL.md`
+- GraphQL mutation schema → follow `skills/graphql/mutation/SKILL.md`
+- GraphQL query schema → follow `skills/graphql/query/SKILL.md`
+- Mutator resolver → follow `skills/graphql/resolver/mutator/SKILL.md`
+- Query resolver → follow `skills/graphql/resolver/query/SKILL.md`
+- Input validation → follow `skills/graphql/validation/SKILL.md`
+- Service layer → follow `skills/service/SKILL.md` (create only when logic is reused across classes)
 
 ## Clarifying Questions
 - What is the module name?

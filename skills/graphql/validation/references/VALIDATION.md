@@ -41,6 +41,8 @@ class CreatePostInputValidator extends Validator
 
 ## Example 2 — Update validator (nullable top-level, required nested)
 
+> **Pattern:** Top-level fields are `nullable` — the caller can omit any field they don't want to change. But once a nested array is provided, each item inside it must be valid — so nested fields stay `required`. Example: you can skip `tags` entirely, but if you pass `tags`, every tag must have a valid `tag_id`.
+
 ```php
 <?php
 

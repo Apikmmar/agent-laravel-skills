@@ -4,7 +4,7 @@ description: Use when defining GraphQL mutations or input types. Triggers when u
 ---
 
 ## Rule
-All mutations are defined in `GraphQL/Schema/Mutations/{ModelName}Mutation.graphql`, always return `SuccessResponse`, use `@spread` on inputs, and all CUD inputs must have `@validator`.
+All mutations are defined in `GraphQL/Schema/Mutations/{ModelName}Mutation.graphql`, always return `SuccessResponse`, use `@spread` on inputs, and all Create/Update inputs must have `@validator`. Delete uses plain arguments — no input type, no validator.
 
 ## Why
 Consistent mutation structure ensures uniform API responses and validation across all operations.
@@ -41,6 +41,10 @@ Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
 - What fields does the Create input need?
 - What fields does the Update input need? (usually same as Create but all optional except `id`)
 - Are there nested inputs?
+
+## Related
+- `SuccessResponse` type is defined **once in the root `graphql/schema.graphql`** — never inside a module, never duplicated. See `skills/graphql/schema/SKILL.md`.
+- Validator classes for Create/Update inputs → see `skills/graphql/validation/SKILL.md`
 
 ## Reference
 See `references/MUTATION.md` for real examples.

@@ -122,7 +122,7 @@ return new class extends Migration
 ## Bad ❌ — What NOT to do
 
 ```php
-// Missing $connection
+// Missing softDeletes() and missing down()
 return new class extends Migration
 {
     public function up(): void
@@ -131,7 +131,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->timestamps();
-            // missing softDeletes()
         });
     }
 };

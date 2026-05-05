@@ -22,6 +22,16 @@ These conventions apply globally to all code generation tasks.
 | Table names | snake_case | `workflow_execution`, `user_profiles` |
 | Column names | snake_case | `first_name`, `created_at`, `parent_execution_id` |
 
+## PHP — Class Suffixes
+
+| What | Convention | Example |
+|---|---|---|
+| GraphQL mutation resolver | `{Model}Mutator` | `PostMutator`, `WorkflowMutator` |
+| GraphQL query resolver | `{Model}Query` | `PostQuery`, `WorkflowQuery` |
+| GraphQL input validator | `{InputName}Validator` | `CreatePostInputValidator`, `UpdateUserInputValidator` |
+| Service classes | `{Name}Service` | `PostService`, `NodeTypeRegistryService` |
+| Response trait | `GraphQLResponse` | always this name, one per module |
+
 ## GraphQL
 
 | What | Convention | Example |
@@ -31,4 +41,5 @@ These conventions apply globally to all code generation tasks.
 | Enum names | PascalCase | `WEStatus`, `TriggerType` |
 | Mutation / Query names | PascalCase | `CreateWorkflow`, `DeleteUser` |
 | Fields | snake_case | `workflow_id`, `parent_execution_id` |
-| Enum values | lowercase | `pending`, `running`, `completed` |
+| Enum values (status/type) | lowercase | `pending`, `running`, `completed` |
+| Enum values (sort/direction) | UPPERCASE | `ASC`, `DESC`, `CREATED_AT` |

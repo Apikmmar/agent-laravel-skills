@@ -60,11 +60,17 @@ extend type Query {
     PostDropdown: [PostDropdown!]!
         @field(resolver: "Modules\\Blog\\GraphQL\\Queries\\PostQuery@dropdown")
 }
+
+type PostDropdown {
+    id: ID!
+    name: String!
+}
 ```
 
 **What this shows:**
 - Dropdown uses `@field` — no pagination, no input needed
-- Returns a simplified type `{Model}Dropdown`
+- Returns a simplified `{Model}Dropdown` type — always `id` + one label field (usually `name`)
+- Define the `{Model}Dropdown` type in the module's `Components/{Model}Schema.graphql`
 
 ---
 

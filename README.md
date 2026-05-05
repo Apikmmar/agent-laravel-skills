@@ -15,20 +15,22 @@ Point your AI tool to `AGENTS.md` at the project root. It loads global rules (al
 ```
 AGENTS.md                          ← entry point, loaded by AI tool
 agents/
-├── convention/convention.md       ← naming conventions (always active)
-└── principles/principles.md       ← DRY, SOLID, Modularity (always active)
+├── convention/CONVENTION.md       ← naming conventions (always active)
+├── principles/PRINCIPLES.md       ← DRY, SOLID, Modularity (always active)
+└── security/SECURITY.md           ← security rules (always active)
 skills/
-├── module/skill.md                ← module creation flow
-├── models/skill.md                ← Eloquent model conventions
-├── migration/skill.md             ← migration conventions
-├── service/skill.md               ← service layer conventions
+├── module/SKILL.md                ← module creation flow
+├── models/SKILL.md                ← Eloquent model conventions
+├── migration/SKILL.md             ← migration conventions
+├── service/SKILL.md               ← service layer conventions
 └── graphql/
-    ├── schema/skill.md            ← GraphQL types, enums
-    ├── mutation/skill.md          ← GraphQL mutation definitions
-    ├── query/skill.md             ← GraphQL query definitions
+    ├── schema/SKILL.md            ← GraphQL types, enums
+    ├── mutation/SKILL.md          ← GraphQL mutation definitions
+    ├── query/SKILL.md             ← GraphQL query definitions
+    ├── validation/SKILL.md        ← Lighthouse input validators
     └── resolver/
-        ├── mutator/skill.md       ← Mutator class (create/update/delete)
-        └── query/skill.md         ← Query class (listing/detail/dropdown)
+        ├── mutator/SKILL.md       ← Mutator class (create/update/delete)
+        └── query/SKILL.md         ← Query class (listing/detail/dropdown)
 ```
 
 Each skill has a companion `references/` folder with real code examples.
@@ -37,7 +39,7 @@ Each skill has a companion `references/` folder with real code examples.
 
 ## Skill Format
 
-Every `skill.md` follows this structure:
+Every `SKILL.md` follows this structure:
 
 ```
 frontmatter   → title, impact, tags
@@ -52,8 +54,8 @@ frontmatter   → title, impact, tags
 
 ## Adding a New Skill
 
-1. Create `skills/{topic}/skill.md`
-2. Create `skills/{topic}/references/{topic}.md` with real code examples (Good + Bad)
+1. Create `skills/{topic}/SKILL.md`
+2. Create `skills/{topic}/references/{TOPIC}.md` with real code examples (Good + Bad)
 3. Add the path to `AGENTS.md` under `## Skills`
 
 ---
