@@ -5,6 +5,10 @@
 - @agents/principles/PRINCIPLES.md
 - @agents/security/SECURITY.md
 
+## Review Agents
+- @agents/review/SECURITY.md
+- @agents/review/TESTING.md
+
 ## Skills
 - @skills/module/SKILL.md
 - @skills/models/SKILL.md

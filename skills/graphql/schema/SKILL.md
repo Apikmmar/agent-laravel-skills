@@ -34,6 +34,19 @@ Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}Schema.graphql
 - `@hasMany(relation: "methodName")` — always include `relation:` when PHP method is camelCase
 - `@hasOne` — for has-one relationships
 
+### SuccessResponse
+All mutations return `SuccessResponse`. It is defined once globally (not per module):
+
+```graphql
+type SuccessResponse {
+    status: Boolean!
+    message: String!
+    data: JSON
+}
+```
+
+This maps to the `GraphQLResponse` trait's `createResponse(bool, string, $data)` return shape.
+
 ### Module Registration
 Every module has a `schema.graphql` at `Modules/{Module}/GraphQL/schema.graphql` that registers all its GraphQL files via `#import`:
 

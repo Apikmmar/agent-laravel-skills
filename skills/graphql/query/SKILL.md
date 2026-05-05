@@ -34,7 +34,7 @@ input {Model}ListingInput {
 
 ### Filter Input
 - Field name: `{Model}FilterInput`
-- Use shared scalar filter types: `StringFilterInput`, `DateFilterInput`, `EnumFilterInput`, `ID`
+- Filter field types are customizable — use the appropriate scalar or custom type per field
 - All filter fields are optional (no `!`)
 
 ### Sort Input

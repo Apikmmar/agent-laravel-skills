@@ -132,3 +132,37 @@ protected $casts = [
 // Manual encryption
 $value = Crypt::encryptString($sensitiveData);
 ```
+
+---
+
+## CSRF
+
+- Never disable `VerifyCsrfToken` middleware globally
+- Only exclude routes under `webhook/*` when third-party services cannot send CSRF tokens
+- Add exclusions to the `$except` array — never comment out or remove the middleware
+
+```php
+// Only acceptable exclusion
+protected $except = [
+    'webhook/*',
+];
+```
+
+---
+
+## Open Redirect
+
+- Never redirect to a URL taken directly from user input without validation
+- Always validate redirect targets against `config('app.url')` or a whitelist of trusted origins
+
+```php
+// Never do this
+return redirect($request->input('redirect_to'));
+
+// Always do this
+$url = $request->input('redirect_to');
+if (!str_starts_with($url, config('app.url'))) {
+    $url = '/';
+}
+return redirect($url);
+```

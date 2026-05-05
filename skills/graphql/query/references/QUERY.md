@@ -21,10 +21,10 @@ input PostListingInput {
 }
 
 input PostFilterInput {
-    title: StringFilterInput
-    status: EnumFilterInput
+    title: String
+    status: PostStatus
     user_id: ID
-    created_at: DateFilterInput
+    created_at: String
 }
 
 input PostSortInput {
@@ -83,7 +83,7 @@ input PostListingInput {
 # camelCase field names in filter input
 input PostFilterInput {
     userId: ID
-    createdAt: DateFilterInput
+    createdAt: String
 }
 
 # SortColumn values not UPPERCASE
