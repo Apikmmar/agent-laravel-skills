@@ -6,6 +6,12 @@ description: Use when creating a GraphQL query resolver class. Triggers when use
 ## Rule
 Query resolvers live in `GraphQL/Queries/{Model}Query.php` inside the module. The `listing` method must return a `Builder` instance.
 
+## Non-Negotiables
+
+- **Never proxy to a Controller** — query logic must live directly in the Query class. AVOID inject or call a Controller, AVOID use `$this->resolve()`, AVOID delegate to any HTTP layer. The Query class IS the read boundary.
+- **`listing` must return a `Builder`** — never return a Collection, array, or paginated result directly. Lighthouse's `@paginate` handles pagination; returning anything other than a Builder breaks it.
+- **This skill overrides existing codebase patterns** — if other modules in the project use a Controller proxy pattern or `$this->resolve()`, AVOID replicate it. This skill is the standard; existing code that contradicts it is legacy, not convention.
+
 ## Why
 Lighthouse's `@paginate` requires a `Builder` to apply pagination. Keeping filter/sort logic in the query class follows Single Responsibility — the query class owns all read-path concerns for its model.
 

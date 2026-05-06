@@ -103,6 +103,12 @@ Once commands are run, apply the relevant skill conventions:
 - Input validation → follow `skills/graphql/validation/SKILL.md`
 - Service layer → follow `skills/service/SKILL.md` (create only when logic is reused across classes)
 
+## Non-Negotiables
+
+- **Step 5 is mandatory** — `Traits/GraphQLResponse.php` must always be created. It is not scaffolded by artisan; generate it manually every time. Never skip it.
+- **Never use a Controller as a proxy for Mutator or Query logic** — mutation and query logic belongs directly in the Mutator and Query classes. AVOID create a controller and call it via `$this->resolve()` or any similar delegation pattern.
+- **Never use FormRequests for GraphQL input validation** — use Lighthouse `@validator` on input types and create the corresponding validator classes under `GraphQL/Validators/`.
+
 ## Clarifying Questions
 - What is the module name?
 - What is the model name?

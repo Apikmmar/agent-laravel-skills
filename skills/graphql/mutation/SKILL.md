@@ -27,7 +27,7 @@ Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
 ### Input Structure
 - Create input: `Create{Model}Input @validator`
 - Update input: `Update{Model}Input @validator` — always includes `id: ID!` as first field
-- Nested inputs do NOT use `@validator` — validation handled in parent validator file
+- Nested inputs AVOID use `@validator` — validation handled in parent validator file
 - Required fields use `!`, optional fields have no `!`
 
 ### Naming

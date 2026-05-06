@@ -6,6 +6,13 @@ description: Use when creating a GraphQL mutator resolver class. Triggers when u
 ## Rule
 Mutation resolvers live in `GraphQL/Mutations/{Model}Mutator.php` inside the module. All CUD operations must wrap in a DB transaction. Logic that is only used within the mutator stays as a private method; logic reused across other classes belongs in a service.
 
+## Non-Negotiables
+
+- **Never proxy to a Controller** — mutation logic must live directly in the Mutator class. AVOID inject or call a Controller, AVOID use `$this->resolve()`, AVOID delegate to any HTTP layer. The Mutator IS the boundary.
+- **Always use the `GraphQLResponse` trait** — every Mutator must `use GraphQLResponse` from `Modules\{Module}\Traits\GraphQLResponse`. Never return raw arrays or throw HTTP exceptions directly.
+- **Always wrap in a DB transaction** — every public CUD method must use `DB::beginTransaction()`, `DB::commit()`, and `DB::rollBack()` inside a try/catch. No exceptions.
+- **This skill overrides existing codebase patterns** — if other modules in the project use a Controller proxy pattern or `$this->resolve()`, AVOID replicate it. This skill is the standard; existing code that contradicts it is legacy, not convention.
+
 ## Why
 Single Responsibility: mutators own the GraphQL boundary and transaction lifecycle, services own business logic. DB transactions ensure data consistency across multi-model operations.
 

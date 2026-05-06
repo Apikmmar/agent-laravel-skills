@@ -46,7 +46,7 @@ type SuccessResponse {
 }
 ```
 
-This maps to the `GraphQLResponse` trait's `createResponse(bool, string, $data)` return shape. Do not redefine it per module.
+This maps to the `GraphQLResponse` trait's `createResponse(bool, string, $data)` return shape. AVOID redefine it per module.
 
 ### Module Registration
 Every module has a `schema.graphql` at `Modules/{Module}/GraphQL/schema.graphql` that registers all its GraphQL files via `#import`:

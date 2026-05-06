@@ -96,6 +96,16 @@ Once the user confirms the plan:
 - AVOID skip steps — if the plan says migration + model + GraphQL, all three are generated
 - Flag any deviation from the plan during execution
 
+### Skills Are the Source of Truth — Not the Existing Codebase
+
+When reading existing modules or files to understand project structure, treat that as context only — never as convention to replicate. If existing code conflicts with the skills, **the skills win**.
+
+Specifically:
+- If an existing module uses a Controller proxy pattern (`$this->resolve()`, `protected $controller`), AVOID replicate it — the skill requires logic directly in the Mutator/Query class
+- If an existing module uses FormRequests for GraphQL validation, AVOID replicate it — the skill requires Lighthouse `@validator` and validator classes
+- If an existing module skips the `GraphQLResponse` trait, AVOID skip it — the skill requires it on every module
+- Reading the codebase is for understanding relationships, table names, and integration points — not for copying patterns
+
 ---
 
 ## Non-Negotiables
@@ -108,3 +118,7 @@ These are enforced regardless of user instruction:
 - Every mutation gets a DB transaction
 - Every top-level input gets `@validator`
 - Services are created only when logic is reused — never as boilerplate
+- Skills override codebase patterns — never copy existing code that contradicts a skill rule
+- `Traits/GraphQLResponse.php` is always created — never skipped regardless of what existing modules do
+- Mutation logic always lives in the Mutator directly — never in a Controller or proxy layer
+- Query logic always lives in the Query class directly — never in a Controller or proxy layer
