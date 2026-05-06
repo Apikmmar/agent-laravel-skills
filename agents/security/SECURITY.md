@@ -23,8 +23,8 @@ Always apply these rules during code generation. These are not optional — enfo
 
 ## Input Validation
 
-- Always validate user input at the boundary (Form Requests, Lighthouse validators)
-- Never trust raw `$request->all()` — always validate and whitelist expected fields
+- For **GraphQL endpoints**: always validate via Lighthouse `@validator` on input types — never use Form Requests
+- For **REST/HTTP endpoints**: always validate via Laravel Form Requests — never trust raw `$request->all()`
 - Sanitize output when rendering user-generated content
 
 ---

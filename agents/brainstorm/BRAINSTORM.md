@@ -22,6 +22,7 @@ Required clarifications (if not already provided):
 - What is the business purpose of this feature?
 - What are the entities involved and how do they relate?
 - Are there any access control requirements? (who can do what)
+- **Which mutations and queries are protected (require auth) and which are public?** — never assume; always ask if not stated. Protected operations use `@guard` on the `extend type Mutation` or `extend type Query` block in the schema file.
 - Are there any performance concerns? (large datasets, frequent queries, heavy writes)
 - Are there any integration points? (external APIs, events, queues)
 - Is this replacing or extending existing functionality?

@@ -1,5 +1,5 @@
 ---
-name: graphql-mutation
+name: mutation
 description: Use when defining GraphQL mutations or input types. Triggers when user asks to create a mutation, define a mutation input, add create/update/delete operations, or set up GraphQL mutation schema.
 ---
 
@@ -24,11 +24,23 @@ Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
 - Input argument always uses `@spread`
 - Delete accepts either `id: ID!` (single) or `ids: [ID!]!` (bulk) — ask user which
 
+### Resolver Path — Always Full Namespace
+Always write the full resolver path inside `@field`, even when `@namespace` is present on the type extension:
+```graphql
+@field(resolver: "Modules\\Post\\GraphQL\\Mutations\\PostMutator@create")
+```
+Never use shorthand like `@field(resolver: "PostMutator@create")` — shorthand depends on `@namespace` being correctly scoped and is fragile.
+
 ### Input Structure
 - Create input: `Create{Model}Input @validator`
 - Update input: `Update{Model}Input @validator` — always includes `id: ID!` as first field
 - Nested inputs AVOID use `@validator` — validation handled in parent validator file
 - Required fields use `!`, optional fields have no `!`
+
+### Update Input Field Rules
+- `id: ID!` — always required
+- All other fields — always optional (no `!`), client sends only what needs updating
+- This applies to every Update input without exception
 
 ### Naming
 - Input names: `{Action}{Model}Input` (e.g. `CreateWorkflowInput`, `UpdateWorkflowInput`)

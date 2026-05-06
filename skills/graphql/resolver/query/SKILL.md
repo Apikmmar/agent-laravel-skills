@@ -29,6 +29,14 @@ Modules/{ModuleName}/GraphQL/Queries/{ModelName}Query.php
 - Standard methods: `listing`, `detail`, `dropdown`
 - Method names are plain by default — ask user if prefixed names are needed (e.g. `listingWorkflow`)
 
+### Method Signature — Strict
+Every public method must use exactly this signature:
+```php
+public function listing($_, array $args): Builder
+```
+- Never add `GraphQLContext`, `ResolveInfo`, or any other parameters — even if you find them in base classes in the project
+- The base class signature is irrelevant; the Query class does not extend any base class
+
 ### listing
 - Always returns `Builder` — required for `@paginate`
 

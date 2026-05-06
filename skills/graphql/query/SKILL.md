@@ -23,6 +23,14 @@ Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}Queries.graphql
 - Detail/dropdown queries use `@field(resolver: "Modules\\{Module}\\GraphQL\\Queries\\{Model}Query@{method}")`
 - Listing input always uses `@spread`
 
+### Resolver Path — Always Full Namespace
+Always write the full path inside `@paginate(builder:)` and `@field(resolver:)`, even when `@namespace` is present on the type extension:
+```graphql
+@paginate(builder: "Modules\\Post\\GraphQL\\Queries\\PostQuery@listing")
+@field(resolver: "Modules\\Post\\GraphQL\\Queries\\PostQuery@detail")
+```
+Never use shorthand — shorthand depends on `@namespace` being correctly scoped and is fragile.
+
 ### Listing Input Structure
 Every listing query has an input with exactly two fields:
 ```graphql

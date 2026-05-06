@@ -68,9 +68,9 @@ type Order {
 ```
 
 **When to use `relation:`:**
-- Field name uses snake_case (`placed_by`) but PHP method is camelCase (`placedBy`) — always use `relation:`
-- Field name exactly matches a camelCase method name — still use `relation:` for explicitness
-- Rule of thumb: always include `relation:` on `@belongsTo` and `@hasMany` to avoid Lighthouse resolution ambiguity
+- Only when the GraphQL field name differs from the PHP relationship method name
+- Example: field `placed_by` maps to PHP method `placedBy` — use `@belongsTo(relation: "placedBy")`
+- If the field name already matches the PHP method name exactly, omit `relation:`
 
 ---
 

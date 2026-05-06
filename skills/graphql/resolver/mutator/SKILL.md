@@ -32,6 +32,14 @@ Modules/{ModuleName}/GraphQL/Mutations/{ModelName}Mutator.php
 - Standard methods: `create`, `update`, `delete`
 - Custom operations: camelCase (e.g. `publish`, `activate`)
 
+### Method Signature — Strict
+Every public method must use exactly this signature:
+```php
+public function create($_, array $args): array
+```
+- Never add `GraphQLContext`, `ResolveInfo`, or any other parameters — even if you find them in base classes in the project
+- The base class signature is irrelevant; the Mutator does not extend any base class
+
 ### DB Transaction
 - ALL CUD operations (create, update, delete, and custom) must use `DB::beginTransaction()`, `DB::commit()`, `DB::rollBack()`
 - Wrap entire operation in try/catch
@@ -45,6 +53,15 @@ Modules/{ModuleName}/GraphQL/Mutations/{ModelName}Mutator.php
 - Every fetch/lookup before a main operation (getPost, getPosts, etc.) must be a private method — never inline inside a public method
 - Any sub-operation used only within this mutator stays as a private method
 - If a method is needed by another class → move to a service
+
+### Private Method vs Job
+Private methods are for lightweight helpers only (fetch, validate, format, ownership check). If the operation does any of the following, it must be dispatched as a Job — even if it is single-use and only called from this mutator:
+- Sends email, SMS, or push notification
+- Calls an external API
+- Generates a report or export
+- Processes more than 1,000 records (see performance agent chunking thresholds)
+
+Never implement these as private methods inside the mutator — they block the response and belong on the queue.
 
 ### Resolver Path Format
 ```

@@ -17,7 +17,9 @@ Modules/{ModuleName}/Services/{ServiceName}Service.php
 ```
 
 ### Class Naming
-- Name by what it does, not strictly by model — `PostService`, `NodeTypeRegistryService`, `WorkflowNodesService`
+- Name by model when the service covers general CRUD-adjacent logic for that model — `PostService`, `UserService`
+- Name by purpose when the service covers a specific operation or cross-entity concern — `NodeTypeRegistryService`, `WorkflowPublishingService`
+- When in doubt: if the service is tied to one model, use the model name; if it spans multiple models or a specific workflow, use the purpose name
 - Must follow PascalCase + `Service` suffix
 - Namespace: `Modules\{Module}\Services`
 

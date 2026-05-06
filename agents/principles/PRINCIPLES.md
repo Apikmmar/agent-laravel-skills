@@ -17,5 +17,6 @@ These principles apply globally to all code generation tasks.
 
 ## Modularity
 - Code is organized by domain under `Modules\`
-- Keep module boundaries clean — no direct cross-module model access
 - Each module owns its models, resolvers, services, and schema
+- A module may contain multiple models — group by domain, not by one model per module
+- Cross-module model access is allowed — import and use models from other modules when a relationship requires it
