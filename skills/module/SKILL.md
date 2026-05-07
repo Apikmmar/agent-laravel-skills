@@ -45,7 +45,7 @@ Modules/{ModuleName}/Http/Requests/Create{ModelName}Request.php
 Modules/{ModuleName}/Http/Requests/Update{ModelName}Request.php
 Modules/{ModuleName}/Http/Requests/Delete{ModelName}Request.php
 ```
-See `skills/graphql/validation/SKILL.md` for the full FormRequest convention.
+See `skills/graphql/request/SKILL.md` for the full FormRequest convention.
 
 **Step 6 — Create the migration**
 ```bash
@@ -97,8 +97,8 @@ Once commands are run, apply the relevant skill conventions:
 - GraphQL query schema → follow `skills/graphql/query/SKILL.md`
 - Mutator resolver → follow `skills/graphql/resolver/mutator/SKILL.md`
 - Query resolver → follow `skills/graphql/resolver/query/SKILL.md`
-- Controller (mutations + queries) → follow `skills/graphql/resolver/mutator/SKILL.md` and `skills/graphql/resolver/query/SKILL.md`
-- FormRequests → follow `skills/graphql/validation/SKILL.md`
+- Controller (mutations + queries) → follow `skills/graphql/controller/SKILL.md`
+- FormRequests → follow `skills/graphql/request/SKILL.md`
 - Service layer → follow `skills/service/SKILL.md` (create only when logic is reused across classes)
 
 ## Non-Negotiables

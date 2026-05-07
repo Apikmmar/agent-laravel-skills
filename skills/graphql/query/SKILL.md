@@ -29,36 +29,8 @@ Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}Queries.graphql
 ### No filter/sort inputs required by default
 Filtering is handled by model scopes (e.g. `User::filter()`). Only add explicit filter inputs if the user requests them.
 
-### Example
-```graphql
-extend type Query
-    @guard
-    @namespace(
-        field: "Modules\\User\\GraphQL\\Queries"
-        paginate: "Modules\\User\\GraphQL\\Queries"
-    ) {
-    """
-    Fetch specific user detail
-    """
-    user(id: ID!): User
-        @hasPermission(name: "view-user")
-        @field(resolver: "UserQuery@detail")
-
-    """
-    Fetch list of users
-    """
-    users: [User!]!
-        @hasPermission(name: "view-all-users")
-        @field(resolver: "UserQuery@listing")
-
-    """
-    Fetch paginated list of users
-    """
-    paginatedUsers: [User!]!
-        @hasPermission(name: "view-all-users")
-        @paginate(builder: "UserQuery@paginatedListing")
-}
-```
+## Reference
+See `references/QUERY.md` for real examples.
 
 ## Non-Negotiables
 - Always `@namespace` on the `extend type` block — never write full resolver paths per query

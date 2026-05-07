@@ -18,7 +18,7 @@ Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
 - Always `@namespace(field: "Modules\\{Module}\\GraphQL\\Mutations")` on the extend block
 - Always `@guard` on the extend block unless the mutations are explicitly public
 - Always `@hasPermission(name: "...")` on each individual mutation
-- Mutation names in PascalCase: `create{Model}`, `update{Model}`, `delete{Model}` — camelCase with lowercase first word
+- Mutation names in camelCase: `create{Model}`, `update{Model}`, `delete{Model}`
 - Always return `SuccessResponse!`
 - Use shorthand `@field(resolver: "{Model}Mutator@{method}")` — namespace comes from the block
 
@@ -38,46 +38,8 @@ Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
 - Mutation names: camelCase (`createUser`, `updateUser`, `deleteUser`)
 - Input names: PascalCase + `Input` suffix (`CreateUserInput`, `UpdateUserInput`)
 
-### Example
-```graphql
-extend type Mutation
-    @namespace(field: "Modules\\User\\GraphQL\\Mutations")
-    @guard {
-    """
-    Create a new user
-    """
-    createUser(input: CreateUserInput!): SuccessResponse!
-        @hasPermission(name: "create-user")
-        @field(resolver: "UserMutator@create")
-
-    """
-    Update existing user
-    """
-    updateUser(input: UpdateUserInput!): SuccessResponse!
-        @hasPermission(name: "update-user")
-        @field(resolver: "UserMutator@update")
-
-    """
-    Delete existing user
-    """
-    deleteUser(id: ID!): SuccessResponse!
-        @hasPermission(name: "delete-user")
-        @field(resolver: "UserMutator@delete")
-}
-
-input CreateUserInput {
-    name: String!
-    email: String!
-    password: String!
-}
-
-input UpdateUserInput {
-    id: ID!
-    name: String
-    email: String
-    status: String
-}
-```
+## Reference
+See `references/MUTATION.md` for real examples.
 
 ## Non-Negotiables
 - No `@validator` on any input type — validation is handled by FormRequests in the Controller

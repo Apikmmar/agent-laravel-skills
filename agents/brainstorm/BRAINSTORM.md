@@ -53,7 +53,7 @@ Before generating any code, output a visible plan using this structure:
 ### 4. GraphQL API Shape
 <List mutations and queries with their input/output shapes>
 <Flag any inputs that need a FormRequest — one per mutation operation>
-<All type fields and input fields use camelCase>
+<All type fields and input fields use snake_case>
 <All enum values use UPPERCASE>
 
 ### 5. Controller & Service Layer

@@ -28,10 +28,9 @@ These conventions apply globally to all code generation tasks.
 |---|---|---|
 | GraphQL mutation resolver | `{Model}Mutator` | `PostMutator`, `WorkflowMutator` |
 | GraphQL query resolver | `{Model}Query` | `PostQuery`, `WorkflowQuery` |
-| GraphQL input validator | `{InputName}Validator` | `CreatePostInputValidator`, `UpdateUserInputValidator` |
 | HTTP controller (GraphQL delegate) | `{Model}Controller` | `PostController`, `WorkflowController` |
+| FormRequest (per mutation operation) | `{Action}{Model}Request` | `CreatePostRequest`, `UpdateUserRequest`, `DeletePostRequest` |
 | Service classes | `{Name}Service` | `PostService`, `NodeTypeRegistryService` |
-| Response trait | `GraphQLResponse` | always this name, one per module |
 
 ## GraphQL
 
@@ -40,7 +39,7 @@ These conventions apply globally to all code generation tasks.
 | Type names | PascalCase | `User`, `WorkflowExecution` |
 | Input names | PascalCase + `Input` suffix | `CreateWorkflowInput`, `UpdateUserInput` |
 | Enum names | PascalCase | `WEStatus`, `TriggerType` |
-| Mutation / Query names | PascalCase | `CreateWorkflow`, `DeleteUser` |
+| Mutation / Query names | camelCase | `createWorkflow`, `deleteUser`, `user`, `paginatedUsers` |
 | Fields | snake_case | `workflow_id`, `parent_execution_id` |
 | Enum values | UPPERCASE | `ACTIVE`, `PENDING`, `ASC`, `DESC` |
 | Model slug | snake_case | `privacy_policy`, `my_first_post` |
