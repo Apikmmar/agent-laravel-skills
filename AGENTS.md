@@ -25,3 +25,5 @@
 - @skills/graphql/request/SKILL.md
 - @skills/service/SKILL.md
 - @skills/job/SKILL.md
+- @skills/trait/SKILL.md
+- @skills/test/SKILL.md

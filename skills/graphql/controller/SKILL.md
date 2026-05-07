@@ -35,6 +35,7 @@ public function delete(DeleteUserRequest $request): array
 - Always throw `ExecutionException` on failure — never return a failure array
 - Return shape: `['status' => true, 'message' => '...', 'data' => $model]`
 - `data` key is optional — omit on delete
+- Existence checks before create must use `->exists()` — never `->count() > 0`
 
 ### Query Methods
 ```php
@@ -59,8 +60,24 @@ throw new ExecutionException("Failed to create user. {$e->getMessage()}", $e);
 - Message format: `"Failed to {verb} {model}. {$e->getMessage()}"`
 
 ### Private Helpers
-- Lookups used more than once in a method → extract to a `private` method
+- Any CUD method that does more than one operation (e.g. find then update, find then delete) must extract the lookup into a `private` method — never chain `findOrFail()->update()` or `findOrFail()->delete()` inline
+- Lookups used across multiple methods → same private method, shared by all
 - Logic reused across multiple controllers → move to a Service
+
+```php
+// NEVER — chains two operations, hides the model, update() returns bool not the model
+User::findOrFail($input['id'])->update($input);
+
+// ALWAYS — fetch first, then act
+$user = $this->getUser($input['id']);
+$user->update($input);
+
+// private lookup
+private function getUser(int|string $id): User
+{
+    return User::findOrFail($id);
+}
+```
 
 ## Non-Negotiables
 - Extends `App\Http\Controllers\Controller` — never a module-local base class
@@ -68,7 +85,6 @@ throw new ExecutionException("Failed to create user. {$e->getMessage()}", $e);
 - Every CUD method wraps in a DB transaction
 - Always throw `ExecutionException` — never return a failure array
 - `paginatedListing` must return a `Builder` — never a collection or array
-- No `GraphQLResponse` trait — return raw arrays directly
 
 ## Clarifying Questions
 - What mutations are needed? (determines which FormRequests to import)

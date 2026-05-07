@@ -188,10 +188,4 @@ public function paginatedListing(Request $request)
     return User::filter()->get(); // wrong — return Builder, not Collection
 }
 
-// Using GraphQLResponse trait — not used in this project
-use Modules\User\Traits\GraphQLResponse;
-class UserController extends Controller
-{
-    use GraphQLResponse; // wrong
-}
 ```

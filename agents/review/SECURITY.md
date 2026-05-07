@@ -18,7 +18,7 @@ When invoked:
 - Auth: Laravel Sanctum — all protected routes must use `@guard` in the GraphQL schema
 - GraphQL: Lighthouse — input validation via FormRequests in the Controller, never `@validator`
 - Modules: `Modules/{ModuleName}/` — review scoped to the module's `GraphQL/`, `Http/`, `Services/`, and `Models/` folders
-- Mutations: must use `DB::beginTransaction/commit/rollBack` in the Controller; no `GraphQLResponse` trait — Controllers return raw arrays
+- Mutations: must use `DB::beginTransaction/commit/rollBack` in the Controller; Controllers return raw arrays
 - Errors: always throw `ExecutionException` — never return `['status' => false, ...]` or expose raw stack traces
 
 ## Output Format

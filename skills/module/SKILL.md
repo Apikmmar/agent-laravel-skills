@@ -118,7 +118,6 @@ Once commands are run, apply the relevant skill conventions:
 - **FormRequests are mandatory for mutations** — one per mutation operation; never use raw `Request` for CUD
 - **Resolvers are proxies only** — Mutator and Query classes contain no logic beyond `$this->resolve()`
 - **No `@validator` anywhere** — validation is entirely in FormRequests
-- **No `Traits/GraphQLResponse.php`** — Controllers return raw arrays; no trait needed
 - **No `GraphQL/Validators/` folder** — this pattern is not used in this project
 
 ## Clarifying Questions

@@ -35,6 +35,7 @@ Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}Schema.graphql
 - `@hasOne` — for has-one relationships
 
 ### Inputs
+- Input types are defined in the mutation/query files — never in `Components/` schema files
 - Plain `input` types — no `@validator`, no `@spread`
 - All input fields use snake_case
 - Validation is handled by FormRequests in the Controller

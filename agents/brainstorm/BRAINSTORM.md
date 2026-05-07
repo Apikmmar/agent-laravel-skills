@@ -107,7 +107,6 @@ When reading existing modules or files to understand project structure, treat th
 
 Specifically:
 - Resolvers (Mutator/Query) are thin proxies — they delegate to the Controller via `$this->resolve()`. If existing code puts business logic directly in the Resolver, AVOID replicate it
-- If an existing module skips the `GraphQLResponse` trait, AVOID skip it — the skill requires it on every module
 - If an existing module skips the Controller layer, AVOID skip it — the Controller is where business logic lives
 - Reading the codebase is for understanding relationships, table names, and integration points — not for copying patterns
 
@@ -124,7 +123,6 @@ These are enforced regardless of user instruction:
 - Every mutation operation gets a typed FormRequest — no `@validator`, no raw `Request` for CUD
 - Services are created only when logic is reused — never as boilerplate
 - Skills override codebase patterns — never copy existing code that contradicts a skill rule
-- No `Traits/GraphQLResponse.php` — Controllers return raw arrays directly
 - No `GraphQL/Validators/` folder — this pattern is not used
 - Resolvers (Mutator/Query) are thin proxies — they only delegate via `$this->resolve()`, never implement business logic
 - Controllers own business logic, DB transactions, and response building — every module has one
