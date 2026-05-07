@@ -50,8 +50,11 @@ public function detail(Request $request)              // returns Model
 
 ### Error Handling
 ```php
+use App\Exceptions\ExecutionException;
+
 throw new ExecutionException("Failed to create user. {$e->getMessage()}", $e);
 ```
+- Always import `App\Exceptions\ExecutionException` — never use `\Nuwave\Lighthouse\Exceptions\DefinitionException`
 - Never return `['status' => false, ...]` — throw instead
 - Message format: `"Failed to {verb} {model}. {$e->getMessage()}"`
 

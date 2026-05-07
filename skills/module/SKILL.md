@@ -88,6 +88,18 @@ database/
     └── {timestamp}_create_{table_name}_table.php
 ```
 
+### Scaffold Cleanup — Delete Empty Generated Files
+`module:make-graphql` generates placeholder `.graphql` files using just the model name (e.g. `Post.graphql`). These conflict with the correctly named files the skill requires. After running the command, delete them:
+
+```
+# Delete these scaffold artifacts — they are empty and wrong
+GraphQL/Schema/Components/{ModelName}.graphql    ← delete, keep {ModelName}Schema.graphql
+GraphQL/Schema/Mutations/{ModelName}.graphql     ← delete, keep {ModelName}Mutation.graphql
+GraphQL/Schema/Queries/{ModelName}.graphql       ← delete, keep {ModelName}Queries.graphql
+```
+
+Only the suffixed files (`*Schema.graphql`, `*Mutation.graphql`, `*Queries.graphql`) should remain and be imported in `schema.graphql`.
+
 ## After Scaffolding
 Once commands are run, apply the relevant skill conventions:
 - Model file → follow `skills/models/SKILL.md`

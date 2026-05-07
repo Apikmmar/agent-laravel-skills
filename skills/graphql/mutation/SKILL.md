@@ -44,9 +44,27 @@ See `references/MUTATION.md` for real examples.
 ## Non-Negotiables
 - No `@validator` on any input type — validation is handled by FormRequests in the Controller
 - No `@spread` on mutation arguments
-- Always `@guard` on the `extend type` block unless explicitly public
+- Always `@guard` on the `extend type` block unless explicitly public — never omit it silently; if mutations are public, state that explicitly in the plan
 - Always `@hasPermission` on each mutation
 - Always use `@namespace` on the block — never write full resolver paths per mutation
+
+### Anti-Pattern — Missing `@guard`
+```graphql
+# NEVER — unprotected mutations with no explicit decision
+extend type Mutation
+    @namespace(field: "Modules\\Post\\GraphQL\\Mutations")
+{
+    createPost(input: CreatePostInput!): SuccessResponse! @field(resolver: "PostMutator@create")
+}
+
+# ALWAYS — guard stated explicitly
+extend type Mutation
+    @guard
+    @namespace(field: "Modules\\Post\\GraphQL\\Mutations")
+{
+    createPost(input: CreatePostInput!): SuccessResponse! @field(resolver: "PostMutator@create") @hasPermission(name: "create-post")
+}
+```
 
 ## Related
 - `SuccessResponse` type is defined once in the root `graphql/schema.graphql` — never inside a module
