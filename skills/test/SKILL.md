@@ -6,8 +6,10 @@ description: Use when generating PHPUnit tests for a Laravel GraphQL module. Tri
 ## Rule
 Tests live in `Modules/{ModuleName}/Tests/Feature/`. One test class per operation group — mutations in `{Model}MutationTest.php`, queries in `{Model}QueryTest.php`. All tests use PHPUnit via `Tests\TestCase`, `RefreshDatabase`, and Lighthouse's `MakesGraphQLRequests` trait.
 
+**Tests must run against MySQL — never SQLite.** Controllers use `DB::beginTransaction()` which conflicts with SQLite under `RefreshDatabase` (SQLite does not support nested transactions). Before generating any test, verify `phpunit.xml` sets `DB_CONNECTION=mysql`. If it still points to SQLite, flag it and instruct the user to switch before proceeding.
+
 ## Why
-Tests are scoped per module so they run independently and travel with the module. Separating mutation tests from query tests keeps each class focused and easy to scan.
+Tests are scoped per module so they run independently and travel with the module. Separating mutation tests from query tests keeps each class focused and easy to scan. MySQL matches the production database — SQLite has subtle differences in type handling, JSON support, and transaction behaviour that can mask real bugs.
 
 ## Conventions
 
@@ -142,6 +144,7 @@ protected function setUp(): void
 
 ## Non-Negotiables
 - Always `RefreshDatabase` — never let data bleed between tests
+- Always MySQL — never SQLite; verify `phpunit.xml` before writing tests and flag if `DB_CONNECTION=sqlite` is set
 - Always `MakesGraphQLRequests` — never use raw HTTP for GraphQL
 - Always test unauthorized access — never assume `@guard` works without a test
 - Always test validation — every required field must have a missing/invalid case

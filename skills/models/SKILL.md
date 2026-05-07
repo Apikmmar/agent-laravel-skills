@@ -12,9 +12,10 @@ Without explicit `$table`, Laravel pluralizes incorrectly for some names.
 ## Conventions
 
 ### Base Class
-- If `app/Models/BaseModel.php` exists in the project, extend `App\Models\BaseModel` — it is the project-wide base and may include shared scopes or utilities
-- If no `BaseModel` exists, extend `Illuminate\Database\Eloquent\Model` directly
-- Never guess — check for `app/Models/BaseModel.php` before deciding which to extend
+- All models live inside `Modules\{ModuleName}\Models\` — never import or extend from `app/Models/`
+- If a `BaseModel.php` exists inside the same module (`Modules\{ModuleName}\Models\BaseModel.php`), extend it
+- If no module-level `BaseModel` exists, extend `Illuminate\Database\Eloquent\Model` directly
+- Never guess — check inside the module's `Models/` folder before deciding which to extend
 
 ### Traits
 - Always add `SoftDeletes`
