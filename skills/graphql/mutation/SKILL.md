@@ -4,10 +4,7 @@ description: Use when defining GraphQL mutations or input types. Triggers when u
 ---
 
 ## Rule
-All mutations are defined in `GraphQL/Schema/Mutations/{ModelName}Mutation.graphql`, always return `SuccessResponse`, use `@spread` on inputs, and all Create/Update inputs must have `@validator`. Delete uses plain arguments — no input type, no validator.
-
-## Why
-Consistent mutation structure ensures uniform API responses and validation across all operations.
+All mutations are defined in `GraphQL/Schema/Mutations/{ModelName}Mutation.graphql`. They always return `SuccessResponse`, use `@namespace` on the `extend type` block for shorthand resolvers, and inputs are plain — no `@validator`, no `@spread`.
 
 ## Conventions
 
@@ -16,47 +13,86 @@ Consistent mutation structure ensures uniform API responses and validation acros
 Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
 ```
 
-### Mutation Structure
+### Mutation Block Structure
 - Always `extend type Mutation`
-- Mutation names in PascalCase: `Create{Model}`, `Update{Model}`, `Delete{Model}`
-- Always return `SuccessResponse`
-- Always use `@field(resolver: "Modules\\{Module}\\GraphQL\\Mutations\\{Model}Mutator@{method}")`
-- Input argument always uses `@spread`
-- Delete accepts either `id: ID!` (single) or `ids: [ID!]!` (bulk) — ask user which
-
-### Resolver Path — Always Full Namespace
-Always write the full resolver path inside `@field`, even when `@namespace` is present on the type extension:
-```graphql
-@field(resolver: "Modules\\Post\\GraphQL\\Mutations\\PostMutator@create")
-```
-Never use shorthand like `@field(resolver: "PostMutator@create")` — shorthand depends on `@namespace` being correctly scoped and is fragile.
+- Always `@namespace(field: "Modules\\{Module}\\GraphQL\\Mutations")` on the extend block
+- Always `@guard` on the extend block unless the mutations are explicitly public
+- Always `@hasPermission(name: "...")` on each individual mutation
+- Mutation names in PascalCase: `create{Model}`, `update{Model}`, `delete{Model}` — camelCase with lowercase first word
+- Always return `SuccessResponse!`
+- Use shorthand `@field(resolver: "{Model}Mutator@{method}")` — namespace comes from the block
 
 ### Input Structure
-- Create input: `Create{Model}Input @validator`
-- Update input: `Update{Model}Input @validator` — always includes `id: ID!` as first field
-- Nested inputs AVOID use `@validator` — validation handled in parent validator file
+- Create input: `Create{Model}Input` — plain, no `@validator`
+- Update input: `Update{Model}Input` — plain, no `@validator`, always includes `id: ID!` as first field
+- Delete: flat arg `id: ID!` directly on the mutation — no input type
+- No `@spread` on input arguments
 - Required fields use `!`, optional fields have no `!`
+- All input fields use snake_case
 
 ### Update Input Field Rules
 - `id: ID!` — always required
 - All other fields — always optional (no `!`), client sends only what needs updating
-- This applies to every Update input without exception
 
 ### Naming
-- Input names: `{Action}{Model}Input` (e.g. `CreateWorkflowInput`, `UpdateWorkflowInput`)
-- Nested inputs: `{Model}{Purpose}Input` (e.g. `WorkflowTriggerInput`, `WorkflowNodesInput`)
+- Mutation names: camelCase (`createUser`, `updateUser`, `deleteUser`)
+- Input names: PascalCase + `Input` suffix (`CreateUserInput`, `UpdateUserInput`)
+
+### Example
+```graphql
+extend type Mutation
+    @namespace(field: "Modules\\User\\GraphQL\\Mutations")
+    @guard {
+    """
+    Create a new user
+    """
+    createUser(input: CreateUserInput!): SuccessResponse!
+        @hasPermission(name: "create-user")
+        @field(resolver: "UserMutator@create")
+
+    """
+    Update existing user
+    """
+    updateUser(input: UpdateUserInput!): SuccessResponse!
+        @hasPermission(name: "update-user")
+        @field(resolver: "UserMutator@update")
+
+    """
+    Delete existing user
+    """
+    deleteUser(id: ID!): SuccessResponse!
+        @hasPermission(name: "delete-user")
+        @field(resolver: "UserMutator@delete")
+}
+
+input CreateUserInput {
+    name: String!
+    email: String!
+    password: String!
+}
+
+input UpdateUserInput {
+    id: ID!
+    name: String
+    email: String
+    status: String
+}
+```
+
+## Non-Negotiables
+- No `@validator` on any input type — validation is handled by FormRequests in the Controller
+- No `@spread` on mutation arguments
+- Always `@guard` on the `extend type` block unless explicitly public
+- Always `@hasPermission` on each mutation
+- Always use `@namespace` on the block — never write full resolver paths per mutation
+
+## Related
+- `SuccessResponse` type is defined once in the root `graphql/schema.graphql` — never inside a module
+- FormRequests for each operation → see `skills/graphql/validation/SKILL.md`
 
 ## Clarifying Questions
 - What is the model name and module?
-- Which operations are needed? (Create / Update / Delete / custom)
-- For Delete — single `id: ID!` or bulk `ids: [ID!]!`?
-- What fields does the Create input need?
-- What fields does the Update input need? (usually same as Create but all optional except `id`)
-- Are there nested inputs?
-
-## Related
-- `SuccessResponse` type is defined **once in the root `graphql/schema.graphql`** — never inside a module, never duplicated. See `skills/graphql/schema/SKILL.md`.
-- Validator classes for Create/Update inputs → see `skills/graphql/validation/SKILL.md`
-
-## Reference
-See `references/MUTATION.md` for real examples.
+- Which operations are needed? (create / update / delete / custom)
+- What fields does each input need?
+- What permission names should be used?
+- Are any mutations public (no `@guard`)?

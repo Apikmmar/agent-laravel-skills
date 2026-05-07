@@ -7,7 +7,7 @@ description: Use when creating a service class inside a module. Triggers when us
 Business logic and validation that is reused across multiple classes belongs in a service. Services live in `Modules/{Module}/Services/`. Services are created only when needed — there is no default service per module.
 
 ## Why
-Single Responsibility: mutators own the GraphQL boundary and transaction lifecycle, services own reusable business logic. Extracting shared logic into services keeps mutators thin and makes logic independently testable.
+Single Responsibility: Controllers own the execution boundary and transaction lifecycle, services own reusable business logic. Extracting shared logic into services keeps Controllers thin and makes logic independently testable.
 
 ## Conventions
 
@@ -38,9 +38,9 @@ Modules/{ModuleName}/Services/{ServiceName}Service.php
 - Bulk operations (bulk create, bulk update)
 
 ### What Does NOT Belong in a Service
-- Single-use logic tied to one mutator/query — keep that as a private method in the caller
-- GraphQL response building — that belongs in the mutator via `GraphQLResponse` trait
-- DB transactions — that belongs in the mutator
+- Single-use logic tied to one Controller method — keep that as a private method in the Controller
+- Response building — that belongs in the Controller (raw array return)
+- DB transactions — that belongs in the Controller
 
 ## Clarifying Questions
 - What business logic or validation is being reused?

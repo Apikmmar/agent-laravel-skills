@@ -2,99 +2,132 @@
 
 ---
 
-## Example 1 — Listing with filter and sort
+## Example 1 — Paginated listing + detail
 
 ```graphql
 # Modules/Blog/GraphQL/Schema/Queries/PostQueries.graphql
 
-extend type Query {
-    PostListing(input: PostListingInput @spread): [Post!]!
-        @paginate(builder: "Modules\\Blog\\GraphQL\\Queries\\PostQuery@listing")
+extend type Query
+    @guard
+    @namespace(
+        field: "Modules\\Blog\\GraphQL\\Queries"
+        paginate: "Modules\\Blog\\GraphQL\\Queries"
+    ) {
+    """
+    Fetch specific post detail
+    """
+    post(id: ID!): Post
+        @hasPermission(name: "view-post")
+        @field(resolver: "PostQuery@detail")
 
-    PostDetail(id: ID! @eq): Post
-        @field(resolver: "Modules\\Blog\\GraphQL\\Queries\\PostQuery@detail")
-}
-
-input PostListingInput {
-    filter: PostFilterInput
-    sorts: [PostSortInput!]
-}
-
-input PostFilterInput {
-    title: String
-    status: PostStatus
-    user_id: ID
-    created_at: String
-}
-
-input PostSortInput {
-    column: PostSortColumn!
-    direction: SortDirection!
-}
-
-enum SortDirection {
-    ASC
-    DESC
-}
-
-enum PostSortColumn {
-    CREATED_AT
-    TITLE
+    """
+    Fetch paginated list of posts
+    """
+    paginatedPosts: [Post!]!
+        @hasPermission(name: "view-all-posts")
+        @paginate(builder: "PostQuery@paginatedListing")
 }
 ```
 
 **What this shows:**
-- Listing uses `@paginate` with `builder:`
-- Detail uses `@field` with `resolver:`
-- Listing input always has `filter` + `sorts`
-- `SortDirection` defined per module
-- `{Model}SortColumn` includes `CREATED_AT` + additional sortable columns
-- Sort column enum values in UPPERCASE
+- `@namespace` with both `field:` and `paginate:` keys — required when mixing `@field` and `@paginate`
+- `@guard` on the block — protects all queries
+- `@hasPermission` on each individual query
+- `@paginate(builder:)` for paginated listing — `paginatedListing` in Controller must return a `Builder`
+- `@field(resolver:)` for detail — shorthand, namespace comes from the block
+- Detail takes `id: ID!` as a flat arg
 
 ---
 
-## Example 2 — Dropdown query
+## Example 2 — Non-paginated listing
 
 ```graphql
-extend type Query {
-    PostDropdown: [PostDropdown!]!
-        @field(resolver: "Modules\\Blog\\GraphQL\\Queries\\PostQuery@dropdown")
-}
-
-type PostDropdown {
-    id: ID!
-    name: String!
+extend type Query
+    @guard
+    @namespace(
+        field: "Modules\\Blog\\GraphQL\\Queries"
+        paginate: "Modules\\Blog\\GraphQL\\Queries"
+    ) {
+    """
+    Fetch all posts as a flat list
+    """
+    posts: [Post!]!
+        @hasPermission(name: "view-all-posts")
+        @field(resolver: "PostQuery@listing")
 }
 ```
 
 **What this shows:**
-- Dropdown uses `@field` — no pagination, no input needed
-- Returns a simplified `{Model}Dropdown` type — always `id` + one label field (usually `name`)
-- Define the `{Model}Dropdown` type in the module's `Components/{Model}Schema.graphql`
+- Non-paginated listing uses `@field(resolver:)` — not `@paginate`
+- `listing` in Controller returns a Collection via `->get()`
+
+---
+
+## Example 3 — Dropdown query
+
+```graphql
+extend type Query
+    @guard
+    @namespace(field: "Modules\\Blog\\GraphQL\\Queries") {
+    """
+    Fetch posts for dropdown
+    """
+    postDropdown: [PostDropdown!]!
+        @hasPermission(name: "view-all-posts")
+        @field(resolver: "PostQuery@dropdown")
+}
+```
+
+**What this shows:**
+- Dropdown uses `@field` — no pagination
+- When only `@field` is used, only `field:` key needed in `@namespace`
+- Returns a simplified type defined in `Components/PostSchema.graphql`
+
+---
+
+## Example 4 — Public queries (no auth)
+
+```graphql
+extend type Query
+    @namespace(field: "Modules\\Blog\\GraphQL\\Queries") {
+    """
+    Fetch published posts
+    """
+    publishedPosts: [Post!]!
+        @field(resolver: "PostQuery@listing")
+}
+```
+
+**What this shows:**
+- No `@guard` when queries are explicitly public
+- No `@hasPermission` on public queries
 
 ---
 
 ## Bad ❌ — What NOT to do
 
 ```graphql
-# Using @field for listing — should be @paginate
-PostListing(input: PostListingInput @spread): [Post!]!
-    @field(resolver: "Modules\\Blog\\GraphQL\\Queries\\PostQuery@listing")
+# Full resolver path — wrong, @namespace makes this redundant
+@field(resolver: "Modules\\Blog\\GraphQL\\Queries\\PostQuery@detail")
 
-# Missing sorts from listing input
-input PostListingInput {
-    filter: PostFilterInput
-}
+# Using @field for paginated listing — must use @paginate
+posts: [Post!]!
+    @field(resolver: "PostQuery@paginatedListing")
 
-# camelCase field names in filter input
-input PostFilterInput {
-    userId: ID
-    createdAt: String
-}
+# Using @paginate without builder — breaks
+paginatedPosts: [Post!]!
+    @paginate
 
-# SortColumn values not UPPERCASE
-enum PostSortColumn {
-    created_at
-    title
-}
+# @spread on query input — not used
+posts(input: PostListingInput @spread): [Post!]!
+
+# Missing @namespace — shorthand resolver paths break
+extend type Query
+    @guard {
+    post(id: ID!): Post
+        @field(resolver: "PostQuery@detail")
+
+# Missing paginate: key when mixing @field and @paginate
+@namespace(field: "Modules\\Blog\\GraphQL\\Queries") {
+    paginatedPosts: [Post!]! @paginate(builder: "PostQuery@paginatedListing")
 ```

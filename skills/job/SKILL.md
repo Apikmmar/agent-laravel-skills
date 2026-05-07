@@ -28,20 +28,12 @@ Modules/{ModuleName}/Jobs/{JobName}Job.php
 - Always define `$backoff` — default `[10, 30, 60]` (seconds between retries)
 
 ### Queue Assignment
-| Queue | Use for |
-|---|---|
-| `high` | Time-sensitive — emails, OTP, notifications |
-| `default` | Standard async ops — webhooks, model updates |
-| `low` | Heavy/slow — reports, exports, bulk processing |
+Queue selection follows `agents/performance/PERFORMANCE.md` — `high` for time-sensitive, `default` for standard, `low` for heavy/slow.
 
 ### handle()
 - Single responsibility — one job does one thing
 - No for loops over DB operations — use `whereIn`, `insert([])`, `upsert()`, `chunk()`
-- Apply chunking thresholds from the performance rules:
-  - < 500 records: direct query
-  - 500 – 5,000: `chunk(500)`
-  - 5,000 – 50,000: `chunkById(1000)`
-  - 50,000+: split into multiple dispatched jobs
+- Apply chunking thresholds from `agents/performance/PERFORMANCE.md`
 
 ### failed()
 - Always implement — never leave it absent

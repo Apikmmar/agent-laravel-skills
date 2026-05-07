@@ -23,7 +23,7 @@ Always apply these rules during code generation. These are not optional — enfo
 
 ## Input Validation
 
-- For **GraphQL endpoints**: always validate via Lighthouse `@validator` on input types — never use Form Requests
+- For **GraphQL endpoints**: always validate via Laravel FormRequests in the Controller — never use Lighthouse `@validator`
 - For **REST/HTTP endpoints**: always validate via Laravel Form Requests — never trust raw `$request->all()`
 - Sanitize output when rendering user-generated content
 

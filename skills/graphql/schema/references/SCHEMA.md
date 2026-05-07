@@ -25,9 +25,9 @@ type Post {
 }
 
 enum PostStatus {
-    draft
-    published
-    archived
+    DRAFT
+    PUBLISHED
+    ARCHIVED
 }
 ```
 
@@ -37,7 +37,7 @@ enum PostStatus {
 - `relation:` used when PHP method name differs from field name (e.g. `featuredImage` → `relation: "featuredImage"`)
 - `@belongsTo` with no `relation:` when field name matches the PHP method exactly (e.g. `user` → `belongsTo()`)
 - Enum defined in same file as the type that uses it
-- Enum values lowercase
+- All enum values UPPERCASE
 
 ---
 
@@ -100,15 +100,22 @@ extend type Mutation {
     CreatePost(...): SuccessResponse
 }
 
-# Enum values in UPPERCASE — wrong for component enums
+# Enum values in lowercase — wrong, always use UPPERCASE
 enum PostStatus {
-    DRAFT
-    PUBLISHED
+    draft
+    published
 }
 
 # camelCase field names — wrong, use snake_case
 type Post {
     userId: ID!
     createdAt: DateTime!
+}
+
+# SuccessResponse redefined inside module — defined once in root schema only
+type SuccessResponse {
+    status: Boolean!
+    message: String!
+    data: JSON
 }
 ```

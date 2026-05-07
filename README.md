@@ -15,22 +15,30 @@ Point your AI tool to `AGENTS.md` at the project root. It loads global rules (al
 ```
 AGENTS.md                          ← entry point, loaded by AI tool
 agents/
+├── brainstorm/BRAINSTORM.md       ← architect agent: plan before code (always active)
 ├── convention/CONVENTION.md       ← naming conventions (always active)
 ├── principles/PRINCIPLES.md       ← DRY, SOLID, Modularity (always active)
-└── security/SECURITY.md           ← security rules (always active)
+├── security/SECURITY.md           ← security rules (always active)
+├── performance/PERFORMANCE.md     ← performance rules (always active)
+└── review/
+    ├── SECURITY.md                ← security review agent
+    ├── TESTING.md                 ← test review agent
+    └── PERFORMANCE.md             ← performance review agent
 skills/
 ├── module/SKILL.md                ← module creation flow
 ├── models/SKILL.md                ← Eloquent model conventions
 ├── migration/SKILL.md             ← migration conventions
 ├── service/SKILL.md               ← service layer conventions
+├── job/SKILL.md                   ← async job conventions
 └── graphql/
     ├── schema/SKILL.md            ← GraphQL types, enums
     ├── mutation/SKILL.md          ← GraphQL mutation definitions
     ├── query/SKILL.md             ← GraphQL query definitions
-    ├── validation/SKILL.md        ← Lighthouse input validators
+    ├── controller/SKILL.md        ← Controller: business logic + execution boundary
+    ├── request/SKILL.md           ← FormRequest: mutation input validation
     └── resolver/
-        ├── mutator/SKILL.md       ← Mutator class (create/update/delete)
-        └── query/SKILL.md         ← Query class (listing/detail/dropdown)
+        ├── mutator/SKILL.md       ← Mutator class (thin proxy → Controller)
+        └── query/SKILL.md         ← Query class (thin proxy → Controller)
 ```
 
 Each skill has a companion `references/` folder with real code examples.
@@ -42,7 +50,7 @@ Each skill has a companion `references/` folder with real code examples.
 Every `SKILL.md` follows this structure:
 
 ```
-frontmatter   → title, impact, tags
+frontmatter   → name, description (used by agent to match trigger phrases)
 ## Rule       → the convention in one sentence
 ## Why        → reason behind the rule
 ## Conventions → detailed rules and file structure

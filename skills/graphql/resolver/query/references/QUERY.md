@@ -2,77 +2,83 @@
 
 ---
 
-## Example 1 — Standard listing, detail, dropdown
+## Example 1 — Standard paginated listing, listing, and detail
 
 ```php
 <?php
 
-namespace Modules\Blog\GraphQL\Queries;
+namespace Modules\User\GraphQL\Queries;
 
-use Illuminate\Database\Eloquent\Builder;
-use Modules\Blog\Models\Post;
+use App\GraphQL\Queries\Query;
+use Modules\User\Http\Controllers\UserController;
+use Nuwave\Lighthouse\Execution\ResolveInfo;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class PostQuery
+class UserQuery extends Query
 {
-    public function listing($_, array $args): Builder
+    protected $controller = UserController::class;
+
+    public function paginatedListing(mixed $_, array $args, GraphQLContext $graphqlContext, ResolveInfo $resolveInfo)
     {
-        return Post::query();
+        return $this->resolve(__FUNCTION__, $args, $graphqlContext, $resolveInfo);
     }
 
-    public function detail($_, array $args): mixed
+    public function listing(mixed $_, array $args, GraphQLContext $graphqlContext, ResolveInfo $resolveInfo)
     {
-        $post = Post::find($args['id']);
-
-        if (!$post) {
-            throw new \Exception('Post not found.');
-        }
-
-        return $post;
+        return $this->resolve(__FUNCTION__, $args, $graphqlContext, $resolveInfo);
     }
 
-    public function dropdown($_, array $args): mixed
+    public function detail(mixed $_, array $args, GraphQLContext $graphqlContext, ResolveInfo $resolveInfo)
     {
-        return Post::query()
-            ->where('status', true)
-            ->get()
-            ->map(fn($item) => [
-                'id'   => $item->id,
-                'name' => $item->title,
-            ]);
+        return $this->resolve(__FUNCTION__, $args, $graphqlContext, $resolveInfo);
     }
 }
 ```
 
 **What this shows:**
-- `listing` returns `Builder` — required for `@paginate`
-- `detail` throws `\Exception` if model not found — never return null silently
-- `dropdown` returns simplified collection (id + label only)
-- Method signature: `($_, array $args)` not `(mixed $root, array $args)`
+- Extends `App\GraphQL\Queries\Query` — not a standalone class
+- `protected $controller = UserController::class` — no constructor injection
+- Every method calls `$this->resolve(__FUNCTION__, ...)` — delegates to the matching Controller method
+- Zero business logic in the Query class — it is a proxy only
+- Method signature: `(mixed $_, array $args, GraphQLContext $graphqlContext, ResolveInfo $resolveInfo)`
+- `paginatedListing` is used with `@paginate(builder:)` in the schema — Controller method must return a `Builder`
 
 ---
 
 ## Bad ❌ — What NOT to do
 
 ```php
-// listing returns Collection instead of Builder — breaks @paginate
-public function listing($_, array $args): Collection
+// Not extending the base Query class
+class UserQuery
 {
-    return Post::all();
+    public function listing(mixed $_, array $args, ...) { }
 }
 
-// Wrong method signature — use ($_, array $args)
-public function listing(mixed $root, array $args): Builder { }
-
-// detail with no exception — must throw if not found
-public function detail($_, array $args): mixed
+// Constructor injection instead of protected $controller
+class UserQuery extends Query
 {
-    return Post::find($args['id']); // returns null silently
+    public function __construct(private UserController $controller) {} // wrong
 }
 
-// Wrong class name — must be Query not Queries
-class PostQueries { }
+// Business logic directly in the Query class — belongs in the Controller
+public function listing(mixed $_, array $args, GraphQLContext $graphqlContext, ResolveInfo $resolveInfo)
+{
+    return User::filter(); // wrong — logic must live in the Controller
+}
+
+// Wrong method signature — missing GraphQLContext and ResolveInfo
+public function listing($_, array $args)
+{
+    return $this->resolve(__FUNCTION__, $args); // wrong
+}
+
+// Method name does not match Controller method
+public function getUsers(mixed $_, array $args, ...) // wrong — schema has @field(resolver: "UserQuery@listing")
+{
+    return $this->resolve(__FUNCTION__, $args, ...);
+}
 
 // Wrong namespace
 namespace App\GraphQL\Queries;
-class PostQuery { }
+class UserQuery extends Query { }
 ```

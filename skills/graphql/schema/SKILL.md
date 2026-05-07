@@ -18,22 +18,26 @@ Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}Schema.graphql
 
 ### Type Definition
 - Always define `id: ID!` as first field
-- All fields use snake_case
+- All fields use **snake_case**: `workflow_id`, `parent_execution_id`, `first_name`
 - Relationship fields use Lighthouse directives: `@belongsTo`, `@hasMany`, `@hasOne`
 - Use `relation:` argument when the PHP method name differs from the field name
-- Always include `created_at: DateTime!` and `updated_at: DateTime!`
+- Always include `created_at: DateTime` and `updated_at: DateTime`
 - Use scalar types: `JSON`, `DateTime`, `ID`, `String`, `Boolean`, `Int`
 
 ### Enums
 - Enum names in PascalCase
 - Enums defined in the same `Components/` file as the type that uses them
-- **Status/type enums** (e.g. `PostStatus`, `WorkflowStatus`) — values in **lowercase**: `draft`, `published`
-- **Sort/direction enums** (e.g. `SortDirection`, `PostSortColumn`) — values in **UPPERCASE**: `ASC`, `DESC`, `CREATED_AT`
+- **All enum values** use **UPPERCASE**: `ACTIVE`, `INACTIVE`, `PENDING`, `DRAFT`, `PUBLISHED`, `ASC`, `DESC`, `CREATED_AT`
 
 ### Relationships
 - `@belongsTo` — for belongs-to relationships
 - `@hasMany(relation: "methodName")` — always include `relation:` when PHP method is camelCase
 - `@hasOne` — for has-one relationships
+
+### Inputs
+- Plain `input` types — no `@validator`, no `@spread`
+- All input fields use snake_case
+- Validation is handled by FormRequests in the Controller
 
 ### SuccessResponse
 All mutations return `SuccessResponse`. It is defined **once in the root schema** (e.g. `graphql/schema.graphql`) — never inside a module, never duplicated:
@@ -46,7 +50,7 @@ type SuccessResponse {
 }
 ```
 
-This maps to the `GraphQLResponse` trait's `createResponse(bool, string, $data)` return shape. AVOID redefine it per module.
+This maps to the raw array returned by the Controller: `['status' => bool, 'message' => string, 'data' => mixed]`. AVOID redefine it per module.
 
 ### Module Registration
 Every module has a `schema.graphql` at `Modules/{Module}/GraphQL/schema.graphql` that registers all its GraphQL files via `#import`:

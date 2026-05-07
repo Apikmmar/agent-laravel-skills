@@ -15,11 +15,11 @@ When invoked:
 
 ## Stack Context
 
-- Auth: Laravel Sanctum — all protected routes must use `auth:sanctum`
-- GraphQL: Lighthouse — input validation via `@validator`, never trust unvalidated args
-- Modules: `Modules/{ModuleName}/` — review scoped to the module's `GraphQL/`, `Services/`, and `Models/` folders
-- Mutations: must use `DB::beginTransaction/commit/rollBack` and `GraphQLResponse` trait
-- Never expose raw exceptions or stack traces — all errors go through `createResponse(false, ...)`
+- Auth: Laravel Sanctum — all protected routes must use `@guard` in the GraphQL schema
+- GraphQL: Lighthouse — input validation via FormRequests in the Controller, never `@validator`
+- Modules: `Modules/{ModuleName}/` — review scoped to the module's `GraphQL/`, `Http/`, `Services/`, and `Models/` folders
+- Mutations: must use `DB::beginTransaction/commit/rollBack` in the Controller; no `GraphQLResponse` trait — Controllers return raw arrays
+- Errors: always throw `ExecutionException` — never return `['status' => false, ...]` or expose raw stack traces
 
 ## Output Format
 

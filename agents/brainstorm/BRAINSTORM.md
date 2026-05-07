@@ -52,10 +52,13 @@ Before generating any code, output a visible plan using this structure:
 
 ### 4. GraphQL API Shape
 <List mutations and queries with their input/output shapes>
-<Flag any inputs that need validators>
+<Flag any inputs that need a FormRequest — one per mutation operation>
+<All type fields and input fields use camelCase>
+<All enum values use UPPERCASE>
 
-### 5. Service Layer
-<Is a service needed? What logic belongs there?>
+### 5. Controller & Service Layer
+<What methods does the Controller need? (maps 1:1 with Resolver methods)>
+<Is a service needed? What reusable logic belongs there?>
 <Is a BaseService needed?>
 
 ### 6. Security Considerations
@@ -79,7 +82,8 @@ Before generating any code, output a visible plan using this structure:
 <Bulk operation risks>
 
 ### 9. Skills Execution Order
-<List the exact skills that will run and in what order>
+<List the exact skills that will run and in what order, following this sequence:>
+<module → models → migration → graphql/schema → graphql/mutation → graphql/query → graphql/resolver/mutator → graphql/resolver/query → graphql/controller → graphql/request → service (if needed) → job (if needed)>
 ```
 
 After outputting the plan, ask the user:
@@ -102,9 +106,9 @@ Once the user confirms the plan:
 When reading existing modules or files to understand project structure, treat that as context only — never as convention to replicate. If existing code conflicts with the skills, **the skills win**.
 
 Specifically:
-- If an existing module uses a Controller proxy pattern (`$this->resolve()`, `protected $controller`), AVOID replicate it — the skill requires logic directly in the Mutator/Query class
-- If an existing module uses FormRequests for GraphQL validation, AVOID replicate it — the skill requires Lighthouse `@validator` and validator classes
+- Resolvers (Mutator/Query) are thin proxies — they delegate to the Controller via `$this->resolve()`. If existing code puts business logic directly in the Resolver, AVOID replicate it
 - If an existing module skips the `GraphQLResponse` trait, AVOID skip it — the skill requires it on every module
+- If an existing module skips the Controller layer, AVOID skip it — the Controller is where business logic lives
 - Reading the codebase is for understanding relationships, table names, and integration points — not for copying patterns
 
 ---
@@ -116,10 +120,12 @@ These are enforced regardless of user instruction:
 - Security considerations are always included in the plan — never omitted
 - Scalability considerations are always included — even for small features
 - Every new model gets `SoftDeletes` and explicit `$fillable`
-- Every mutation gets a DB transaction
-- Every top-level input gets `@validator`
+- Every mutation gets a DB transaction — in the Controller, not the Resolver
+- Every mutation operation gets a typed FormRequest — no `@validator`, no raw `Request` for CUD
 - Services are created only when logic is reused — never as boilerplate
 - Skills override codebase patterns — never copy existing code that contradicts a skill rule
-- `Traits/GraphQLResponse.php` is always created — never skipped regardless of what existing modules do
-- Mutation logic always lives in the Mutator directly — never in a Controller or proxy layer
-- Query logic always lives in the Query class directly — never in a Controller or proxy layer
+- No `Traits/GraphQLResponse.php` — Controllers return raw arrays directly
+- No `GraphQL/Validators/` folder — this pattern is not used
+- Resolvers (Mutator/Query) are thin proxies — they only delegate via `$this->resolve()`, never implement business logic
+- Controllers own business logic, DB transactions, and response building — every module has one
+- All enum values use UPPERCASE

@@ -7,18 +7,32 @@
 ```graphql
 # Modules/Blog/GraphQL/Schema/Mutations/PostMutation.graphql
 
-extend type Mutation {
-    CreatePost(input: CreatePostInput! @spread): SuccessResponse
-        @field(resolver: "Modules\\Blog\\GraphQL\\Mutations\\PostMutator@create")
+extend type Mutation
+    @namespace(field: "Modules\\Blog\\GraphQL\\Mutations")
+    @guard {
+    """
+    Create a new post
+    """
+    createPost(input: CreatePostInput!): SuccessResponse!
+        @hasPermission(name: "create-post")
+        @field(resolver: "PostMutator@create")
 
-    UpdatePost(input: UpdatePostInput! @spread): SuccessResponse
-        @field(resolver: "Modules\\Blog\\GraphQL\\Mutations\\PostMutator@update")
+    """
+    Update existing post
+    """
+    updatePost(input: UpdatePostInput!): SuccessResponse!
+        @hasPermission(name: "update-post")
+        @field(resolver: "PostMutator@update")
 
-    DeletePost(ids: [ID!]!): SuccessResponse
-        @field(resolver: "Modules\\Blog\\GraphQL\\Mutations\\PostMutator@delete")
+    """
+    Delete existing post
+    """
+    deletePost(id: ID!): SuccessResponse!
+        @hasPermission(name: "delete-post")
+        @field(resolver: "PostMutator@delete")
 }
 
-input CreatePostInput @validator {
+input CreatePostInput {
     user_id: ID!
     category_id: ID!
     title: String!
@@ -28,7 +42,7 @@ input CreatePostInput @validator {
     published_at: String
 }
 
-input UpdatePostInput @validator {
+input UpdatePostInput {
     id: ID!
     category_id: ID
     title: String
@@ -40,73 +54,85 @@ input UpdatePostInput @validator {
 ```
 
 **What this shows:**
-- `extend type Mutation` always
-- Always return `SuccessResponse`
-- Always `@spread` on input
-- Always `@validator` on Create/Update inputs
+- `@namespace` on the `extend type` block — enables shorthand `@field(resolver: "PostMutator@create")`
+- `@guard` on the block — protects all mutations
+- `@hasPermission` on each individual mutation
+- Always return `SuccessResponse!`
+- No `@validator`, no `@spread` on inputs
 - Update input: `id: ID!` first, all other fields optional
-- Delete uses bulk `ids: [ID!]!`
+- Delete uses flat `id: ID!` — no input type
 
 ---
 
-## Example 2 — Delete single + custom operation
+## Example 2 — Custom operation
 
 ```graphql
-extend type Mutation {
-    DeletePost(id: ID!): SuccessResponse
-        @field(resolver: "Modules\\Blog\\GraphQL\\Mutations\\PostMutator@delete")
-
-    PublishPost(id: ID!): SuccessResponse
-        @field(resolver: "Modules\\Blog\\GraphQL\\Mutations\\PostMutator@publish")
+extend type Mutation
+    @namespace(field: "Modules\\Blog\\GraphQL\\Mutations")
+    @guard {
+    """
+    Publish a post
+    """
+    publishPost(id: ID!): SuccessResponse!
+        @hasPermission(name: "publish-post")
+        @field(resolver: "PostMutator@publish")
 }
 ```
 
 **What this shows:**
-- Single delete uses `id: ID!`
-- Custom operations follow same pattern — PascalCase name, return `SuccessResponse`
+- Custom operations follow same pattern — camelCase name, flat args, return `SuccessResponse!`
+- Same `@namespace` + `@guard` + `@hasPermission` pattern
 
 ---
 
-## Example 3 — Nested inputs (no @validator on nested)
+## Example 3 — Public mutations (no auth)
 
 ```graphql
-input CreatePostInput @validator {
-    title: String!
-    body: String!
-    meta: PostMetaInput!
-    tags: [PostTagInput!]
+extend type Mutation
+    @namespace(field: "Modules\\Auth\\GraphQL\\Mutations") {
+    """
+    Register a new account
+    """
+    register(input: RegisterInput!): SuccessResponse!
+        @field(resolver: "AuthMutator@register")
 }
 
-input PostMetaInput {
-    seo_title: String
-    seo_description: String
-}
-
-input PostTagInput {
-    tag_id: ID!
+input RegisterInput {
+    name: String!
+    email: String!
+    password: String!
 }
 ```
 
 **What this shows:**
-- Only top-level Create/Update inputs get `@validator`
-- Nested inputs never get `@validator`
+- No `@guard` when mutations are explicitly public
+- No `@hasPermission` on public mutations
+- Input still plain — no `@validator`, no `@spread`
 
 ---
 
 ## Bad ❌ — What NOT to do
 
 ```graphql
-# Missing @validator on Create/Update input
-input CreatePostInput {
+# Full resolver path — wrong, @namespace makes this redundant
+@field(resolver: "Modules\\Blog\\GraphQL\\Mutations\\PostMutator@create")
+
+# @validator on input — not used in this project
+input CreatePostInput @validator {
     title: String!
 }
 
-# Missing @spread
-CreatePost(input: CreatePostInput!): SuccessResponse
+# @spread on input — not used
+createPost(input: CreatePostInput! @spread): SuccessResponse!
 
-# Not returning SuccessResponse
-CreatePost(input: CreatePostInput! @spread): Post
+# Missing @guard when mutations should be protected
+extend type Mutation
+    @namespace(field: "Modules\\Blog\\GraphQL\\Mutations") {
+    createPost(input: CreatePostInput!): SuccessResponse!
 
-# Resolver path wrong format
-@field(resolver: "PostMutator@create")
+# PascalCase mutation name — must be camelCase
+CreatePost(input: CreatePostInput!): SuccessResponse!
+
+# Not returning SuccessResponse!
+createPost(input: CreatePostInput!): Post
 ```

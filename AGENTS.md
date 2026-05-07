@@ -19,8 +19,9 @@
 - @skills/graphql/schema/SKILL.md
 - @skills/graphql/mutation/SKILL.md
 - @skills/graphql/query/SKILL.md
-- @skills/graphql/validation/SKILL.md
 - @skills/graphql/resolver/mutator/SKILL.md
 - @skills/graphql/resolver/query/SKILL.md
+- @skills/graphql/controller/SKILL.md
+- @skills/graphql/request/SKILL.md
 - @skills/service/SKILL.md
 - @skills/job/SKILL.md

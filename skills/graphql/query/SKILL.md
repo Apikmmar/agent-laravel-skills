@@ -1,13 +1,10 @@
 ---
 name: graphql-query
-description: Use when defining GraphQL queries, filters, or sort inputs. Triggers when user asks to create a listing query, detail query, dropdown query, add pagination, or define filter and sort inputs.
+description: Use when defining GraphQL queries. Triggers when user asks to create a listing query, detail query, dropdown query, add pagination, or define query schema.
 ---
 
 ## Rule
-All queries are defined in `GraphQL/Schema/Queries/{ModelName}Queries.graphql`. Use `@paginate` for listing queries and `@field` for detail/dropdown queries.
-
-## Why
-`@paginate` handles cursor/page-based pagination automatically via Lighthouse. `@field` is for single-result or non-paginated resolvers.
+All queries are defined in `GraphQL/Schema/Queries/{ModelName}Queries.graphql`. Use `@namespace` on the `extend type` block for shorthand resolvers. Use `@paginate(builder:)` for paginated listing and `@field(resolver:)` for all others.
 
 ## Conventions
 
@@ -16,46 +13,62 @@ All queries are defined in `GraphQL/Schema/Queries/{ModelName}Queries.graphql`. 
 Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}Queries.graphql
 ```
 
-### Query Structure
+### Query Block Structure
 - Always `extend type Query`
-- Query names in PascalCase: `{Model}Listing`, `{Model}Detail`, `{Model}Dropdown`
-- Listing queries use `@paginate(builder: "Modules\\{Module}\\GraphQL\\Queries\\{Model}Query@listing")`
-- Detail/dropdown queries use `@field(resolver: "Modules\\{Module}\\GraphQL\\Queries\\{Model}Query@{method}")`
-- Listing input always uses `@spread`
+- Always `@guard` on the extend block unless queries are explicitly public
+- Always `@namespace(field: "...", paginate: "...")` on the extend block — both keys required when mixing `@field` and `@paginate`
+- Always `@hasPermission(name: "...")` on each individual query
+- Use shorthand resolver names — namespace comes from the block
+- Query names in camelCase: `user`, `users`, `paginatedUsers`
 
-### Resolver Path — Always Full Namespace
-Always write the full path inside `@paginate(builder:)` and `@field(resolver:)`, even when `@namespace` is present on the type extension:
-```graphql
-@paginate(builder: "Modules\\Post\\GraphQL\\Queries\\PostQuery@listing")
-@field(resolver: "Modules\\Post\\GraphQL\\Queries\\PostQuery@detail")
-```
-Never use shorthand — shorthand depends on `@namespace` being correctly scoped and is fragile.
+### Resolver Types
+- Paginated listing: `@paginate(builder: "{Model}Query@paginatedListing")`
+- Non-paginated listing: `@field(resolver: "{Model}Query@listing")`
+- Detail / dropdown: `@field(resolver: "{Model}Query@detail")`
 
-### Listing Input Structure
-Every listing query has an input with exactly two fields:
+### No filter/sort inputs required by default
+Filtering is handled by model scopes (e.g. `User::filter()`). Only add explicit filter inputs if the user requests them.
+
+### Example
 ```graphql
-input {Model}ListingInput {
-    filter: {Model}FilterInput
-    sorts: [{Model}SortInput!]
+extend type Query
+    @guard
+    @namespace(
+        field: "Modules\\User\\GraphQL\\Queries"
+        paginate: "Modules\\User\\GraphQL\\Queries"
+    ) {
+    """
+    Fetch specific user detail
+    """
+    user(id: ID!): User
+        @hasPermission(name: "view-user")
+        @field(resolver: "UserQuery@detail")
+
+    """
+    Fetch list of users
+    """
+    users: [User!]!
+        @hasPermission(name: "view-all-users")
+        @field(resolver: "UserQuery@listing")
+
+    """
+    Fetch paginated list of users
+    """
+    paginatedUsers: [User!]!
+        @hasPermission(name: "view-all-users")
+        @paginate(builder: "UserQuery@paginatedListing")
 }
 ```
 
-### Filter Input
-- Field name: `{Model}FilterInput`
-- Filter field types are customizable — use the appropriate scalar or custom type per field
-- All filter fields are optional (no `!`)
-
-### Sort Input
-- Field name: `{Model}SortInput`
-- Always has two fields: `column: {Model}SortColumn!` and `direction: SortDirection!`
-- `SortDirection` enum defined per module with values: `ASC`, `DESC`
-- `{Model}SortColumn` enum always includes `CREATED_AT` at minimum — add other sortable columns as needed
+## Non-Negotiables
+- Always `@namespace` on the `extend type` block — never write full resolver paths per query
+- Always `@guard` on the block unless explicitly public
+- Always `@hasPermission` on each query
+- `paginatedListing` controller method must return a `Builder` — `@paginate` breaks otherwise
+- No filter/sort input types unless the user explicitly requests them
 
 ## Clarifying Questions
 - What is the model name and module?
-- What query types are needed? (Listing / Detail / Dropdown / custom)
-- What filter fields are needed for listing?
-- What columns should be sortable?
-
-## Reference
-See `references/QUERY.md` for real examples.
+- What queries are needed? (paginatedListing / listing / detail / custom)
+- What permission names should be used?
+- Are any queries public (no `@guard`)?
