@@ -1,9 +1,21 @@
 #!/bin/bash
 
-PHPUNIT_FILE="phpunit.xml"
+if [ -z "$1" ]; then
+    echo "Usage: ./scripts/check-test-config.sh {/path/to/project}"
+    exit 1
+fi
+
+PROJECT_PATH=$1
+
+if [ ! -d "$PROJECT_PATH" ]; then
+    echo "ERROR: Project path '$PROJECT_PATH' does not exist."
+    exit 1
+fi
+
+PHPUNIT_FILE="$PROJECT_PATH/phpunit.xml"
 
 if [ ! -f "$PHPUNIT_FILE" ]; then
-    echo "FAIL: phpunit.xml not found."
+    echo "FAIL: phpunit.xml not found in '$PROJECT_PATH'."
     exit 1
 fi
 

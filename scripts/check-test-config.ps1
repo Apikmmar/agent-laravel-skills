@@ -1,7 +1,17 @@
-$phpunitFile = "phpunit.xml"
+param(
+    [Parameter(Mandatory)]
+    [string]$ProjectPath
+)
+
+if (-not (Test-Path $ProjectPath)) {
+    Write-Host "ERROR: Project path '$ProjectPath' does not exist." -ForegroundColor Red
+    exit 1
+}
+
+$phpunitFile = Join-Path $ProjectPath "phpunit.xml"
 
 if (-not (Test-Path $phpunitFile)) {
-    Write-Host "phpunit.xml not found." -ForegroundColor Red
+    Write-Host "FAIL: phpunit.xml not found in '$ProjectPath'." -ForegroundColor Red
     exit 1
 }
 

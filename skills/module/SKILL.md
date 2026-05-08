@@ -20,13 +20,13 @@ Run the scaffold script (do NOT run the artisan commands separately):
 
 **Windows (PowerShell)**
 ```powershell
-.\scripts\scaffold-module.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -TableName {table_name}
+.\scripts\scaffold-module.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -TableName {table_name} -ProjectPath {C:\path\to\project}
 ```
 
 **Mac / Linux (Bash)**
 ```bash
 chmod +x ./scripts/scaffold-module.sh  # first time only
-./scripts/scaffold-module.sh {ModuleName} {ModelName} {table_name}
+./scripts/scaffold-module.sh {ModuleName} {ModelName} {table_name} {/path/to/project}
 ```
 
 **Step 5 — Create the HTTP Controller**

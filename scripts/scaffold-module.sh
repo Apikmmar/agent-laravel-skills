@@ -1,15 +1,23 @@
 #!/bin/bash
 
-if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
-    echo "Usage: ./scripts/scaffold-module.sh {ModuleName} {ModelName} {table_name}"
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ]; then
+    echo "Usage: ./scripts/scaffold-module.sh {ModuleName} {ModelName} {table_name} {/path/to/project}"
     exit 1
 fi
 
 MODULE_NAME=$1
 MODEL_NAME=$2
 TABLE_NAME=$3
+PROJECT_PATH=$4
 
-echo "Scaffolding module '$MODULE_NAME' with model '$MODEL_NAME' (table: $TABLE_NAME)..."
+if [ ! -d "$PROJECT_PATH" ]; then
+    echo "ERROR: Project path '$PROJECT_PATH' does not exist."
+    exit 1
+fi
+
+cd "$PROJECT_PATH" || exit 1
+
+echo "Scaffolding module '$MODULE_NAME' with model '$MODEL_NAME' (table: $TABLE_NAME) in '$PROJECT_PATH'..."
 
 php artisan module:make $MODULE_NAME
 php artisan module:make-model $MODEL_NAME $MODULE_NAME
