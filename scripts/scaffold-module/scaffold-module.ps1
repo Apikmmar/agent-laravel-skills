@@ -30,19 +30,18 @@ php artisan module:make-model $ModelName $ModuleName
 php artisan module:make-graphql $ModelName $ModuleName
 php artisan make:migration "create_${TableName}_table"
 
-# Rename scaffold artifact .graphql files to the correct suffixed names the skill requires.
+# module:make-graphql deletes the .graphql schema files after creating them.
+# Create the 3 required stub files directly.
 $basePath = "Modules/$ModuleName/GraphQL/Schema"
-$renames = @(
-    @{ From = "$basePath/Components/$ModelName.graphql"; To = "$basePath/Components/${ModelName}Schema.graphql" },
-    @{ From = "$basePath/Mutations/$ModelName.graphql"; To = "$basePath/Mutations/${ModelName}Mutation.graphql" },
-    @{ From = "$basePath/Queries/$ModelName.graphql";   To = "$basePath/Queries/${ModelName}Queries.graphql" }
+$stubs = @(
+    "$basePath/Components/${ModelName}Schema.graphql",
+    "$basePath/Mutations/${ModelName}Mutation.graphql",
+    "$basePath/Queries/${ModelName}Queries.graphql"
 )
 
-foreach ($entry in $renames) {
-    if (Test-Path $entry.From) {
-        Rename-Item $entry.From $entry.To
-        Write-Host "Renamed: $($entry.From) → $($entry.To)" -ForegroundColor Yellow
-    }
+foreach ($stub in $stubs) {
+    New-Item -ItemType File -Path $stub -Force | Out-Null
+    Write-Host "Created stub: $stub" -ForegroundColor Yellow
 }
 
 Pop-Location

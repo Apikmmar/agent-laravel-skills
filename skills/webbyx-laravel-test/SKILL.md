@@ -10,8 +10,8 @@ Tests live in `Modules/{ModuleName}/Tests/Feature/`. One test class per operatio
 
 This repo is used as a git submodule at `{project}/.claude/`. Run from the **project root**:
 
-**Windows:** `.\.claude\scripts\check-test-config.ps1 -ProjectPath "{C:\path\to\project}"`
-**Mac / Linux:** `chmod +x ./.claude/scripts/check-test-config.sh && ./.claude/scripts/check-test-config.sh {/path/to/project}`
+**Windows:** `.\.claude\scripts\check-test-config\check-test-config.ps1 -ProjectPath "{C:\path\to\project}"`
+**Mac / Linux:** `chmod +x ./.claude/scripts/check-test-config/check-test-config.sh && ./.claude/scripts/check-test-config/check-test-config.sh {/path/to/project}`
 
 If the script fails, update `DB_CONNECTION` in `phpunit.xml` to `mysql` before proceeding.
 

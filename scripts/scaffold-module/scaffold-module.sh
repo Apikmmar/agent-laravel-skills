@@ -28,21 +28,18 @@ php artisan module:make-model $MODEL_NAME $MODULE_NAME
 php artisan module:make-graphql $MODEL_NAME $MODULE_NAME
 php artisan make:migration "create_${TABLE_NAME}_table"
 
-# Rename scaffold artifact .graphql files to the correct suffixed names the skill requires.
+# module:make-graphql deletes the .graphql schema files after creating them.
+# Create the 3 required stub files directly.
 BASE_PATH="Modules/$MODULE_NAME/GraphQL/Schema"
-
-declare -A RENAMES=(
-    ["$BASE_PATH/Components/$MODEL_NAME.graphql"]="$BASE_PATH/Components/${MODEL_NAME}Schema.graphql"
-    ["$BASE_PATH/Mutations/$MODEL_NAME.graphql"]="$BASE_PATH/Mutations/${MODEL_NAME}Mutation.graphql"
-    ["$BASE_PATH/Queries/$MODEL_NAME.graphql"]="$BASE_PATH/Queries/${MODEL_NAME}Queries.graphql"
+STUBS=(
+    "$BASE_PATH/Components/${MODEL_NAME}Schema.graphql"
+    "$BASE_PATH/Mutations/${MODEL_NAME}Mutation.graphql"
+    "$BASE_PATH/Queries/${MODEL_NAME}Queries.graphql"
 )
 
-for from in "${!RENAMES[@]}"; do
-    to="${RENAMES[$from]}"
-    if [ -f "$from" ]; then
-        mv "$from" "$to"
-        echo "Renamed: $from → $to"
-    fi
+for stub in "${STUBS[@]}"; do
+    touch "$stub"
+    echo "Created stub: $stub"
 done
 
 echo "Done. Proceed with Controller, FormRequests, and file content generation."

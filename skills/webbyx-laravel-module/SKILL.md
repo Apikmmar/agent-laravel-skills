@@ -20,13 +20,13 @@ This repo is used as a git submodule at `{project}/.claude/`. Run the scaffold s
 
 **Windows (PowerShell)**
 ```powershell
-.\.claude\scripts\scaffold-module.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -TableName {table_name} -ProjectPath "{C:\path\to\project}"
+.\.claude\scripts\scaffold-module\scaffold-module.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -TableName {table_name} -ProjectPath "{C:\path\to\project}"
 ```
 
 **Mac / Linux (Bash)**
 ```bash
-chmod +x ./.claude/scripts/scaffold-module.sh  # first time only
-./.claude/scripts/scaffold-module.sh {ModuleName} {ModelName} {table_name} {/path/to/project}
+chmod +x ./.claude/scripts/scaffold-module/scaffold-module.sh  # first time only
+./.claude/scripts/scaffold-module/scaffold-module.sh {ModuleName} {ModelName} {table_name} {/path/to/project}
 ```
 
 **Step 5 — Create the HTTP Controller**
