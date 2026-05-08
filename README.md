@@ -1,4 +1,4 @@
-# agent-laravel-skills
+# webbyx-laravel
 
 Webby Development agent skills package for Laravel + Lighthouse GraphQL projects. Encodes team conventions so AI tools generate code in the correct format without correction rounds.
 
@@ -13,32 +13,34 @@ Point your AI tool to `AGENTS.md` at the project root. It loads global rules (al
 ## Structure
 
 ```
-AGENTS.md                          ← entry point, loaded by AI tool
+AGENTS.md                                              ← entry point, loaded by AI tool
 agents/
-├── brainstorm/BRAINSTORM.md       ← architect agent: plan before code (always active)
-├── convention/CONVENTION.md       ← naming conventions (always active)
-├── principles/PRINCIPLES.md       ← DRY, SOLID, Modularity (always active)
-├── security/SECURITY.md           ← security rules (always active)
-├── performance/PERFORMANCE.md     ← performance rules (always active)
-└── review/
-    ├── SECURITY.md                ← security review agent
-    ├── TESTING.md                 ← test review agent
-    └── PERFORMANCE.md             ← performance review agent
+├── webbyx-laravel-brainstorm/BRAINSTORM.md            ← architect agent: plan before code (always active)
+├── webbyx-laravel-convention/CONVENTION.md            ← naming conventions (always active)
+├── webbyx-laravel-principles/PRINCIPLES.md            ← DRY, SOLID, Modularity (always active)
+├── webbyx-laravel-security/SECURITY.md                ← security rules (always active)
+├── webbyx-laravel-performance/PERFORMANCE.md          ← performance rules (always active)
+└── webbyx-laravel-review/
+    ├── SECURITY.md                                    ← security review agent
+    ├── TESTING.md                                     ← test review agent
+    └── PERFORMANCE.md                                 ← performance review agent
 skills/
-├── module/SKILL.md                ← module creation flow
-├── models/SKILL.md                ← Eloquent model conventions
-├── migration/SKILL.md             ← migration conventions
-├── service/SKILL.md               ← service layer conventions
-├── job/SKILL.md                   ← async job conventions
-└── graphql/
-    ├── schema/SKILL.md            ← GraphQL types, enums
-    ├── mutation/SKILL.md          ← GraphQL mutation definitions
-    ├── query/SKILL.md             ← GraphQL query definitions
-    ├── controller/SKILL.md        ← Controller: business logic + execution boundary
-    ├── request/SKILL.md           ← FormRequest: mutation input validation
+├── webbyx-laravel-module/SKILL.md                     ← module creation flow
+├── webbyx-laravel-model/SKILL.md                      ← Eloquent model conventions
+├── webbyx-laravel-migration/SKILL.md                  ← migration conventions
+├── webbyx-laravel-service/SKILL.md                    ← service layer conventions
+├── webbyx-laravel-job/SKILL.md                        ← async job conventions
+├── webbyx-laravel-trait/SKILL.md                      ← trait conventions
+├── webbyx-laravel-test/SKILL.md                       ← test conventions
+└── webbyx-laravel-graphql/
+    ├── schema/SKILL.md                                ← GraphQL types, enums
+    ├── mutation/SKILL.md                              ← GraphQL mutation definitions
+    ├── query/SKILL.md                                 ← GraphQL query definitions
+    ├── controller/SKILL.md                            ← Controller: business logic + execution boundary
+    ├── request/SKILL.md                               ← FormRequest: mutation input validation
     └── resolver/
-        ├── mutator/SKILL.md       ← Mutator class (thin proxy → Controller)
-        └── query/SKILL.md         ← Query class (thin proxy → Controller)
+        ├── mutator/SKILL.md                           ← Mutator class (thin proxy → Controller)
+        └── query/SKILL.md                             ← Query class (thin proxy → Controller)
 ```
 
 Each skill has a companion `references/` folder with real code examples.

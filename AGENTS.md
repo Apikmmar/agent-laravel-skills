@@ -1,29 +1,29 @@
 # Webby Development — Agent Rules
 
 ## Global Rules
-- @agents/brainstorm/BRAINSTORM.md
-- @agents/convention/CONVENTION.md
-- @agents/principles/PRINCIPLES.md
-- @agents/security/SECURITY.md
-- @agents/performance/PERFORMANCE.md
+- @agents/webbyx-laravel-brainstorm/BRAINSTORM.md
+- @agents/webbyx-laravel-convention/CONVENTION.md
+- @agents/webbyx-laravel-principles/PRINCIPLES.md
+- @agents/webbyx-laravel-security/SECURITY.md
+- @agents/webbyx-laravel-performance/PERFORMANCE.md
 
 ## Review Agents
-- @agents/review/SECURITY.md
-- @agents/review/TESTING.md
-- @agents/review/PERFORMANCE.md
+- @agents/webbyx-laravel-review/SECURITY.md
+- @agents/webbyx-laravel-review/TESTING.md
+- @agents/webbyx-laravel-review/PERFORMANCE.md
 
 ## Skills
-- @skills/module/SKILL.md
-- @skills/models/SKILL.md
-- @skills/migration/SKILL.md
-- @skills/graphql/schema/SKILL.md
-- @skills/graphql/mutation/SKILL.md
-- @skills/graphql/query/SKILL.md
-- @skills/graphql/resolver/mutator/SKILL.md
-- @skills/graphql/resolver/query/SKILL.md
-- @skills/graphql/controller/SKILL.md
-- @skills/graphql/request/SKILL.md
-- @skills/service/SKILL.md
-- @skills/job/SKILL.md
-- @skills/trait/SKILL.md
-- @skills/test/SKILL.md
+- @skills/webbyx-laravel-module/SKILL.md
+- @skills/webbyx-laravel-model/SKILL.md
+- @skills/webbyx-laravel-migration/SKILL.md
+- @skills/webbyx-laravel-graphql/schema/SKILL.md
+- @skills/webbyx-laravel-graphql/mutation/SKILL.md
+- @skills/webbyx-laravel-graphql/query/SKILL.md
+- @skills/webbyx-laravel-graphql/resolver/mutator/SKILL.md
+- @skills/webbyx-laravel-graphql/resolver/query/SKILL.md
+- @skills/webbyx-laravel-graphql/controller/SKILL.md
+- @skills/webbyx-laravel-graphql/request/SKILL.md
+- @skills/webbyx-laravel-service/SKILL.md
+- @skills/webbyx-laravel-job/SKILL.md
+- @skills/webbyx-laravel-trait/SKILL.md
+- @skills/webbyx-laravel-test/SKILL.md
