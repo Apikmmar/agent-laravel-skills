@@ -8,8 +8,10 @@ Tests live in `Modules/{ModuleName}/Tests/Feature/`. One test class per operatio
 
 **Tests must run against MySQL — never SQLite.** Controllers use `DB::beginTransaction()` which conflicts with SQLite under `RefreshDatabase` (SQLite does not support nested transactions). Before generating any test, run the config check script and confirm it passes:
 
-**Windows:** `.\scripts\check-test-config.ps1 -ProjectPath {C:\path\to\project}`
-**Mac / Linux:** `chmod +x ./scripts/check-test-config.sh && ./scripts/check-test-config.sh {/path/to/project}`
+This repo is used as a git submodule at `{project}/.claude/`. Run from the **project root**:
+
+**Windows:** `.\.claude\scripts\check-test-config.ps1 -ProjectPath "{C:\path\to\project}"`
+**Mac / Linux:** `chmod +x ./.claude/scripts/check-test-config.sh && ./.claude/scripts/check-test-config.sh {/path/to/project}`
 
 If the script fails, update `DB_CONNECTION` in `phpunit.xml` to `mysql` before proceeding.
 
