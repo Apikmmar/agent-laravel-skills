@@ -1,11 +1,10 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-    echo "Usage: ./scripts/check-test-config.sh {/path/to/project}"
-    exit 1
-fi
+PROJECT_PATH=${1:-$(pwd)}
 
-PROJECT_PATH=$1
+if [ "$1" = "" ]; then
+    echo "No project path provided. Using current directory: $PROJECT_PATH"
+fi
 
 if [ ! -d "$PROJECT_PATH" ]; then
     echo "ERROR: Project path '$PROJECT_PATH' does not exist."

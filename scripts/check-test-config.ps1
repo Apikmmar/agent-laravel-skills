@@ -1,7 +1,11 @@
 param(
-    [Parameter(Mandatory)]
-    [string]$ProjectPath
+    [string]$ProjectPath = ""
 )
+
+if ($ProjectPath -eq "") {
+    $ProjectPath = (Get-Location).Path
+    Write-Host "No -ProjectPath provided. Using current directory: $ProjectPath" -ForegroundColor Yellow
+}
 
 if (-not (Test-Path $ProjectPath)) {
     Write-Host "ERROR: Project path '$ProjectPath' does not exist." -ForegroundColor Red

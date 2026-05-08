@@ -31,19 +31,19 @@ chmod +x ./.claude/scripts/scaffold-module.sh  # first time only
 
 **Step 5 — Create the HTTP Controller**
 
-No artisan command — generate manually:
+The scaffold generates a stub at `Modules/{ModuleName}/app/Http/Controllers/{ModelName}Controller.php` — fill in the content:
 ```
-Modules/{ModuleName}/Http/Controllers/{ModelName}Controller.php
+Modules/{ModuleName}/app/Http/Controllers/{ModelName}Controller.php
 ```
-See `skills/graphql/resolver/mutator/SKILL.md` for the full Controller convention.
+See `skills/graphql/controller/SKILL.md` for the full Controller convention.
 
 **Step 6 — Create FormRequests**
 
-No artisan command — generate manually, one per mutation operation:
+No artisan command — generate manually under `app/Http/Requests/`, one per mutation operation:
 ```
-Modules/{ModuleName}/Http/Requests/Create{ModelName}Request.php
-Modules/{ModuleName}/Http/Requests/Update{ModelName}Request.php
-Modules/{ModuleName}/Http/Requests/Delete{ModelName}Request.php
+Modules/{ModuleName}/app/Http/Requests/Create{ModelName}Request.php
+Modules/{ModuleName}/app/Http/Requests/Update{ModelName}Request.php
+Modules/{ModuleName}/app/Http/Requests/Delete{ModelName}Request.php
 ```
 See `skills/graphql/request/SKILL.md` for the full FormRequest convention.
 
@@ -53,28 +53,29 @@ After running all commands:
 ```
 Modules/
 └── {ModuleName}/
+    ├── app/
+    │   ├── Http/
+    │   │   ├── Controllers/
+    │   │   │   └── {ModelName}Controller.php   ← stub generated; fill in content
+    │   │   └── Requests/
+    │   │       ├── Create{ModelName}Request.php   ← create manually
+    │   │       ├── Update{ModelName}Request.php   ← create manually
+    │   │       └── Delete{ModelName}Request.php   ← create manually
+    │   └── Models/
+    │       └── {ModelName}.php                 ← stub generated; fill in content
     ├── GraphQL/
     │   ├── schema.graphql
     │   ├── Mutations/
-    │   │   └── {ModelName}Mutator.php
+    │   │   └── {ModelName}Mutator.php          ← stub generated; fill in content
     │   ├── Queries/
-    │   │   └── {ModelName}Query.php
+    │   │   └── {ModelName}Query.php            ← stub generated; fill in content
     │   └── Schema/
     │       ├── Components/
-    │       │   └── {ModelName}Schema.graphql
+    │       │   └── {ModelName}Schema.graphql   ← renamed by script; fill in content
     │       ├── Mutations/
-    │       │   └── {ModelName}Mutation.graphql
+    │       │   └── {ModelName}Mutation.graphql ← renamed by script; fill in content
     │       └── Queries/
-    │           └── {ModelName}Queries.graphql
-    ├── Http/
-    │   ├── Controllers/
-    │   │   └── {ModelName}Controller.php
-    │   └── Requests/
-    │       ├── Create{ModelName}Request.php
-    │       ├── Update{ModelName}Request.php
-    │       └── Delete{ModelName}Request.php
-    ├── Models/
-    │   └── {ModelName}.php
+    │           └── {ModelName}Queries.graphql  ← renamed by script; fill in content
     └── Services/           ← not scaffolded; create as needed (see skills/service/SKILL.md)
 
 database/

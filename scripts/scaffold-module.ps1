@@ -8,9 +8,13 @@ param(
     [Parameter(Mandatory)]
     [string]$TableName,
 
-    [Parameter(Mandatory)]
-    [string]$ProjectPath
+    [string]$ProjectPath = ""
 )
+
+if ($ProjectPath -eq "") {
+    $ProjectPath = (Get-Location).Path
+    Write-Host "No -ProjectPath provided. Using current directory: $ProjectPath" -ForegroundColor Yellow
+}
 
 if (-not (Test-Path $ProjectPath)) {
     Write-Host "ERROR: Project path '$ProjectPath' does not exist." -ForegroundColor Red
@@ -26,19 +30,18 @@ php artisan module:make-model $ModelName $ModuleName
 php artisan module:make-graphql $ModelName $ModuleName
 php artisan make:migration "create_${TableName}_table"
 
-# Remove scaffold artifact .graphql files generated with just the model name.
-# These conflict with the correctly suffixed files the skill requires.
+# Rename scaffold artifact .graphql files to the correct suffixed names the skill requires.
 $basePath = "Modules/$ModuleName/GraphQL/Schema"
-$artifacts = @(
-    "$basePath/Components/$ModelName.graphql",
-    "$basePath/Mutations/$ModelName.graphql",
-    "$basePath/Queries/$ModelName.graphql"
+$renames = @(
+    @{ From = "$basePath/Components/$ModelName.graphql"; To = "$basePath/Components/${ModelName}Schema.graphql" },
+    @{ From = "$basePath/Mutations/$ModelName.graphql"; To = "$basePath/Mutations/${ModelName}Mutation.graphql" },
+    @{ From = "$basePath/Queries/$ModelName.graphql";   To = "$basePath/Queries/${ModelName}Queries.graphql" }
 )
 
-foreach ($file in $artifacts) {
-    if (Test-Path $file) {
-        Remove-Item $file
-        Write-Host "Deleted artifact: $file" -ForegroundColor Yellow
+foreach ($entry in $renames) {
+    if (Test-Path $entry.From) {
+        Rename-Item $entry.From $entry.To
+        Write-Host "Renamed: $($entry.From) → $($entry.To)" -ForegroundColor Yellow
     }
 }
 

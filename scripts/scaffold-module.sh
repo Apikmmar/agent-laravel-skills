@@ -1,14 +1,18 @@
 #!/bin/bash
 
-if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ]; then
-    echo "Usage: ./scripts/scaffold-module.sh {ModuleName} {ModelName} {table_name} {/path/to/project}"
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    echo "Usage: ./scripts/scaffold-module.sh {ModuleName} {ModelName} {table_name} [/path/to/project]"
     exit 1
 fi
 
 MODULE_NAME=$1
 MODEL_NAME=$2
 TABLE_NAME=$3
-PROJECT_PATH=$4
+PROJECT_PATH=${4:-$(pwd)}
+
+if [ "$4" = "" ]; then
+    echo "No project path provided. Using current directory: $PROJECT_PATH"
+fi
 
 if [ ! -d "$PROJECT_PATH" ]; then
     echo "ERROR: Project path '$PROJECT_PATH' does not exist."
@@ -24,19 +28,20 @@ php artisan module:make-model $MODEL_NAME $MODULE_NAME
 php artisan module:make-graphql $MODEL_NAME $MODULE_NAME
 php artisan make:migration "create_${TABLE_NAME}_table"
 
-# Remove scaffold artifact .graphql files generated with just the model name.
-# These conflict with the correctly suffixed files the skill requires.
+# Rename scaffold artifact .graphql files to the correct suffixed names the skill requires.
 BASE_PATH="Modules/$MODULE_NAME/GraphQL/Schema"
-ARTIFACTS=(
-    "$BASE_PATH/Components/$MODEL_NAME.graphql"
-    "$BASE_PATH/Mutations/$MODEL_NAME.graphql"
-    "$BASE_PATH/Queries/$MODEL_NAME.graphql"
+
+declare -A RENAMES=(
+    ["$BASE_PATH/Components/$MODEL_NAME.graphql"]="$BASE_PATH/Components/${MODEL_NAME}Schema.graphql"
+    ["$BASE_PATH/Mutations/$MODEL_NAME.graphql"]="$BASE_PATH/Mutations/${MODEL_NAME}Mutation.graphql"
+    ["$BASE_PATH/Queries/$MODEL_NAME.graphql"]="$BASE_PATH/Queries/${MODEL_NAME}Queries.graphql"
 )
 
-for file in "${ARTIFACTS[@]}"; do
-    if [ -f "$file" ]; then
-        rm "$file"
-        echo "Deleted artifact: $file"
+for from in "${!RENAMES[@]}"; do
+    to="${RENAMES[$from]}"
+    if [ -f "$from" ]; then
+        mv "$from" "$to"
+        echo "Renamed: $from → $to"
     fi
 done
 

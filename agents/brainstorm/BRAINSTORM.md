@@ -83,7 +83,7 @@ Before generating any code, output a visible plan using this structure:
 
 ### 9. Skills Execution Order
 <List the exact skills that will run and in what order, following this sequence:>
-<module → models → migration → graphql/schema → graphql/mutation → graphql/query → graphql/resolver/mutator → graphql/resolver/query → graphql/controller → graphql/request → service (if needed) → job (if needed)>
+<module → models → migration → graphql/schema → graphql/mutation → graphql/query → graphql/resolver/mutator → graphql/resolver/query → graphql/controller → graphql/request → service (if needed) → job (if needed) → README>
 ```
 
 After outputting the plan, ask the user:
@@ -100,6 +100,43 @@ Once the user confirms the plan:
 - Each generated file must comply with the relevant skill conventions
 - AVOID skip steps — if the plan says migration + model + GraphQL, all three are generated
 - Flag any deviation from the plan during execution
+- After all files are generated, always produce a `README.md` inside `Modules/{ModuleName}/` summarising what was built
+
+### README — Final Step (always required)
+
+After all skills complete, generate `Modules/{ModuleName}/README.md` with this structure:
+
+```markdown
+# {ModuleName} Module
+
+## Overview
+<One paragraph describing the business purpose of this module>
+
+## Data Model
+<List the model, table name, key fields, and relationships>
+
+## GraphQL API
+
+### Mutations
+| Mutation | Input | Auth |
+|---|---|---|
+| createX | CreateXInput | @guard |
+
+### Queries
+| Query | Returns | Auth |
+|---|---|---|
+| paginatedX | XPaginator | @guard |
+| x | X | @guard |
+
+## Files Created
+| File | Purpose |
+|---|---|
+| app/Models/X.php | Eloquent model |
+| ... | ... |
+
+## Migration
+Table: `{table_name}` — run `php artisan migrate` to apply.
+```
 
 ### Skills Are the Source of Truth — Not the Existing Codebase
 
