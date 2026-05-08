@@ -14,22 +14,22 @@ Modules keep domain logic isolated and consistent. Running commands in the wrong
 ### Creation Flow
 Run in this exact order:
 
-**Step 1 — Scaffold the module**
-```bash
-php artisan module:make {ModuleName}
+**Steps 1–4 — Scaffold the module, model, GraphQL files, and migration**
+
+Run the scaffold script (do NOT run the artisan commands separately):
+
+**Windows (PowerShell)**
+```powershell
+.\scripts\scaffold-module.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -TableName {table_name}
 ```
 
-**Step 2 — Create the model inside the module**
+**Mac / Linux (Bash)**
 ```bash
-php artisan module:make-model {ModelName} {ModuleName}
+chmod +x ./scripts/scaffold-module.sh  # first time only
+./scripts/scaffold-module.sh {ModuleName} {ModelName} {table_name}
 ```
 
-**Step 3 — Generate GraphQL files**
-```bash
-php artisan module:make-graphql {ModelName} {ModuleName}
-```
-
-**Step 4 — Create the HTTP Controller**
+**Step 5 — Create the HTTP Controller**
 
 No artisan command — generate manually:
 ```
@@ -37,7 +37,7 @@ Modules/{ModuleName}/Http/Controllers/{ModelName}Controller.php
 ```
 See `skills/graphql/resolver/mutator/SKILL.md` for the full Controller convention.
 
-**Step 5 — Create FormRequests**
+**Step 6 — Create FormRequests**
 
 No artisan command — generate manually, one per mutation operation:
 ```
@@ -46,12 +46,6 @@ Modules/{ModuleName}/Http/Requests/Update{ModelName}Request.php
 Modules/{ModuleName}/Http/Requests/Delete{ModelName}Request.php
 ```
 See `skills/graphql/request/SKILL.md` for the full FormRequest convention.
-
-**Step 6 — Create the migration**
-```bash
-php artisan make:migration create_{table_name}_table
-```
-> Migration goes in `database/migrations/` — NOT inside the module.
 
 ### Generated Structure
 After running all commands:
@@ -87,18 +81,6 @@ database/
 └── migrations/
     └── {timestamp}_create_{table_name}_table.php
 ```
-
-### Scaffold Cleanup — Delete Empty Generated Files
-`module:make-graphql` generates placeholder `.graphql` files using just the model name (e.g. `Post.graphql`). These conflict with the correctly named files the skill requires. After running the command, delete them:
-
-```
-# Delete these scaffold artifacts — they are empty and wrong
-GraphQL/Schema/Components/{ModelName}.graphql    ← delete, keep {ModelName}Schema.graphql
-GraphQL/Schema/Mutations/{ModelName}.graphql     ← delete, keep {ModelName}Mutation.graphql
-GraphQL/Schema/Queries/{ModelName}.graphql       ← delete, keep {ModelName}Queries.graphql
-```
-
-Only the suffixed files (`*Schema.graphql`, `*Mutation.graphql`, `*Queries.graphql`) should remain and be imported in `schema.graphql`.
 
 ## After Scaffolding
 Once commands are run, apply the relevant skill conventions:
