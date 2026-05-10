@@ -9,6 +9,19 @@ All mutation input validation uses Laravel FormRequests. One FormRequest per mut
 ## Why
 FormRequests are typed per Controller method — validation is co-located with execution and independently testable. The GraphQL schema defines the shape; the FormRequest enforces the rules.
 
+## File Creation
+
+Run the script first — AI edits the generated stub, never creates from scratch:
+
+**Windows:**
+```powershell
+.\.claude\scripts\make-request\make-request.ps1 -ModuleName {ModuleName} -RequestName {RequestName} -ProjectPath "{C:\path\to\project}"
+```
+**Mac / Linux:**
+```bash
+./.claude/scripts/make-request/make-request.sh {ModuleName} {RequestName} {/path/to/project}
+```
+
 ## Conventions
 
 ### File Location

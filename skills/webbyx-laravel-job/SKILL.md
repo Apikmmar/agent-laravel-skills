@@ -9,6 +9,19 @@ Jobs live in `Modules/{ModuleName}/Jobs/`. Every job must implement `handle()` a
 ## Why
 Jobs run async on the queue — they can process large volumes safely. But poorly written jobs cause queue backlogs, memory spikes, and silent failures. The same performance rules that apply to services apply here.
 
+## File Creation
+
+Run the script first — AI edits the generated stub, never creates from scratch:
+
+**Windows:**
+```powershell
+.\.claude\scripts\make-job\make-job.ps1 -ModuleName {ModuleName} -JobName {JobName}Job -ProjectPath "{C:\path\to\project}"
+```
+**Mac / Linux:**
+```bash
+./.claude/scripts/make-job/make-job.sh {ModuleName} {JobName}Job {/path/to/project}
+```
+
 ## Conventions
 
 ### File Location

@@ -15,6 +15,21 @@ This repo is used as a git submodule at `{project}/.claude/`. Run from the **pro
 
 If the script fails, update `DB_CONNECTION` in `phpunit.xml` to `mysql` before proceeding.
 
+## File Creation
+
+Run the script first — AI edits the generated stubs, never creates from scratch:
+
+**Windows:**
+```powershell
+.\.claude\scripts\make-test\make-test.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -ProjectPath "{C:\path\to\project}"
+```
+**Mac / Linux:**
+```bash
+./.claude/scripts/make-test/make-test.sh {ModuleName} {ModelName} {/path/to/project}
+```
+
+Creates both `{ModelName}MutationTest.php` and `{ModelName}QueryTest.php`.
+
 ## Why
 Tests are scoped per module so they run independently and travel with the module. Separating mutation tests from query tests keeps each class focused and easy to scan. MySQL matches the production database — SQLite has subtle differences in type handling, JSON support, and transaction behaviour that can mask real bugs.
 

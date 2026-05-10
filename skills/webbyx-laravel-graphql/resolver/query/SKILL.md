@@ -12,6 +12,19 @@ Query resolvers live in `GraphQL/Queries/{Model}Query.php`. They extend `App\Gra
 GraphQL Schema → Query (proxy) → Controller (read logic)
 ```
 
+## File Creation
+
+Run the script first — AI edits the generated stub, never creates from scratch:
+
+**Windows:**
+```powershell
+.\.claude\scripts\make-graphql\make-graphql.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -ProjectPath "{C:\path\to\project}"
+```
+**Mac / Linux:**
+```bash
+./.claude/scripts/make-graphql/make-graphql.sh {ModuleName} {ModelName} {/path/to/project}
+```
+
 ## Conventions
 
 ### File Location

@@ -9,6 +9,19 @@ Business logic and validation that is reused across multiple classes belongs in 
 ## Why
 Single Responsibility: Controllers own the execution boundary and transaction lifecycle, services own reusable business logic. Extracting shared logic into services keeps Controllers thin and makes logic independently testable.
 
+## File Creation
+
+Run the script first — AI edits the generated stub, never creates from scratch:
+
+**Windows:**
+```powershell
+.\.claude\scripts\make-service\make-service.ps1 -ModuleName {ModuleName} -ServiceName {ServiceName} -ProjectPath "{C:\path\to\project}"
+```
+**Mac / Linux:**
+```bash
+./.claude/scripts/make-service/make-service.sh {ModuleName} {ServiceName} {/path/to/project}
+```
+
 ## Conventions
 
 ### File Location

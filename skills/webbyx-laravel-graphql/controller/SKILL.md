@@ -9,6 +9,19 @@ Every module has one Controller at `Http/Controllers/{Model}Controller.php`. It 
 ## Why
 Single Responsibility: Resolvers handle the GraphQL boundary, the Controller handles execution. This keeps Resolvers interchangeable and business logic independently testable.
 
+## File Creation
+
+Run the script first — AI edits the generated stub, never creates from scratch:
+
+**Windows:**
+```powershell
+.\.claude\scripts\make-controller\make-controller.ps1 -ModuleName {ModuleName} -ControllerName {ModelName}Controller -ProjectPath "{C:\path\to\project}"
+```
+**Mac / Linux:**
+```bash
+./.claude/scripts/make-controller/make-controller.sh {ModuleName} {ModelName}Controller {/path/to/project}
+```
+
 ## Conventions
 
 ### File Location
