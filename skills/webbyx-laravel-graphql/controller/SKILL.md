@@ -4,17 +4,19 @@ description: Use when creating the HTTP Controller for a GraphQL module. Trigger
 ---
 
 ## Rule
-Every module has one Controller at `Http/Controllers/{Model}Controller.php`. It is the execution boundary for all mutations and queries — it owns business logic, DB transactions, and responses. Resolvers (Mutator/Query) are proxies that delegate to it.
+Every module has at least one Controller at `Http/Controllers/{Model}Controller.php`. It is the execution boundary for mutations and queries — it owns business logic, DB transactions, and responses. Resolvers (Mutator/Query) are proxies that delegate to it. A module may have multiple controllers when operations are intentionally split (e.g. `UpdatePostController`) — each must follow the same conventions.
 
 ## Why
 Single Responsibility: Resolvers handle the GraphQL boundary, the Controller handles execution. This keeps Resolvers interchangeable and business logic independently testable.
 
 ## File Creation
 
-Run this command from the project root first — AI edits the generated stub, never creates from scratch:
+`module:make` already generates the primary Controller stub — no separate command needed. Edit it directly.
+
+For **additional controllers** (e.g. `UpdatePostController`), scaffold via artisan first:
 
 ```bash
-php artisan module:make-controller {ModelName}Controller {ModuleName}
+php artisan module:make-controller {ControllerName} {ModuleName}
 ```
 
 ## Conventions

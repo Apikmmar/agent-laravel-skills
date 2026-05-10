@@ -23,11 +23,11 @@ php artisan module:make-graphql {ModelName} {ModuleName}
 This generates:
 - `Modules/{ModuleName}/GraphQL/Mutations/{ModelName}Mutator.php` — fill in content
 - `Modules/{ModuleName}/GraphQL/Queries/{ModelName}Query.php` — fill in content
-- `Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}.graphql` — fill in content
+- `Modules/{ModuleName}/GraphQL/Schema/Components/.gitkeep` — Components folder only; **create** `{ModelName}.graphql` here from scratch
 - `Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}.graphql` — fill in content
 - `Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}.graphql` — fill in content
 
-Edit these files directly — do not create new files with different names.
+Edit the generated stubs directly. For `Schema/Components/{ModelName}.graphql` — artisan only creates a `.gitkeep`; create that file from scratch.
 
 ## Conventions
 
@@ -44,6 +44,20 @@ Modules/{ModuleName}/GraphQL/Mutations/{ModelName}Mutator.php
 - Standard methods: `create`, `update`, `delete`
 - Custom operations: camelCase (e.g. `publish`, `activate`)
 - Never put business logic, DB calls, or model access in the Mutator
+
+### Multiple Controllers per Module
+When a mutation is handled by a **separate controller** (not the default `$this->controller`), use `app()->call()` directly in that method instead of `$this->resolve()`:
+
+```php
+public function update(mixed $_, array $args, GraphQLContext $graphqlContext, ResolveInfo $resolveInfo): array
+{
+    return app()->call([app(UpdatePostController::class), 'update'], $args);
+}
+```
+
+- Only use this pattern when the user explicitly requests a separate controller for that operation
+- The separate controller must still follow all controller skill conventions (FormRequest, DB transaction, ExecutionException)
+- Default is one controller per module via `$this->resolve()` — use this only when controllers are intentionally split
 
 ### Resolver Path Format
 Uses shorthand because `@namespace` is on the schema `extend type` block:

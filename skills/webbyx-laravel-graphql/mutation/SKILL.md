@@ -68,7 +68,7 @@ extend type Mutation
 
 ## Related
 - `SuccessResponse` type is defined once in the root `graphql/schema.graphql` — never inside a module
-- FormRequests for each operation → see `skills/graphql/validation/SKILL.md`
+- FormRequests for each operation → see `skills/webbyx-laravel-graphql/request/SKILL.md`
 
 ## Clarifying Questions
 - What is the model name and module?

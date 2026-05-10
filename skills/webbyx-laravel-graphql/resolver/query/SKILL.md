@@ -23,11 +23,11 @@ php artisan module:make-graphql {ModelName} {ModuleName}
 This generates:
 - `Modules/{ModuleName}/GraphQL/Mutations/{ModelName}Mutator.php` — fill in content
 - `Modules/{ModuleName}/GraphQL/Queries/{ModelName}Query.php` — fill in content
-- `Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}.graphql` — fill in content
+- `Modules/{ModuleName}/GraphQL/Schema/Components/.gitkeep` — Components folder only; **create** `{ModelName}.graphql` here from scratch
 - `Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}.graphql` — fill in content
 - `Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}.graphql` — fill in content
 
-Edit these files directly — do not create new files with different names.
+Edit the generated stubs directly. For `Schema/Components/{ModelName}.graphql` — artisan only creates a `.gitkeep`; create that file from scratch.
 
 ## Conventions
 

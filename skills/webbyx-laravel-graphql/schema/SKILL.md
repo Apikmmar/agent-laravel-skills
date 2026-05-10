@@ -57,14 +57,15 @@ This maps to the raw array returned by the Controller: `['status' => bool, 'mess
 Every module has a `schema.graphql` at `Modules/{Module}/GraphQL/schema.graphql` that registers all its GraphQL files via `#import`:
 
 ```graphql
-#import Schema/Components/{Model}.graphql
+#import ../GraphQL/Schema/Components/{Model}.graphql
 
-#import Schema/Mutations/{Model}.graphql
+#import ../GraphQL/Schema/Mutations/{Model}.graphql
 
-#import Schema/Queries/{Model}.graphql
+#import ../GraphQL/Schema/Queries/{Model}.graphql
 ```
 
 - Every new Component, Mutation, and Query file added to the module must be registered here
+- All three imports are always required — never omit Queries even if no queries are built yet
 - Group by type: Components first, then Mutations, then Queries
 
 ## Clarifying Questions
