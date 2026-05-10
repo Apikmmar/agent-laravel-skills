@@ -12,47 +12,42 @@ Modules keep domain logic isolated and consistent. Running commands in the wrong
 ## Conventions
 
 ### Creation Flow
-Run in this exact order:
+Run in this exact order from the **project root**:
 
 **Steps 1–4 — Scaffold the module, model, GraphQL files, and migration**
 
-This repo is used as a git submodule at `{project}/.claude/`. Run the scaffold script from the **project root** — the script navigates internally via `-ProjectPath`:
-
-**Windows (PowerShell)**
-```powershell
-.\.claude\scripts\scaffold-module\scaffold-module.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -TableName {table_name} -ProjectPath "{C:\path\to\project}"
+Run these commands sequentially:
+```bash
+php artisan module:make {ModuleName}
+php artisan module:make-model {ModelName} {ModuleName}
+php artisan module:make-graphql {ModelName} {ModuleName}
+php artisan make:migration "create_{table_name}_table"
 ```
 
-**Mac / Linux (Bash)**
-```bash
-chmod +x ./.claude/scripts/scaffold-module/scaffold-module.sh  # first time only
-./.claude/scripts/scaffold-module/scaffold-module.sh {ModuleName} {ModelName} {table_name} {/path/to/project}
+Then create the 3 empty GraphQL schema stub files (module:make-graphql deletes them after running):
+```
+Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}Schema.graphql
+Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
+Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}Queries.graphql
 ```
 
 **Step 5 — Create the HTTP Controller**
 
-The scaffold generates a stub at `Modules/{ModuleName}/Http/Controllers/{ModelName}Controller.php` — fill in the content:
+```bash
+php artisan module:make-controller {ModelName}Controller {ModuleName}
 ```
-Modules/{ModuleName}/Http/Controllers/{ModelName}Controller.php
-```
+
 See `skills/webbyx-laravel-graphql/controller/SKILL.md` for the full Controller convention.
 
 **Step 6 — Create FormRequests**
 
-Run the make-request script once per mutation operation:
-
-**Windows:**
-```powershell
-.\.claude\scripts\make-request\make-request.ps1 -ModuleName {ModuleName} -RequestName Create{ModelName}Request -ProjectPath "{C:\path\to\project}"
-.\.claude\scripts\make-request\make-request.ps1 -ModuleName {ModuleName} -RequestName Update{ModelName}Request -ProjectPath "{C:\path\to\project}"
-.\.claude\scripts\make-request\make-request.ps1 -ModuleName {ModuleName} -RequestName Delete{ModelName}Request -ProjectPath "{C:\path\to\project}"
-```
-**Mac / Linux:**
+Run once per mutation operation:
 ```bash
-./.claude/scripts/make-request/make-request.sh {ModuleName} Create{ModelName}Request {/path/to/project}
-./.claude/scripts/make-request/make-request.sh {ModuleName} Update{ModelName}Request {/path/to/project}
-./.claude/scripts/make-request/make-request.sh {ModuleName} Delete{ModelName}Request {/path/to/project}
+php artisan module:make-request Create{ModelName}Request {ModuleName}
+php artisan module:make-request Update{ModelName}Request {ModuleName}
+php artisan module:make-request Delete{ModelName}Request {ModuleName}
 ```
+
 See `skills/webbyx-laravel-graphql/request/SKILL.md` for the full FormRequest convention.
 
 ### Generated Structure

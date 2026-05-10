@@ -11,15 +11,10 @@ FormRequests are typed per Controller method — validation is co-located with e
 
 ## File Creation
 
-Run the script first — AI edits the generated stub, never creates from scratch:
+Run this command from the project root first — AI edits the generated stub, never creates from scratch:
 
-**Windows:**
-```powershell
-.\.claude\scripts\make-request\make-request.ps1 -ModuleName {ModuleName} -RequestName {RequestName} -ProjectPath "{C:\path\to\project}"
-```
-**Mac / Linux:**
 ```bash
-./.claude/scripts/make-request/make-request.sh {ModuleName} {RequestName} {/path/to/project}
+php artisan module:make-request {RequestName} {ModuleName}
 ```
 
 ## Conventions

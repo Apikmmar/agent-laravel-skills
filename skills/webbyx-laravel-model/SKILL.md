@@ -11,15 +11,10 @@ Without explicit `$table`, Laravel pluralizes incorrectly for some names.
 
 ## File Creation
 
-Run the script first — AI edits the generated stub, never creates from scratch:
+Run this command from the project root first — AI edits the generated stub, never creates from scratch:
 
-**Windows:**
-```powershell
-.\.claude\scripts\make-model\make-model.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -ProjectPath "{C:\path\to\project}"
-```
-**Mac / Linux:**
 ```bash
-./.claude/scripts/make-model/make-model.sh {ModuleName} {ModelName} {/path/to/project}
+php artisan module:make-model {ModelName} {ModuleName}
 ```
 
 ## Conventions

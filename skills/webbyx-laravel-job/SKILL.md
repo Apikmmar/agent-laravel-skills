@@ -11,15 +11,10 @@ Jobs run async on the queue — they can process large volumes safely. But poorl
 
 ## File Creation
 
-Run the script first — AI edits the generated stub, never creates from scratch:
+Run this command from the project root first — AI edits the generated stub, never creates from scratch:
 
-**Windows:**
-```powershell
-.\.claude\scripts\make-job\make-job.ps1 -ModuleName {ModuleName} -JobName {JobName}Job -ProjectPath "{C:\path\to\project}"
-```
-**Mac / Linux:**
 ```bash
-./.claude/scripts/make-job/make-job.sh {ModuleName} {JobName}Job {/path/to/project}
+php artisan module:make-job {JobName}Job {ModuleName}
 ```
 
 ## Conventions

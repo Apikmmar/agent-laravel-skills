@@ -6,26 +6,15 @@ description: Use when generating PHPUnit tests for a Laravel GraphQL module. Tri
 ## Rule
 Tests live in `Modules/{ModuleName}/Tests/Feature/`. One test class per operation group — mutations in `{Model}MutationTest.php`, queries in `{Model}QueryTest.php`. All tests use PHPUnit via `Tests\TestCase`, `RefreshDatabase`, and Lighthouse's `MakesGraphQLRequests` trait.
 
-**Tests must run against MySQL — never SQLite.** Controllers use `DB::beginTransaction()` which conflicts with SQLite under `RefreshDatabase` (SQLite does not support nested transactions). Before generating any test, run the config check script and confirm it passes:
-
-This repo is used as a git submodule at `{project}/.claude/`. Run from the **project root**:
-
-**Windows:** `.\.claude\scripts\check-test-config\check-test-config.ps1 -ProjectPath "{C:\path\to\project}"`
-**Mac / Linux:** `chmod +x ./.claude/scripts/check-test-config/check-test-config.sh && ./.claude/scripts/check-test-config/check-test-config.sh {/path/to/project}`
-
-If the script fails, update `DB_CONNECTION` in `phpunit.xml` to `mysql` before proceeding.
+**Tests must run against MySQL — never SQLite.** Controllers use `DB::beginTransaction()` which conflicts with SQLite under `RefreshDatabase` (SQLite does not support nested transactions). Before generating any test, read `phpunit.xml` in the project root and confirm `DB_CONNECTION` is set to `mysql`. If it is set to `sqlite`, update it to `mysql` before proceeding.
 
 ## File Creation
 
-Run the script first — AI edits the generated stubs, never creates from scratch:
+Run these commands from the project root first — AI edits the generated stubs, never creates from scratch:
 
-**Windows:**
-```powershell
-.\.claude\scripts\make-test\make-test.ps1 -ModuleName {ModuleName} -ModelName {ModelName} -ProjectPath "{C:\path\to\project}"
-```
-**Mac / Linux:**
 ```bash
-./.claude/scripts/make-test/make-test.sh {ModuleName} {ModelName} {/path/to/project}
+php artisan module:make-test {ModelName}MutationTest {ModuleName}
+php artisan module:make-test {ModelName}QueryTest {ModuleName}
 ```
 
 Creates both `{ModelName}MutationTest.php` and `{ModelName}QueryTest.php`.

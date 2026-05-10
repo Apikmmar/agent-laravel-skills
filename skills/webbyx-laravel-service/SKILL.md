@@ -11,15 +11,21 @@ Single Responsibility: Controllers own the execution boundary and transaction li
 
 ## File Creation
 
-Run the script first — AI edits the generated stub, never creates from scratch:
-
-**Windows:**
-```powershell
-.\.claude\scripts\make-service\make-service.ps1 -ModuleName {ModuleName} -ServiceName {ServiceName} -ProjectPath "{C:\path\to\project}"
+No artisan command exists for services. Create the file directly at:
 ```
-**Mac / Linux:**
-```bash
-./.claude/scripts/make-service/make-service.sh {ModuleName} {ServiceName} {/path/to/project}
+Modules/{ModuleName}/Services/{ServiceName}Service.php
+```
+
+With this stub content:
+```php
+<?php
+
+namespace Modules\{ModuleName}\Services;
+
+class {ServiceName}Service
+{
+
+}
 ```
 
 ## Conventions

@@ -11,15 +11,10 @@ Single Responsibility: Resolvers handle the GraphQL boundary, the Controller han
 
 ## File Creation
 
-Run the script first — AI edits the generated stub, never creates from scratch:
+Run this command from the project root first — AI edits the generated stub, never creates from scratch:
 
-**Windows:**
-```powershell
-.\.claude\scripts\make-controller\make-controller.ps1 -ModuleName {ModuleName} -ControllerName {ModelName}Controller -ProjectPath "{C:\path\to\project}"
-```
-**Mac / Linux:**
 ```bash
-./.claude/scripts/make-controller/make-controller.sh {ModuleName} {ModelName}Controller {/path/to/project}
+php artisan module:make-controller {ModelName}Controller {ModuleName}
 ```
 
 ## Conventions
