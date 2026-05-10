@@ -25,15 +25,13 @@ agents/
     ├── TESTING.md                                     ← test review agent
     └── PERFORMANCE.md                                 ← performance review agent
 scripts/
-├── scaffold-module/                                   ← scaffold full module (model, GraphQL, migration)
-├── check-test-config/                                 ← verify phpunit.xml uses MySQL before writing tests
-├── make-model/                                        ← create model stub via artisan
-├── make-graphql/                                      ← create Mutator, Query, and schema stubs via artisan
-├── make-controller/                                   ← create controller stub via artisan
-├── make-request/                                      ← create FormRequest stub via artisan (one per operation)
-├── make-service/                                      ← create service stub (no artisan command)
-├── make-job/                                          ← create job stub via artisan
-└── make-test/                                         ← create MutationTest + QueryTest stubs via artisan
+├── make-controller/                                   ← legacy script (superseded — skills now invoke artisan directly)
+├── make-graphql/                                      ← legacy script (superseded — skills now invoke artisan directly)
+├── make-job/                                          ← legacy script (superseded — skills now invoke artisan directly)
+├── make-model/                                        ← legacy script (superseded — skills now invoke artisan directly)
+├── make-request/                                      ← legacy script (superseded — skills now invoke artisan directly)
+├── make-service/                                      ← legacy script (superseded — skills now invoke artisan directly)
+└── make-test/                                         ← legacy script (superseded — skills now invoke artisan directly)
 skills/
 ├── webbyx-laravel-module/SKILL.md                     ← module creation flow
 ├── webbyx-laravel-model/SKILL.md                      ← Eloquent model conventions
@@ -53,7 +51,7 @@ skills/
         └── query/SKILL.md                             ← Query class (thin proxy → Controller)
 ```
 
-Each script folder contains both a `.ps1` (Windows) and `.sh` (Mac/Linux) version. Each skill has a companion `references/` folder with real code examples.
+Skills invoke `php artisan` commands directly — no script execution required. The `scripts/` folder is kept for reference only. Each skill has a companion `references/` folder with real code examples.
 
 ---
 

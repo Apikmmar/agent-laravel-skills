@@ -14,18 +14,20 @@ GraphQL Schema → Mutator (proxy) → Controller (business logic + validation)
 
 ## File Creation
 
-Run this command from the project root first — AI edits the generated stub, never creates from scratch:
+Run this command from the project root first — AI edits the generated stubs, never creates from scratch:
 
 ```bash
 php artisan module:make-graphql {ModelName} {ModuleName}
 ```
 
-Then create the 3 empty GraphQL schema stub files (module:make-graphql deletes them after running):
-```
-Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}Schema.graphql
-Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
-Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}Queries.graphql
-```
+This generates:
+- `Modules/{ModuleName}/GraphQL/Mutations/{ModelName}Mutator.php` — fill in content
+- `Modules/{ModuleName}/GraphQL/Queries/{ModelName}Query.php` — fill in content
+- `Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}.graphql` — fill in content
+- `Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}.graphql` — fill in content
+- `Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}.graphql` — fill in content
+
+Edit these files directly — do not create new files with different names.
 
 ## Conventions
 

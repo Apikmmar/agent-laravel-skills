@@ -4,7 +4,7 @@ description: Use when defining GraphQL types, enums, or registering schema files
 ---
 
 ## Rule
-All GraphQL types and enums are defined in `GraphQL/Schema/Components/{ModelName}Schema.graphql` inside the module. Never define types inline in mutation or query files.
+All GraphQL types and enums are defined in `GraphQL/Schema/Components/{ModelName}.graphql` inside the module. Never define types inline in mutation or query files.
 
 ## Why
 Centralizing types in Components keeps schema organized and prevents duplicate type definitions across files.
@@ -13,7 +13,7 @@ Centralizing types in Components keeps schema organized and prevents duplicate t
 
 ### File Location
 ```
-Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}Schema.graphql
+Modules/{ModuleName}/GraphQL/Schema/Components/{ModelName}.graphql
 ```
 
 ### Type Definition
@@ -57,11 +57,11 @@ This maps to the raw array returned by the Controller: `['status' => bool, 'mess
 Every module has a `schema.graphql` at `Modules/{Module}/GraphQL/schema.graphql` that registers all its GraphQL files via `#import`:
 
 ```graphql
-#import Schema/Components/{Model}Schema.graphql
+#import Schema/Components/{Model}.graphql
 
-#import Schema/Mutations/{Model}Mutation.graphql
+#import Schema/Mutations/{Model}.graphql
 
-#import Schema/Queries/{Model}Queries.graphql
+#import Schema/Queries/{Model}.graphql
 ```
 
 - Every new Component, Mutation, and Query file added to the module must be registered here

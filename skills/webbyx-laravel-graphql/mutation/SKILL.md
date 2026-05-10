@@ -4,13 +4,13 @@ description: Use when defining GraphQL mutations or input types. Triggers when u
 ---
 
 ## Rule
-All mutations are defined in `GraphQL/Schema/Mutations/{ModelName}Mutation.graphql`. They always return `SuccessResponse`, use `@namespace` on the `extend type` block for shorthand resolvers, and inputs are plain — no `@validator`, no `@spread`.
+All mutations are defined in `GraphQL/Schema/Mutations/{ModelName}.graphql`. They always return `SuccessResponse`, use `@namespace` on the `extend type` block for shorthand resolvers, and inputs are plain — no `@validator`, no `@spread`.
 
 ## Conventions
 
 ### File Location
 ```
-Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}Mutation.graphql
+Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}.graphql
 ```
 
 ### Mutation Block Structure

@@ -4,13 +4,13 @@ description: Use when defining GraphQL queries. Triggers when user asks to creat
 ---
 
 ## Rule
-All queries are defined in `GraphQL/Schema/Queries/{ModelName}Queries.graphql`. Use `@namespace` on the `extend type` block for shorthand resolvers. Use `@paginate(builder:)` for paginated listing and `@field(resolver:)` for all others.
+All queries are defined in `GraphQL/Schema/Queries/{ModelName}.graphql`. Use `@namespace` on the `extend type` block for shorthand resolvers. Use `@paginate(builder:)` for paginated listing and `@field(resolver:)` for all others.
 
 ## Conventions
 
 ### File Location
 ```
-Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}Queries.graphql
+Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}.graphql
 ```
 
 ### Query Block Structure
