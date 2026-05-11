@@ -1,11 +1,11 @@
 # Webby Development — Agent Rules
 
 ## Global Rules
-- @agents/webbyx-laravel-brainstorm/BRAINSTORM.md
-- @agents/webbyx-laravel-convention/CONVENTION.md
-- @agents/webbyx-laravel-principles/PRINCIPLES.md
-- @agents/webbyx-laravel-security/SECURITY.md
-- @agents/webbyx-laravel-performance/PERFORMANCE.md
+- @agents/BRAINSTORM.md
+- @agents/CONVENTION.md
+- @agents/PRINCIPLES.md
+- @agents/SECURITY.md
+- @agents/PERFORMANCE.md
 
 ## Skills
 - @skills/webbyx-laravel-module/SKILL.md
