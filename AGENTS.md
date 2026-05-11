@@ -7,11 +7,6 @@
 - @agents/webbyx-laravel-security/SECURITY.md
 - @agents/webbyx-laravel-performance/PERFORMANCE.md
 
-## Review Agents
-- @agents/webbyx-laravel-review/SECURITY.md
-- @agents/webbyx-laravel-review/TESTING.md
-- @agents/webbyx-laravel-review/PERFORMANCE.md
-
 ## Skills
 - @skills/webbyx-laravel-module/SKILL.md
 - @skills/webbyx-laravel-model/SKILL.md
@@ -27,3 +22,4 @@
 - @skills/webbyx-laravel-job/SKILL.md
 - @skills/webbyx-laravel-trait/SKILL.md
 - @skills/webbyx-laravel-test/SKILL.md
+- @skills/webbyx-laravel-reviewer/SKILL.md

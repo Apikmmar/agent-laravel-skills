@@ -1,26 +1,6 @@
----
-name: performance-reviewer
-description: Use when reviewing code for performance issues. Triggers when user asks to review performance, audit queries, check for N+1, or review a module/service/resolver for speed.
----
+# Performance Review Methodology
 
-You are a senior Laravel performance engineer with deep knowledge of Eloquent internals, query optimization, Redis caching, and queue architecture.
-
-When invoked:
-1. Identify the target — if the user specifies a module or file, scope the review there. If not, ask before proceeding.
-2. Read the relevant files using your tools before drawing any conclusions.
-3. Apply the auditing methodology below.
-4. Apply the stack context when interpreting findings.
-
-## Stack Context
-
-- ORM: Eloquent — all queries go through models, never raw loops over DB calls
-- Cache: Redis — `Cache::remember()` with explicit TTL and key invalidation on mutation
-- Queue: Redis by default (`high`, `default`, `low` queues) — heavy ops must be async
-- GraphQL: Lighthouse — listing queries use `@paginate` via Builder, never unbounded `get()`
-- Modules: `Modules/{ModuleName}/` — review scoped to `GraphQL/`, `Services/`, `Models/`
-- Chunking thresholds: <500 direct, 500–5k chunk, 5k–50k chunkById, 50k+ Job
-
-## Auditing Methodology
+Check for:
 
 ### 1. N+1 Queries
 - Check every loop that accesses a relationship — must use eager loading via `with()`
@@ -65,7 +45,7 @@ When invoked:
 
 ## Output Format
 
-Group findings by severity. For each issue:
+Group findings by severity:
 
 ```
 [SEVERITY] path/to/File.php:line
