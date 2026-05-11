@@ -84,6 +84,7 @@ Before generating any code, output a visible plan using this structure:
 ### 9. Skills Execution Order
 <List the exact skills that will run and in what order, following this sequence:>
 <module → models → migration → graphql/schema → graphql/mutation → graphql/query → graphql/resolver/mutator → graphql/resolver/query → graphql/controller → graphql/request → service (if needed) → job (if needed) → README>
+<README is always the last step — even for partial changes (e.g. adding a single mutation or query). If README exists, update it; if not, create it.>
 ```
 
 After outputting the plan, ask the user:
@@ -100,11 +101,16 @@ Once the user confirms the plan:
 - Each generated file must comply with the relevant skill conventions
 - AVOID skip steps — if the plan says migration + model + GraphQL, all three are generated
 - Flag any deviation from the plan during execution
-- After all files are generated, always produce a `README.md` inside `Modules/{ModuleName}/` summarising what was built
+- After all files are generated, always create or update `README.md` inside `Modules/{ModuleName}/` to reflect the current state of the module
 
-### README — Final Step (always required)
+### README — Final Step (always required, for every change)
 
-After all skills complete, generate `Modules/{ModuleName}/README.md` with this structure:
+This applies to **every code generation task** — not just full module creation. Whenever any file in a module is created or modified (a new mutation, a new query, a new model, a new service, a migration change, etc.), update `Modules/{ModuleName}/README.md` to reflect the current state of the module.
+
+- If `README.md` does not exist — create it
+- If `README.md` already exists — read it first, then update only the sections affected by the change; never delete existing sections that are still valid
+
+After all skills complete, generate or update `Modules/{ModuleName}/README.md` with this structure:
 
 ```markdown
 # {ModuleName} Module
@@ -164,3 +170,4 @@ These are enforced regardless of user instruction:
 - Resolvers (Mutator/Query) are thin proxies — they only delegate via `$this->resolve()`, never implement business logic
 - Controllers own business logic, DB transactions, and response building — every module has one
 - All enum values use UPPERCASE
+- README is always created or updated after every change — not just full module creation; if it exists, read it first and update only affected sections
