@@ -1,53 +1,46 @@
----
-name: graphql-controller
-description: Use when creating the HTTP Controller for a GraphQL module. Triggers when user asks to create a controller, implement business logic for a mutation or query, or wire up the execution layer behind a resolver.
----
+# Controller — Rules & Conventions
 
 ## Rule
-Every module has at least one Controller at `Http/Controllers/{Model}Controller.php`. It is the execution boundary for mutations and queries — it owns business logic, DB transactions, and responses. Resolvers (Mutator/Query) are proxies that delegate to it. A module may have multiple controllers when operations are intentionally split (e.g. `UpdatePostController`) — each must follow the same conventions.
+Every module has at least one Controller at `Http/Controllers/{Model}Controller.php`. It is the execution boundary for mutations and queries — it owns business logic, DB transactions, and responses. Resolvers (Mutator/Query) are proxies that delegate to it.
 
 ## Why
 Single Responsibility: Resolvers handle the GraphQL boundary, the Controller handles execution. This keeps Resolvers interchangeable and business logic independently testable.
 
 ## File Creation
-
 `module:make` already generates the primary Controller stub — no separate command needed. Edit it directly.
 
-For **additional controllers** (e.g. `UpdatePostController`), scaffold via artisan first:
-
+For additional controllers (e.g. `UpdatePostController`), scaffold via artisan:
 ```bash
 php artisan module:make-controller {ControllerName} {ModuleName}
 ```
 
-## Conventions
-
-### File Location
+## File Location
 ```
 Modules/{ModuleName}/Http/Controllers/{ModelName}Controller.php
 ```
 
-### Class Structure
+## Class Structure
 - Extends `App\Http\Controllers\Controller`
 - No constructor injection needed unless a Service is required
 - Mutation methods accept a typed `FormRequest` — one per operation
 - Query methods accept a plain `Request`
 - Returns a raw array for mutations; returns a model or Builder for queries
 
-### Mutation Methods
+## Mutation Methods
 ```php
 public function create(CreateUserRequest $request): array
 public function update(UpdateUserRequest $request): array
 public function delete(DeleteUserRequest $request): array
 ```
-- Get input-wrapped args: `$request->input('input')`
-- Get flat args: `$request->all()`
+- Input-wrapped args: `$request->input('input')`
+- Flat args: `$request->all()`
 - Always wrap in `DB::beginTransaction()` / `DB::commit()` / `DB::rollBack()`
 - Always throw `ExecutionException` on failure — never return a failure array
 - Return shape: `['status' => true, 'message' => '...', 'data' => $model]`
 - `data` key is optional — omit on delete
-- Existence checks before create must use `->exists()` — never `->count() > 0`
+- Existence checks must use `->exists()` — never `->count() > 0`
 
-### Query Methods
+## Query Methods
 ```php
 public function paginatedListing(Request $request)   // returns Builder
 public function listing(Request $request)             // returns Collection
@@ -59,30 +52,27 @@ public function detail(Request $request)              // returns Model
 - No DB transaction needed for reads
 - Always wrap in try/catch and throw `ExecutionException` on failure
 
-### Error Handling
+## Error Handling
 ```php
 use App\Exceptions\ExecutionException;
 
 throw new ExecutionException("Failed to create user. {$e->getMessage()}", $e);
 ```
-- Always import `App\Exceptions\ExecutionException` — never use `\Nuwave\Lighthouse\Exceptions\DefinitionException`
+- Always import `App\Exceptions\ExecutionException`
 - Never return `['status' => false, ...]` — throw instead
 - Message format: `"Failed to {verb} {model}. {$e->getMessage()}"`
 
-### Private Helpers
-- Any CUD method that does more than one operation (e.g. find then update, find then delete) must extract the lookup into a `private` method — never chain `findOrFail()->update()` or `findOrFail()->delete()` inline
-- Lookups used across multiple methods → same private method, shared by all
-- Logic reused across multiple controllers → move to a Service
+## Private Helpers
+Any CUD method doing more than one operation must extract the lookup into a `private` method:
 
 ```php
-// NEVER — chains two operations, hides the model, update() returns bool not the model
+// NEVER — chains two operations
 User::findOrFail($input['id'])->update($input);
 
 // ALWAYS — fetch first, then act
 $user = $this->getUser($input['id']);
 $user->update($input);
 
-// private lookup
 private function getUser(int|string $id): User
 {
     return User::findOrFail($id);
@@ -100,6 +90,3 @@ private function getUser(int|string $id): User
 - What mutations are needed? (determines which FormRequests to import)
 - What queries are needed? (paginatedListing / listing / detail / custom)
 - Does the controller need a Service injected?
-
-## Reference
-See `references/CONTROLLER.md` for real examples.

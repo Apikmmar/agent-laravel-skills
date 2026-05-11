@@ -1,6 +1,4 @@
-# Request References
-
----
+# FormRequest — Examples
 
 ## Example 1 — Create request with input-wrapped args
 
@@ -33,7 +31,7 @@ class CreateUserRequest extends FormRequest
 - Mutation uses `createUser(input: CreateUserInput!)` — args are nested under `input`
 - Rules are prefixed with `input.` to match the nested structure
 - Controller reads with `$request->input('input')`
-- `authorize()` always returns `true` — auth is handled by `@guard` and `@hasPermission` in the schema
+- `authorize()` always returns `true`
 
 ---
 
@@ -106,7 +104,7 @@ class DeleteUserRequest extends FormRequest
 ## Bad ❌ — What NOT to do
 
 ```php
-// authorize() returning false — always return true, auth is in the schema
+// authorize() returning false — always return true
 public function authorize(): bool
 {
     return false;
@@ -118,7 +116,7 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'input.name'  => ['required'], // used for both create and update — wrong
+            'input.name' => ['required'], // used for both create and update — wrong
         ];
     }
 }

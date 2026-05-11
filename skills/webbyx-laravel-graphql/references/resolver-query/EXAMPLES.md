@@ -1,6 +1,4 @@
-# GraphQL Query Resolver References
-
----
+# Query Resolver — Examples
 
 ## Example 1 — Standard paginated listing, listing, and detail
 
@@ -40,8 +38,7 @@ class UserQuery extends Query
 - `protected $controller = UserController::class` — no constructor injection
 - Every method calls `$this->resolve(__FUNCTION__, ...)` — delegates to the matching Controller method
 - Zero business logic in the Query class — it is a proxy only
-- Method signature: `(mixed $_, array $args, GraphQLContext $graphqlContext, ResolveInfo $resolveInfo)`
-- `paginatedListing` is used with `@paginate(builder:)` in the schema — Controller method must return a `Builder`
+- `paginatedListing` is used with `@paginate(builder:)` — Controller method must return a `Builder`
 
 ---
 
@@ -73,12 +70,8 @@ public function listing($_, array $args)
 }
 
 // Method name does not match Controller method
-public function getUsers(mixed $_, array $args, ...) // wrong — schema has @field(resolver: "UserQuery@listing")
+public function getUsers(mixed $_, array $args, ...) // wrong
 {
     return $this->resolve(__FUNCTION__, $args, ...);
 }
-
-// Wrong namespace
-namespace App\GraphQL\Queries;
-class UserQuery extends Query { }
 ```

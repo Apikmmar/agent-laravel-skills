@@ -1,6 +1,4 @@
-# GraphQL Mutator References
-
----
+# Mutator Resolver — Examples
 
 ## Example 1 — Standard CUD
 
@@ -40,22 +38,12 @@ class UserMutator extends Mutator
 - `protected $controller = UserController::class` — no constructor injection
 - Every method calls `$this->resolve(__FUNCTION__, ...)` — `__FUNCTION__` maps to the matching Controller method
 - Zero business logic in the Mutator — it is a proxy only
-- Method signature: `(mixed $_, array $args, GraphQLContext $graphqlContext, ResolveInfo $resolveInfo)`
 
 ---
 
 ## Example 2 — Custom operation
 
 ```php
-<?php
-
-namespace Modules\User\GraphQL\Mutations;
-
-use App\GraphQL\Mutations\Mutator;
-use Modules\User\Http\Controllers\UserController;
-use Nuwave\Lighthouse\Execution\ResolveInfo;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-
 class UserMutator extends Mutator
 {
     protected $controller = UserController::class;
@@ -71,10 +59,6 @@ class UserMutator extends Mutator
     }
 }
 ```
-
-**What this shows:**
-- Custom operations follow the exact same pattern as CRUD methods
-- Method name (`activate`) must match the Controller method name and the `@field(resolver: "UserMutator@activate")` in the schema
 
 ---
 
@@ -97,7 +81,7 @@ class UserMutator extends Mutator
 public function create(mixed $_, array $args, GraphQLContext $graphqlContext, ResolveInfo $resolveInfo)
 {
     DB::beginTransaction();
-    $user = User::create($args['input']); // wrong — logic must live in the Controller
+    $user = User::create($args['input']); // wrong
     DB::commit();
     return ['status' => true, 'message' => 'Created.', 'data' => $user];
 }
@@ -109,12 +93,8 @@ public function create($_, array $args)
 }
 
 // Method name does not match Controller method
-public function createUser(mixed $_, array $args, ...) // wrong — schema has @field(resolver: "UserMutator@create")
+public function createUser(mixed $_, array $args, ...) // wrong
 {
     return $this->resolve(__FUNCTION__, $args, ...);
 }
-
-// Wrong namespace
-namespace App\GraphQL\Mutations;
-class UserMutator extends Mutator { }
 ```

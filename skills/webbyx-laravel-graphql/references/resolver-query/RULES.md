@@ -1,42 +1,26 @@
----
-name: graphql-resolver-query
-description: Use when creating a GraphQL query resolver class. Triggers when user asks to create a query resolver, implement listing or detail resolver, add a query class, or wire up a GraphQL query to PHP.
----
+# Query Resolver — Rules & Conventions
 
 ## Rule
 Query resolvers live in `GraphQL/Queries/{Model}Query.php`. They extend `App\GraphQL\Queries\Query` and delegate all read logic to the Controller via `$this->resolve()`. The Query class is a thin proxy only — never put logic here.
 
 ## Architecture Flow
-
 ```
 GraphQL Schema → Query (proxy) → Controller (read logic)
 ```
 
 ## File Creation
-
 Run this command from the project root first — AI edits the generated stubs, never creates from scratch:
 
 ```bash
 php artisan module:make-graphql {ModelName} {ModuleName}
 ```
 
-This generates:
-- `Modules/{ModuleName}/GraphQL/Mutations/{ModelName}Mutator.php` — fill in content
-- `Modules/{ModuleName}/GraphQL/Queries/{ModelName}Query.php` — fill in content
-- `Modules/{ModuleName}/GraphQL/Schema/Components/.gitkeep` — Components folder only; **create** `{ModelName}.graphql` here from scratch
-- `Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}.graphql` — fill in content
-- `Modules/{ModuleName}/GraphQL/Schema/Queries/{ModelName}.graphql` — fill in content
-
-Edit the generated stubs directly. For `Schema/Components/{ModelName}.graphql` — artisan only creates a `.gitkeep`; create that file from scratch.
-
-## Conventions
-
-### File Location
+## File Location
 ```
 Modules/{ModuleName}/GraphQL/Queries/{ModelName}Query.php
 ```
 
-### Class Structure
+## Class Structure
 - Extends `App\GraphQL\Queries\Query`
 - Declare `protected $controller = {Model}Controller::class` — no constructor injection
 - One public method per query, each calls `$this->resolve(__FUNCTION__, ...)`
@@ -44,7 +28,7 @@ Modules/{ModuleName}/GraphQL/Queries/{ModelName}Query.php
 - Standard methods: `paginatedListing`, `listing`, `detail`
 - Never put business logic, DB calls, or model access in the Query class
 
-### Resolver Path Format
+## Resolver Path Format
 Uses shorthand because `@namespace` is on the schema `extend type` block:
 ```
 UserQuery@paginatedListing
@@ -58,11 +42,8 @@ UserQuery@detail
 - Every method delegates via `$this->resolve(__FUNCTION__, ...)` — nothing else
 - Method names must match the Controller method names exactly
 - `paginatedListing` Controller method must return a `Builder` — `@paginate` breaks otherwise
-- Read logic, filtering, and responses all belong in the Controller — see `skills/graphql/controller/SKILL.md`
+- Read logic, filtering, and responses all belong in the Controller
 
 ## Clarifying Questions
 - What is the model name and module?
 - What queries are needed? (paginatedListing / listing / detail / custom)
-
-## Reference
-See `references/QUERY.md` for real examples.

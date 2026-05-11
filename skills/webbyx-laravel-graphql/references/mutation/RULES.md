@@ -1,19 +1,14 @@
----
-name: mutation
-description: Use when defining GraphQL mutations or input types. Triggers when user asks to create a mutation, define a mutation input, add create/update/delete operations, or set up GraphQL mutation schema.
----
+# GraphQL Mutation — Rules & Conventions
 
 ## Rule
 All mutations are defined in `GraphQL/Schema/Mutations/{ModelName}.graphql`. They always return `SuccessResponse`, use `@namespace` on the `extend type` block for shorthand resolvers, and inputs are plain — no `@validator`, no `@spread`.
 
-## Conventions
-
-### File Location
+## File Location
 ```
 Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}.graphql
 ```
 
-### Mutation Block Structure
+## Mutation Block Structure
 - Always `extend type Mutation`
 - Always `@namespace(field: "Modules\\{Module}\\GraphQL\\Mutations")` on the extend block
 - Always `@guard` on the extend block unless the mutations are explicitly public
@@ -22,7 +17,7 @@ Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}.graphql
 - Always return `SuccessResponse!`
 - Use shorthand `@field(resolver: "{Model}Mutator@{method}")` — namespace comes from the block
 
-### Input Structure
+## Input Structure
 - Create input: `Create{Model}Input` — plain, no `@validator`
 - Update input: `Update{Model}Input` — plain, no `@validator`, always includes `id: ID!` as first field
 - Delete: flat arg `id: ID!` directly on the mutation — no input type
@@ -30,25 +25,23 @@ Modules/{ModuleName}/GraphQL/Schema/Mutations/{ModelName}.graphql
 - Required fields use `!`, optional fields have no `!`
 - All input fields use snake_case
 
-### Update Input Field Rules
+## Update Input Field Rules
 - `id: ID!` — always required
 - All other fields — always optional (no `!`), client sends only what needs updating
 
-### Naming
+## Naming
 - Mutation names: camelCase (`createUser`, `updateUser`, `deleteUser`)
 - Input names: PascalCase + `Input` suffix (`CreateUserInput`, `UpdateUserInput`)
-
-## Reference
-See `references/MUTATION.md` for real examples.
 
 ## Non-Negotiables
 - No `@validator` on any input type — validation is handled by FormRequests in the Controller
 - No `@spread` on mutation arguments
-- Always `@guard` on the `extend type` block unless explicitly public — never omit it silently; if mutations are public, state that explicitly in the plan
+- Always `@guard` on the `extend type` block unless explicitly public — never omit it silently
 - Always `@hasPermission` on each mutation
 - Always use `@namespace` on the block — never write full resolver paths per mutation
+- `SuccessResponse` is defined once in the root schema — never redefine inside a module
 
-### Anti-Pattern — Missing `@guard`
+## Anti-Pattern — Missing `@guard`
 ```graphql
 # NEVER — unprotected mutations with no explicit decision
 extend type Mutation
@@ -65,10 +58,6 @@ extend type Mutation
     createPost(input: CreatePostInput!): SuccessResponse! @field(resolver: "PostMutator@create") @hasPermission(name: "create-post")
 }
 ```
-
-## Related
-- `SuccessResponse` type is defined once in the root `graphql/schema.graphql` — never inside a module
-- FormRequests for each operation → see `skills/webbyx-laravel-graphql/request/SKILL.md`
 
 ## Clarifying Questions
 - What is the model name and module?

@@ -1,6 +1,4 @@
-# GraphQL Query References
-
----
+# GraphQL Query — Examples
 
 ## Example 1 — Paginated listing + detail
 
@@ -57,10 +55,6 @@ extend type Query
 }
 ```
 
-**What this shows:**
-- Non-paginated listing uses `@field(resolver:)` — not `@paginate`
-- `listing` in Controller returns a Collection via `->get()`
-
 ---
 
 ## Example 3 — Dropdown query
@@ -81,7 +75,6 @@ extend type Query
 **What this shows:**
 - Dropdown uses `@field` — no pagination
 - When only `@field` is used, only `field:` key needed in `@namespace`
-- Returns a simplified type defined in `Components/PostSchema.graphql`
 
 ---
 
@@ -98,10 +91,6 @@ extend type Query
 }
 ```
 
-**What this shows:**
-- No `@guard` when queries are explicitly public
-- No `@hasPermission` on public queries
-
 ---
 
 ## Bad ❌ — What NOT to do
@@ -117,9 +106,6 @@ posts: [Post!]!
 # Using @paginate without builder — breaks
 paginatedPosts: [Post!]!
     @paginate
-
-# @spread on query input — not used
-posts(input: PostListingInput @spread): [Post!]!
 
 # Missing @namespace — shorthand resolver paths break
 extend type Query

@@ -1,6 +1,4 @@
-# GraphQL Mutation References
-
----
+# GraphQL Mutation — Examples
 
 ## Example 1 — Standard CRUD mutations
 
@@ -78,10 +76,6 @@ extend type Mutation
         @field(resolver: "PostMutator@publish")
 }
 ```
-
-**What this shows:**
-- Custom operations follow same pattern — camelCase name, flat args, return `SuccessResponse!`
-- Same `@namespace` + `@guard` + `@hasPermission` pattern
 
 ---
 

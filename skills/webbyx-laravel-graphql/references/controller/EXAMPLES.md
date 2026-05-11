@@ -1,6 +1,4 @@
-# Controller References
-
----
+# Controller — Examples
 
 ## Example 1 — Standard mutations and queries
 
@@ -78,7 +76,7 @@ class UserController extends Controller
         try {
             $input = $request->input('input');
             DB::beginTransaction();
-            $user = User::findOrFail($input['id']);
+            $user = $this->getUser($input['id']);
             $user->update($input);
             DB::commit();
         } catch (\Exception $e) {
@@ -98,7 +96,7 @@ class UserController extends Controller
         try {
             $input = $request->all();
             DB::beginTransaction();
-            User::findOrFail($input['id'])->delete();
+            $this->getUser($input['id'])->delete();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -110,20 +108,26 @@ class UserController extends Controller
             'message' => 'Successfully deleted a user.',
         ];
     }
+
+    private function getUser(int|string $id): User
+    {
+        return User::findOrFail($id);
+    }
 }
 ```
 
 **What this shows:**
-- Extends `App\Http\Controllers\Controller` — not a module-local base
+- Extends `App\Http\Controllers\Controller`
 - Query methods use plain `Request`, mutation methods use typed `FormRequest`
 - `paginatedListing` returns `Builder` (no `->get()`) — required for `@paginate`
-- `listing` calls `->get()` on the builder — returns a Collection
-- Mutation args wrapped in `input:` are read with `$request->input('input')`
-- Flat args (like `id` on delete) are read with `$request->all()`
+- `listing` calls `->get()` — returns a Collection
+- Mutation args wrapped in `input:` read with `$request->input('input')`
+- Flat args (like `id` on delete) read with `$request->all()`
 - Every CUD method wraps in `DB::beginTransaction / commit / rollBack`
-- Errors always rethrown as `ExecutionException` — never swallowed or returned as failure array
+- Errors always rethrown as `ExecutionException`
 - Mutation response is a raw array with `status`, `message`, and optionally `data`
-- `data` key is omitted on delete
+- `data` omitted on delete
+- Private helper `getUser()` used across update and delete — never chain inline
 
 ---
 
@@ -135,7 +139,7 @@ public function activate(ActivateUserRequest $request): array
     try {
         $input = $request->all();
         DB::beginTransaction();
-        $user = User::findOrFail($input['id']);
+        $user = $this->getUser($input['id']);
         $user->update(['status' => 'ACTIVE']);
         DB::commit();
     } catch (\Exception $e) {
@@ -151,11 +155,6 @@ public function activate(ActivateUserRequest $request): array
 }
 ```
 
-**What this shows:**
-- Custom operations follow the same pattern as create/update/delete
-- Still uses a typed FormRequest even for custom operations
-- Method name matches the Mutator method and `@field(resolver: "UserMutator@activate")`
-
 ---
 
 ## Bad ❌ — What NOT to do
@@ -169,14 +168,9 @@ public function create(CreateUserRequest $request): array
 }
 
 // Returning a failure array instead of throwing
-public function create(CreateUserRequest $request): array
-{
-    try {
-        // ...
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return ['status' => false, 'message' => $e->getMessage()]; // wrong — throw instead
-    }
+catch (\Exception $e) {
+    DB::rollBack();
+    return ['status' => false, 'message' => $e->getMessage()]; // wrong — throw instead
 }
 
 // Using plain Request on a mutation method — must use typed FormRequest
@@ -188,4 +182,6 @@ public function paginatedListing(Request $request)
     return User::filter()->get(); // wrong — return Builder, not Collection
 }
 
+// Chaining findOrFail and update inline — wrong
+User::findOrFail($input['id'])->update($input);
 ```

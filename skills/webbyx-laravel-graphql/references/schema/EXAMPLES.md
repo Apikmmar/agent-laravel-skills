@@ -1,6 +1,4 @@
-# GraphQL Schema — Component References
-
----
+# GraphQL Schema — Examples
 
 ## Example 1 — Type with relationships and enums
 
@@ -41,7 +39,7 @@ enum PostStatus {
 
 ---
 
-## Example 3 — @belongsTo with explicit `relation:` argument
+## Example 2 — @belongsTo with explicit `relation:` argument
 
 Use `relation:` when the GraphQL field name and the PHP relationship method name differ.
 
@@ -67,14 +65,9 @@ type Order {
 }
 ```
 
-**When to use `relation:`:**
-- Only when the GraphQL field name differs from the PHP relationship method name
-- Example: field `placed_by` maps to PHP method `placedBy` — use `@belongsTo(relation: "placedBy")`
-- If the field name already matches the PHP method name exactly, omit `relation:`
-
 ---
 
-## Example 2 — Simple type, no relationships
+## Example 3 — Simple type, no relationships
 
 ```graphql
 # Modules/Blog/GraphQL/Schema/Components/TagSchema.graphql
