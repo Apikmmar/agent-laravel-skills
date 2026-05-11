@@ -1,168 +1,73 @@
 # Security Rules
 
-Always apply these rules during code generation. These are not optional — enforce them by default.
-
----
+Always apply during code generation — not optional. These are enforced by default on every task.
 
 ## Authentication
-
-- Default auth is **Laravel Sanctum** — use it unless user specifies otherwise
-- If user requires JWT or another provider, ask before implementing
-- Never hardcode tokens, secrets, or credentials in code
-- Always protect routes with the appropriate auth middleware
-
----
+- Default auth: Laravel Sanctum — ask before using JWT or any other provider
+- Never hardcode tokens, secrets, or credentials anywhere in code
+- Always protect mutations/queries with `@guard` in the GraphQL schema
+- Never assume a route is public — always ask if auth requirement is unclear
 
 ## Rate Limiting
-
-- Apply rate limiting on all sensitive endpoints: login, password reset, token generation, OTP
-- Default: use Laravel's built-in throttle middleware (`throttle:60,1`)
-- Ask user if a custom rate limit is needed for specific endpoints
-
----
+- Apply throttle on all sensitive endpoints: login, password reset, token generation, OTP
+- Default: `throttle:60,1` — ask user if a custom limit is needed
+- Rate limiting goes on the route or middleware level — not inside the controller
 
 ## Input Validation
-
-- For **GraphQL endpoints**: always validate via Laravel FormRequests in the Controller — never use Lighthouse `@validator`
-- For **REST/HTTP endpoints**: always validate via Laravel Form Requests — never trust raw `$request->all()`
+- GraphQL: always validate via Laravel FormRequests in the Controller — never `@validator`, never raw `Request` on CUD
+- REST: always use Form Requests — never trust raw `$request->all()`
 - Sanitize output when rendering user-generated content
 
----
-
 ## SQL Injection
-
-- Always use Eloquent ORM or the Query Builder — never concatenate user input into raw SQL
-- If raw queries are unavoidable, always use parameter binding
-
-```php
-// NEVER do this
-DB::select("SELECT * FROM users WHERE email = '$email'");
-
-// ALWAYS do this
-DB::select("SELECT * FROM users WHERE email = ?", [$email]);
-// or
-User::where('email', $email)->first();
-```
-
----
+- Always use Eloquent ORM or Query Builder — never concatenate user input into raw SQL
+- If raw queries are unavoidable, always use parameter binding (`?` placeholders)
+- Never use string interpolation inside `DB::select()`, `DB::statement()`, etc.
 
 ## Mass Assignment
-
-- Always define explicit `$fillable` on models — never use `$guarded = []`
+- Always define explicit `$fillable` on every model — never use `$guarded = []`
 - Never pass raw `$request->all()` directly to `create()` or `update()`
+- Use `$request->validated()` or `$request->only([...])` when passing to model methods
 
-```php
-// Never do this
-User::create($request->all());
+## Password Hashing
+- Always `Hash::make()` — never store plain text
+- Never use `md5()` or `sha1()` for passwords under any circumstance
 
-// Always do this
-User::create($request->validated());
-// or
-User::create($request->only(['name', 'email']));
-```
-
----
-
-## File Uploads
-
-- No default file upload rule — always ask the user about upload requirements during development
-- When implementing: validate MIME type, file size, and store outside the public directory
-
----
+## Sensitive Data Encryption
+- Encrypt sensitive columns using Eloquent `'encrypted'` cast or `Crypt::encryptString()`
+- Ask user which columns contain PII, secrets, or tokens before defining casts
+- Never log or return encrypted values in plain text
 
 ## Debug & Environment
-
-- Never enable `APP_DEBUG=true`
-- Never expose stack traces or internal paths to end users
-- Never log sensitive data (passwords, tokens, PII)
-
----
+- Never `APP_DEBUG=true` in production
+- Never expose stack traces, file paths, or internal errors to end users
+- Never log passwords, tokens, PII, or any sensitive input/output
 
 ## HTTPS
-
 - Always redirect HTTP to HTTPS
 - Never serve sensitive endpoints over plain HTTP
 
----
-
 ## CORS
-
 - Never use wildcard `*` for `allowed_origins`
-- Always ask user whether the app is public-facing or internal — CORS config differs
-  - Public-facing: restrict to known frontend domains
-  - Internal: restrict to internal service origins only
-- Configure in `config/cors.php` — never bypass via middleware directly
-
----
-
-## Password Hashing
-
-- Always hash passwords using Laravel's `Hash` facade — never store plain text
-- Never use `md5()` or `sha1()` for passwords
-
-```php
-// Never do this
-$user->password = $request->password;
-
-// Always do this
-$user->password = Hash::make($request->password);
-```
-
----
-
-## Session Hardening
-
-- Always enforce HTTPS-only cookies (`'secure' => true` in `config/session.php`)
-- Always enable HTTP-only flag (`'http_only' => true`)
-- Always set SameSite to `strict` or `lax` — never `none` unless explicitly required
-
----
-
-## Sensitive Data Encryption
-
-- Encrypt sensitive columns using Eloquent's `'encrypted'` cast or `Crypt::encryptString()`
-- Ask user which columns contain sensitive data (PII, secrets, tokens) before defining casts
-
-```php
-// Eloquent encrypted cast
-protected $casts = [
-    'secret_key' => 'encrypted',
-];
-
-// Manual encryption
-$value = Crypt::encryptString($sensitiveData);
-```
-
----
+- Ask user if the app is public-facing or internal — config differs
+- Always configure in `config/cors.php` — never bypass via middleware directly
 
 ## CSRF
-
 - Never disable `VerifyCsrfToken` middleware globally
-- Only exclude routes under `webhook/*` when third-party services cannot send CSRF tokens
-- Add exclusions to the `$except` array — never comment out or remove the middleware
+- Only exclude `webhook/*` routes when third-party services cannot send CSRF tokens
+- Add exclusions to the `$except` array only — never remove the middleware
 
-```php
-// Only acceptable exclusion
-protected $except = [
-    'webhook/*',
-];
-```
+## Session Hardening
+- Cookies must be: `secure: true`, `http_only: true`, `same_site: strict or lax`
+- Never set `same_site: none` unless explicitly required and justified
 
----
+## Sensitive Data Exposure
+- Never return sensitive fields (passwords, tokens, secrets) in GraphQL responses
+- Always review what fields are exposed on a type before finalising the schema
 
 ## Open Redirect
+- Never redirect to a URL taken directly from user input
+- Always validate redirect targets against `config('app.url')` or a trusted whitelist
 
-- Never redirect to a URL taken directly from user input without validation
-- Always validate redirect targets against `config('app.url')` or a whitelist of trusted origins
-
-```php
-// Never do this
-return redirect($request->input('redirect_to'));
-
-// Always do this
-$url = $request->input('redirect_to');
-if (!str_starts_with($url, config('app.url'))) {
-    $url = '/';
-}
-return redirect($url);
-```
+## File Uploads
+- No default rule — always ask user about upload requirements before implementing
+- When implementing: validate MIME type and file size, store outside the public directory

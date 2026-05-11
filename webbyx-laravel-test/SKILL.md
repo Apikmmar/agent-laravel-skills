@@ -3,11 +3,7 @@ name: laravel-test-generator
 description: Use when generating PHPUnit tests for a Laravel GraphQL module. Triggers when user asks to write tests, generate test files, or cover a module's mutations and queries with tests.
 ---
 
-@agents/BRAINSTORM.md
 @agents/CONVENTION.md
-@agents/PRINCIPLES.md
-@agents/SECURITY.md
-@agents/PERFORMANCE.md
 
 ## Rule
 Tests live in `Modules/{ModuleName}/Tests/Feature/`. One test class per operation group — mutations in `{Model}MutationTest.php`, queries in `{Model}QueryTest.php`. All tests use PHPUnit via `Tests\TestCase`, `RefreshDatabase`, and Lighthouse's `MakesGraphQLRequests` trait.
