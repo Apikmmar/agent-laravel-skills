@@ -1,5 +1,5 @@
 ---
-name: job
+name: webbyx-laravel-job
 description: Use when creating a Laravel Job class. Triggers when user asks to create a job, dispatch async work, queue a heavy operation, or move blocking logic off the request lifecycle.
 ---
 

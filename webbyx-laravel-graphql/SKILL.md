@@ -1,5 +1,5 @@
 ---
-name: laravel-graphql
+name: webbyx-laravel-graphql
 description: Use when creating or modifying any GraphQL layer file in a Laravel Lighthouse project. Triggers when the user asks to create or update a GraphQL schema type, mutation, query, mutator resolver, query resolver, controller, or FormRequest — or any combination of these.
 tools: Read, Write, Edit, Glob, Grep
 ---
