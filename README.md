@@ -14,44 +14,49 @@ Point your AI tool to `AGENTS.md` at the project root. It loads global rules (al
 
 ```
 AGENTS.md                                              ← entry point, loaded by AI tool
-agents/
-├── webbyx-laravel-brainstorm/BRAINSTORM.md            ← architect agent: plan before code (always active)
-├── webbyx-laravel-convention/CONVENTION.md            ← naming conventions (always active)
-├── webbyx-laravel-principles/PRINCIPLES.md            ← DRY, SOLID, Modularity (always active)
-├── webbyx-laravel-security/SECURITY.md                ← security rules (always active)
-├── webbyx-laravel-performance/PERFORMANCE.md          ← performance rules (always active)
-└── webbyx-laravel-review/
-    ├── SECURITY.md                                    ← security review agent
-    ├── TESTING.md                                     ← test review agent
-    └── PERFORMANCE.md                                 ← performance review agent
-scripts/
-├── make-controller/                                   ← legacy script (superseded — skills now invoke artisan directly)
-├── make-graphql/                                      ← legacy script (superseded — skills now invoke artisan directly)
-├── make-job/                                          ← legacy script (superseded — skills now invoke artisan directly)
-├── make-model/                                        ← legacy script (superseded — skills now invoke artisan directly)
-├── make-request/                                      ← legacy script (superseded — skills now invoke artisan directly)
-├── make-service/                                      ← legacy script (superseded — skills now invoke artisan directly)
-└── make-test/                                         ← legacy script (superseded — skills now invoke artisan directly)
-skills/
-├── webbyx-laravel-module/SKILL.md                     ← module creation flow
-├── webbyx-laravel-model/SKILL.md                      ← Eloquent model conventions
-├── webbyx-laravel-migration/SKILL.md                  ← migration conventions
-├── webbyx-laravel-service/SKILL.md                    ← service layer conventions
-├── webbyx-laravel-job/SKILL.md                        ← async job conventions
-├── webbyx-laravel-trait/SKILL.md                      ← trait conventions
-├── webbyx-laravel-test/SKILL.md                       ← test conventions
-└── webbyx-laravel-graphql/
-    ├── schema/SKILL.md                                ← GraphQL types, enums
-    ├── mutation/SKILL.md                              ← GraphQL mutation definitions
-    ├── query/SKILL.md                                 ← GraphQL query definitions
-    ├── controller/SKILL.md                            ← Controller: business logic + execution boundary
-    ├── request/SKILL.md                               ← FormRequest: mutation input validation
-    └── resolver/
-        ├── mutator/SKILL.md                           ← Mutator class (thin proxy → Controller)
-        └── query/SKILL.md                             ← Query class (thin proxy → Controller)
+CLAUDE.md                                              ← points to AGENTS.md
+webbyx-laravel-module/
+├── SKILL.md                                           ← module creation flow
+└── agents/                                            ← embedded global rules (always active)
+webbyx-laravel-model/
+├── SKILL.md                                           ← Eloquent model conventions
+└── agents/
+webbyx-laravel-migration/
+├── SKILL.md                                           ← migration conventions
+└── agents/
+webbyx-laravel-service/
+├── SKILL.md                                           ← service layer conventions
+└── agents/
+webbyx-laravel-job/
+├── SKILL.md                                           ← async job conventions
+└── agents/
+webbyx-laravel-trait/
+├── SKILL.md                                           ← trait conventions
+└── agents/
+webbyx-laravel-test/
+├── SKILL.md                                           ← test conventions
+└── agents/
+webbyx-laravel-reviewer/
+├── SKILL.md                                           ← code review (security, performance, testing)
+├── agents/
+└── references/
+    ├── SECURITY.md
+    ├── PERFORMANCE.md
+    └── TESTING.md
+webbyx-laravel-graphql/
+├── SKILL.md                                           ← unified GraphQL skill
+├── agents/
+└── references/
+    ├── schema/        RULES.md + EXAMPLES.md
+    ├── mutation/      RULES.md + EXAMPLES.md
+    ├── query/         RULES.md + EXAMPLES.md
+    ├── resolver-mutator/  RULES.md + EXAMPLES.md
+    ├── resolver-query/    RULES.md + EXAMPLES.md
+    ├── controller/    RULES.md + EXAMPLES.md
+    └── request/       RULES.md + EXAMPLES.md
 ```
 
-Skills invoke `php artisan` commands directly — no script execution required. The `scripts/` folder is kept for reference only. Each skill has a companion `references/` folder with real code examples.
+Each skill is self-contained — the `agents/` folder inside each skill embeds the global rules (BRAINSTORM, CONVENTION, PRINCIPLES, SECURITY, PERFORMANCE) so the skill works correctly when uploaded to a Claude organization.
 
 ---
 
@@ -80,8 +85,9 @@ frontmatter   → name, description (used by agent to match trigger phrases)
 
 ## Global Rules vs Skills
 
-| | Global Rules (`agents/`) | Skills (`skills/`) |
+| | Global Rules (`agents/`) | Skills |
 |---|---|---|
-| When active | Always, every session | Triggered per task |
+| When active | Always, on every invocation | Triggered per task |
 | Purpose | Conventions, principles | Task-specific patterns |
-| Examples | Naming, DRY/SOLID | Model, migration, GraphQL |
+| Examples | Naming, DRY/SOLID, Security | Model, migration, GraphQL |
+| Location | Embedded inside each skill's `agents/` folder | Root-level skill folders |
