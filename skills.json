@@ -11,6 +11,8 @@
     "./webbyx-laravel-job",
     "./webbyx-laravel-trait",
     "./webbyx-laravel-test",
-    "./webbyx-laravel-reviewer"
+    "./webbyx-laravel-reviewer",
+    "./webbyx-laravel-logactivity",
+    "./webbyx-laravel-media"
   ]
 }
