@@ -55,6 +55,18 @@
       "description": "Code review for security, performance, and testing in Laravel modules",
       "path": "webbyx-laravel-reviewer",
       "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-logactivity",
+      "description": "Add Spatie activity logging to a model — opt-in per model only",
+      "path": "webbyx-laravel-logactivity",
+      "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-media",
+      "description": "Add media upload and retrieval support via Spatie Media Library",
+      "path": "webbyx-laravel-media",
+      "entrypoint": "SKILL.md"
     }
   ]
 }

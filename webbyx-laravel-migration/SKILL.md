@@ -15,6 +15,14 @@ All migrations must always include `softDeletes()` and use named foreign key con
 ## Why
 `softDeletes()` is required on all tables to match the model convention. Named foreign keys make constraints easier to identify and drop.
 
+## File Creation
+
+Run this command from the project root first — AI edits the generated stub, never creates from scratch:
+
+```bash
+php artisan make:migration {MigrationName}
+```
+
 ## Conventions
 
 ### Structure

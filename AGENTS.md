@@ -8,3 +8,5 @@
 - @webbyx-laravel-trait/SKILL.md
 - @webbyx-laravel-test/SKILL.md
 - @webbyx-laravel-reviewer/SKILL.md
+- @webbyx-laravel-logactivity/SKILL.md
+- @webbyx-laravel-media/SKILL.md
