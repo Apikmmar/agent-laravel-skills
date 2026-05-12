@@ -1,5 +1,5 @@
 ---
-name: laravel-test-generator
+name: webbyx-laravel-test-generator
 description: Use when generating PHPUnit tests for a Laravel GraphQL module. Triggers when user asks to write tests, generate test files, or cover a module's mutations and queries with tests.
 ---
 

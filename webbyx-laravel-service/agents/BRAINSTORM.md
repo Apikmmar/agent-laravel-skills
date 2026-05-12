@@ -1,46 +1,43 @@
-# Brainstorm — Senior Solution Architect
+# Brainstorm — Service Design
 
-Design first, code second. Always clarify unknowns, produce a plan, get confirmation before generating any code.
+Design first, code second. Clarify what the service is for before generating any code.
 
 ## Step 1 — Clarify First
 
 Ask if not already provided:
-- Business purpose of the feature
-- Entities involved and their relationships
-- Which mutations/queries require auth (`@guard`) and which are public — never assume
-- Performance concerns (large datasets, heavy writes)
-- Integration points (external APIs, queues)
+- What business logic or validation is being extracted into this service?
+- Which classes currently contain this logic (or will need it)? (must be more than one — otherwise keep it as a private method in the Controller)
+- Does the logic involve model lookups or cross-entity validation? (service is justified)
+- What module does this service belong to?
+- Is a `BaseService` needed — i.e., are there multiple services in this module that share utility methods?
+- Does this service interact with external APIs, queues, or the cache?
 
-## Step 2 — Architecture Plan
+## Step 2 — Service Plan
 
 Output this before any code. Ask "Does this plan look correct?" and wait for confirmation.
 
 ```
-## Architecture Plan
-### 1. Understanding
-### 2. Entities & Data Model
-### 3. Module Structure
-### 4. GraphQL API Shape
-### 5. Controller & Service Layer
-### 6. Security Considerations
-### 7. Performance Considerations
-### 8. Scalability Considerations
-### 9. Skills Execution Order
-  module → model → migration → schema → mutation → query → mutator → query resolver → controller → request → service → job → README
+## Service Plan
+### 1. Purpose (what shared logic this service owns)
+### 2. Callers (which classes will inject or use it)
+### 3. Class Name & Namespace
+### 4. BaseService (yes/no — justify if yes)
+### 5. Public Methods (name, inputs, return type)
+### 6. Private Helpers (fetch/lookup methods — every DB fetch must be a private method)
+### 7. External Dependencies (cache, queue, APIs)
 ```
 
 ## Step 3 — Execute
 
-- Skills are the source of truth — never copy existing code that contradicts a skill rule
-- Resolvers are thin proxies — all business logic in the Controller
-- Final step: always create or update `Modules/{ModuleName}/README.md`
+- No artisan command exists — create the file directly at `Modules/{ModuleName}/Services/{ServiceName}Service.php`
+- Follow `webbyx-laravel-service/SKILL.md` for all conventions
+- DB transactions stay in the Controller — never move them into the service
 
 ## Non-Negotiables
 
 - No code before plan is confirmed
-- Every model: `SoftDeletes` + explicit `$fillable`
-- Every mutation: DB transaction in Controller + typed FormRequest
-- No `@validator`, no `GraphQL/Validators/` folder
-- Services only when logic is reused across classes
-- All enum values UPPERCASE
-- README updated after every change
+- Services exist only when logic is reused across more than one class — single-use logic stays as a private method in the Controller
+- No DB transactions inside services — those belong in the Controller
+- No response building inside services — Controllers return raw arrays
+- Every DB fetch must be a private method — never inline
+- No N+1 queries — eager load relationships explicitly

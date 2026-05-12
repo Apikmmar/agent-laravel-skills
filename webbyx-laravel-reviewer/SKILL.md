@@ -1,5 +1,5 @@
 ---
-name: laravel-reviewer
+name: webbyx-laravel-reviewer
 description: Use when reviewing Laravel code for security, performance, or test quality issues. Triggers when user asks to review security, audit code, check for vulnerabilities, review performance, check for N+1, audit queries, review tests, check test coverage, or run a code review on a module or file.
 tools: Read, Grep, Glob
 ---

@@ -1,5 +1,5 @@
 ---
-name: laravel-migration
+name: webbyx-laravel-migration
 description: Use when creating a database migration. Triggers when user asks to create a migration, add a table, add columns, define foreign keys, or run make:migration.
 ---
 

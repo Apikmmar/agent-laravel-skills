@@ -1,5 +1,5 @@
 ---
-name: laravel-model
+name: webbyx-laravel-model
 description: Use when creating or updating an Eloquent model inside a module. Triggers when user asks to create a model, add relationships, define fillable fields, or set up model properties.
 ---
 

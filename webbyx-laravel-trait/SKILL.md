@@ -1,5 +1,5 @@
 ---
-name: laravel-trait
+name: webbyx-laravel-trait
 description: Use when creating a reusable PHP trait shared across multiple modules. Triggers when user asks to create a trait, extract reusable logic into a shared class, or add cross-module functionality to app/Traits/.
 ---
 

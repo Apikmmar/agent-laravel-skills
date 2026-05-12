@@ -1,46 +1,44 @@
-# Brainstorm — Senior Solution Architect
+# Brainstorm — Migration Design
 
-Design first, code second. Always clarify unknowns, produce a plan, get confirmation before generating any code.
+Design first, code second. Clarify the table structure before generating any code.
 
 ## Step 1 — Clarify First
 
 Ask if not already provided:
-- Business purpose of the feature
-- Entities involved and their relationships
-- Which mutations/queries require auth (`@guard`) and which are public — never assume
-- Performance concerns (large datasets, heavy writes)
-- Integration points (external APIs, queues)
+- What is the exact table name? (snake_case)
+- What columns are needed? For each column: name, type, nullable or not
+- Are there any enum columns? If yes — what are the allowed values?
+- Are there any JSON columns?
+- Are there foreign keys? If yes — which tables do they reference, and what is the exact column name?
+- For each foreign key — what is the delete behaviour? (`cascadeOnDelete`, `nullOnDelete`, or `restrictOnDelete`)
+- Which columns will be frequently filtered or sorted? (determines indexes)
+- Are any columns required to be unique?
 
-## Step 2 — Architecture Plan
+## Step 2 — Migration Plan
 
 Output this before any code. Ask "Does this plan look correct?" and wait for confirmation.
 
 ```
-## Architecture Plan
-### 1. Understanding
-### 2. Entities & Data Model
-### 3. Module Structure
-### 4. GraphQL API Shape
-### 5. Controller & Service Layer
-### 6. Security Considerations
-### 7. Performance Considerations
-### 8. Scalability Considerations
-### 9. Skills Execution Order
-  module → model → migration → schema → mutation → query → mutator → query resolver → controller → request → service → job → README
+## Migration Plan
+### 1. Table Name
+### 2. Columns (in order: id → regular columns → timestamps → softDeletes)
+### 3. Enum Values (if any — confirm values are lowercase in migration)
+### 4. Foreign Keys (constraint name: fk_{shortTable}_{referencedTable}, delete behaviour)
+### 5. Indexes (foreign key columns, filtered/sorted columns, unique columns)
 ```
 
 ## Step 3 — Execute
 
-- Skills are the source of truth — never copy existing code that contradicts a skill rule
-- Resolvers are thin proxies — all business logic in the Controller
-- Final step: always create or update `Modules/{ModuleName}/README.md`
+- Run `php artisan make:migration "create_{table_name}_table"` first — edit the stub, never create from scratch
+- Follow `webbyx-laravel-migration/SKILL.md` for column order and foreign key naming
+- Flag any index that may be missing based on the expected query patterns
 
 ## Non-Negotiables
 
 - No code before plan is confirmed
-- Every model: `SoftDeletes` + explicit `$fillable`
-- Every mutation: DB transaction in Controller + typed FormRequest
-- No `@validator`, no `GraphQL/Validators/` folder
-- Services only when logic is reused across classes
-- All enum values UPPERCASE
-- README updated after every change
+- Always `softDeletes()` — no exceptions
+- Always anonymous class: `return new class extends Migration`
+- Always implement both `up()` and `down()`
+- Always name foreign key constraints: `fk_{shortTable}_{referencedTable}`
+- Always specify delete behaviour on every foreign key — never leave it implicit
+- Enum values are lowercase in migration, UPPERCASE in GraphQL schema
