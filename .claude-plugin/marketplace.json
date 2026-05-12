@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "webbyx-dev-laravel",
-      "source": "https://github.com/Apikmmar/agent-laravel-skills.git",
+      "source": "Apikmmar/agent-laravel-skills",
       "description": "Production-ready Laravel + Lighthouse GraphQL agent skills. Covers the full module creation flow: module scaffolding, Eloquent models, migrations, GraphQL schema, resolvers, controllers, FormRequests, services, jobs, traits, tests, and code review."
     }
   ]
