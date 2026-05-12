@@ -1,0 +1,60 @@
+{
+  "name": "Webby Laravel Skills",
+  "description": "Production-ready Laravel + Lighthouse GraphQL agent skills",
+  "skills": [
+    {
+      "name": "webbyx-laravel-module",
+      "description": "Scaffold Laravel modules following the full creation flow",
+      "path": "webbyx-laravel-module",
+      "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-model",
+      "description": "Generate Eloquent models with SoftDeletes and explicit fillable",
+      "path": "webbyx-laravel-model",
+      "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-migration",
+      "description": "Create migrations with softDeletes, named FK constraints, and indexes",
+      "path": "webbyx-laravel-migration",
+      "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-graphql",
+      "description": "Generate the full GraphQL layer: schema, resolvers, controller, FormRequests",
+      "path": "webbyx-laravel-graphql",
+      "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-service",
+      "description": "Create service classes for reusable business logic",
+      "path": "webbyx-laravel-service",
+      "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-job",
+      "description": "Create async jobs with proper queue assignment and chunking",
+      "path": "webbyx-laravel-job",
+      "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-trait",
+      "description": "Create reusable traits in app/Traits/",
+      "path": "webbyx-laravel-trait",
+      "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-test",
+      "description": "Generate PHPUnit feature tests for GraphQL mutations and queries",
+      "path": "webbyx-laravel-test",
+      "entrypoint": "SKILL.md"
+    },
+    {
+      "name": "webbyx-laravel-reviewer",
+      "description": "Code review for security, performance, and testing in Laravel modules",
+      "path": "webbyx-laravel-reviewer",
+      "entrypoint": "SKILL.md"
+    }
+  ]
+}
