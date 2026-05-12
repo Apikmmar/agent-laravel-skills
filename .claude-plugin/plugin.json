@@ -1,22 +1,8 @@
 {
-  "name": "@webbyx/dev-laravel",
+  "name": "webbyx-dev-laravel",
   "description": "Production-ready Laravel + Lighthouse GraphQL agent skills. Covers the full module creation flow: module scaffolding, Eloquent models, migrations, GraphQL schema, resolvers, controllers, FormRequests, services, jobs, traits, tests, and code review.",
   "version": "1.0.0",
   "author": {
-    "name": "Webby",
-    "email": "afiqammar@webbygroup.com"
-  },
-  "skills": [
-    "./webbyx-laravel-module",
-    "./webbyx-laravel-model",
-    "./webbyx-laravel-migration",
-    "./webbyx-laravel-graphql",
-    "./webbyx-laravel-service",
-    "./webbyx-laravel-job",
-    "./webbyx-laravel-trait",
-    "./webbyx-laravel-test",
-    "./webbyx-laravel-reviewer",
-    "./webbyx-laravel-media",
-    "./webbyx-laravel-logactivity"
-  ]
+    "name": "Webby Developer"
+  }
 }
