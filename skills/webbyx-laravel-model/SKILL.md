@@ -57,4 +57,5 @@ php artisan module:make-model {ModelName} {ModuleName}
 - What relationships are needed?
 
 ## Reference
-See `references/MODEL.md` for real examples.
+
+@references/MODEL.md

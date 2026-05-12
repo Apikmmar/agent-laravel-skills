@@ -3,6 +3,9 @@ name: webbyx-laravel-logactivity
 description: Use when the user asks to add activity logging to a model. Triggers when user asks to log model events, track changes, audit a model, or add Spatie activity log to a module model.
 ---
 
+@agents/BRAINSTORM.md
+@agents/CONVENTION.md
+
 ## Rule
 Activity logging is **opt-in per model** — not every model uses it. When requested, add the `LogsActivity` trait and `getActivitylogOptions()` method directly to the target model. Never add it to a BaseModel.
 
@@ -60,6 +63,6 @@ class YourModel extends ...
 - Trait list must remain alphabetical after adding `LogsActivity`
 
 ## Reference
-See `references/LOGACTIVITY.md` for real examples.
+@references/LOGACTIVITY.md
 
 Spatie docs: https://spatie.be/docs/laravel-activitylog/v5/advanced-usage/logging-model-events

@@ -60,7 +60,8 @@ Queue selection follows `agents/performance/PERFORMANCE.md` — `high` for time-
 - Delayed: `->delay(now()->addMinutes(10))`
 
 ## Reference
-See `references/JOB.md` for real examples.
+
+@references/JOB.md
 
 ## Clarifying Questions
 - What is the async operation being moved to this job?

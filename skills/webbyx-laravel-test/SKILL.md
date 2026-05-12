@@ -1,8 +1,9 @@
 ---
 name: webbyx-laravel-test-generator
-description: Use when generating PHPUnit tests for a Laravel GraphQL module. Triggers when user asks to write tests, generate test files, or cover a module's mutations and queries with tests.
+description: Use when generating PHPUnit tests for a Laravel GraphQL module. Triggers when user asks to write tests, generate test files, cover a module with tests, add test coverage, or create mutation/query tests.
 ---
 
+@agents/BRAINSTORM.md
 @agents/CONVENTION.md
 
 ## Rule
@@ -173,4 +174,4 @@ protected function setUp(): void
 - Is there a User factory already set up?
 
 ## Reference
-See `references/TEST.md` for real examples.
+@references/TEST.md

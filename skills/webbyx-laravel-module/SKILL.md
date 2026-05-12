@@ -1,6 +1,6 @@
 ---
 name: webbyx-laravel-module
-description: Use when creating a new Laravel module. Triggers when user asks to create a module, scaffold a new feature, set up a new domain, or run module:make commands.
+description: Use when creating a new Laravel module end-to-end. Triggers when user asks to create a module, scaffold a new feature, build a full feature, set up a new domain, create a full GraphQL module, or run module:make commands. Covers the full flow: scaffold, model, migration, GraphQL schema, resolvers, controller, FormRequests.
 ---
 
 @agents/BRAINSTORM.md

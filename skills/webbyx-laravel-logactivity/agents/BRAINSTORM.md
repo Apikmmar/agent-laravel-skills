@@ -2,6 +2,8 @@
 
 Design first, code second. Clarify which model(s) need logging and what should be tracked before touching any code.
 
+> **HARD STOP — Do NOT write any code, run any commands, or create any files until the user explicitly confirms the plan. This is non-negotiable.**
+
 ## Step 1 — Clarify First
 
 Ask if not already provided:
@@ -12,7 +14,7 @@ Ask if not already provided:
 
 ## Step 2 — Plan
 
-Output this before any code. Ask "Does this plan look correct?" and wait for confirmation.
+Output this before any code. Ask "Does this plan look correct?" and **wait for explicit confirmation before proceeding to Step 3**. Do not proceed if the user has not yet responded.
 
 ```
 ## Activity Log Plan

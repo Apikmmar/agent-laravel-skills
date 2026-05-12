@@ -1,6 +1,6 @@
 ---
 name: webbyx-laravel-graphql
-description: Use when creating or modifying any GraphQL layer file in a Laravel Lighthouse project. Triggers when the user asks to create or update a GraphQL schema type, mutation, query, mutator resolver, query resolver, controller, or FormRequest — or any combination of these.
+description: Use when creating or modifying any GraphQL layer file in a Laravel Lighthouse project. Triggers when the user asks to create or update a GraphQL schema type, mutation, query, mutator resolver, query resolver, controller, or FormRequest — or any combination of these. Also triggers for full end-to-end module GraphQL layer generation.
 tools: Read, Write, Edit, Glob, Grep
 ---
 
@@ -35,12 +35,19 @@ When invoked:
 
 ## Component → Reference Routing
 
-| User asks about | Read this reference |
-|---|---|
-| GraphQL type, enum, schema component | [references/schema/RULES.md](references/schema/RULES.md) + [references/schema/EXAMPLES.md](references/schema/EXAMPLES.md) |
-| Mutation schema file | [references/mutation/RULES.md](references/mutation/RULES.md) + [references/mutation/EXAMPLES.md](references/mutation/EXAMPLES.md) |
-| Query schema file | [references/query/RULES.md](references/query/RULES.md) + [references/query/EXAMPLES.md](references/query/EXAMPLES.md) |
-| Mutator resolver class | [references/resolver-mutator/RULES.md](references/resolver-mutator/RULES.md) + [references/resolver-mutator/EXAMPLES.md](references/resolver-mutator/EXAMPLES.md) |
-| Query resolver class | [references/resolver-query/RULES.md](references/resolver-query/RULES.md) + [references/resolver-query/EXAMPLES.md](references/resolver-query/EXAMPLES.md) |
-| Controller class | [references/controller/RULES.md](references/controller/RULES.md) + [references/controller/EXAMPLES.md](references/controller/EXAMPLES.md) |
-| FormRequest / validation | [references/request/RULES.md](references/request/RULES.md) + [references/request/EXAMPLES.md](references/request/EXAMPLES.md) |
+All reference files below are auto-loaded. Apply only the sections relevant to what was requested.
+
+@references/schema/RULES.md
+@references/schema/EXAMPLES.md
+@references/mutation/RULES.md
+@references/mutation/EXAMPLES.md
+@references/query/RULES.md
+@references/query/EXAMPLES.md
+@references/resolver-mutator/RULES.md
+@references/resolver-mutator/EXAMPLES.md
+@references/resolver-query/RULES.md
+@references/resolver-query/EXAMPLES.md
+@references/controller/RULES.md
+@references/controller/EXAMPLES.md
+@references/request/RULES.md
+@references/request/EXAMPLES.md

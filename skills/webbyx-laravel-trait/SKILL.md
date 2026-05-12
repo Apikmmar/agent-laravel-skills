@@ -69,4 +69,5 @@ app/Traits/{TraitName}.php
 - Does it interact with external services? If yes — which ones?
 
 ## Reference
-See `references/TRAIT.md` for real examples.
+
+@references/TRAIT.md

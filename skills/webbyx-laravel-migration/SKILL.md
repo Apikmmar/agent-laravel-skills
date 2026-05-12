@@ -61,4 +61,5 @@ php artisan make:migration {MigrationName}
 - Any enum columns? If yes — what are the allowed values?
 
 ## Reference
-See `references/MIGRATION.md` for real examples.
+
+@references/MIGRATION.md

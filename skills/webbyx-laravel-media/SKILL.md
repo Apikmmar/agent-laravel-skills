@@ -1,6 +1,6 @@
 ---
 name: webbyx-laravel-media
-description: Use when the user asks to add media support to the project. Adds upload, delete, and retrieval methods to BaseModel and BaseController.
+description: Use when adding media or file upload support to the project. Triggers when user asks to add media, implement file uploads, manage file collections, add image support, or set up Spatie media library integration on BaseModel or BaseController.
 ---
 
 ## Rule
@@ -23,4 +23,6 @@ Add all media methods directly to `App\Models\BaseModel` and `App\Http\Controlle
 
 1. Read `app/Models/BaseModel.php` and `app/Http/Controllers/Controller.php`
 2. Add only what is missing — never duplicate existing methods
-3. See `references/MEDIA.md` for the exact implementation of each method
+3. See the reference implementation below and add only what is missing
+
+@references/MEDIA.md

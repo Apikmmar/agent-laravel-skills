@@ -31,6 +31,6 @@ When invoked:
 
 ## Reference Files
 
-- Security review methodology → [references/SECURITY.md](references/SECURITY.md)
-- Performance review methodology → [references/PERFORMANCE.md](references/PERFORMANCE.md)
-- Testing review methodology → [references/TESTING.md](references/TESTING.md)
+@references/SECURITY.md
+@references/PERFORMANCE.md
+@references/TESTING.md
